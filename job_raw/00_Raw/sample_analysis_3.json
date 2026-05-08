@@ -1,0 +1,88 @@
+{
+  "timestamp": "2026-04-29T11:22:41.705897Z",
+  "entries": [
+    {
+      "alio_id": "force-1",
+      "trimmed_len": 0,
+      "analysis": {
+        "explicit_skills": [],
+        "skills_found": [
+          "의료법 및 개인정보보호법 이해",
+          "정보보호 관리체계 운영",
+          "의료정보시스템 보안 관리",
+          "위험 평가 및 대응"
+        ],
+        "core_logic": "의료기관 내 의료정보 보호 및 관리 체계 운영",
+        "domain_context": "보건의료 정보보호 및 개인정보 관리",
+        "latent_skills": [
+          "의료법 및 개인정보보호법 이해",
+          "정보보호 관리체계 운영",
+          "의료정보시스템 보안 관리",
+          "위험 평가 및 대응"
+        ],
+        "job_nature": "운영/관리",
+        "complexity": "medium",
+        "skills_additional": [],
+        "method": "regex+llm",
+        "model": "deepseek-ai/deepseek-v4-pro",
+        "tokens": 87,
+        "cost": 0.000261,
+        "analyzed_at": "2026-04-29T11:22:41.707633Z"
+      }
+    },
+    {
+      "alio_id": "force-2",
+      "trimmed_len": 0,
+      "analysis": {
+        "explicit_skills": [],
+        "skills_found": [
+          "연구 방법론",
+          "데이터 분석",
+          "보고서 작성"
+        ],
+        "core_logic": "연구 / 연구과제에 대한 기획 및 수행",
+        "domain_context": "연구",
+        "latent_skills": [
+          "연구 방법론",
+          "데이터 분석",
+          "보고서 작성"
+        ],
+        "job_nature": "연구/개발",
+        "complexity": "medium",
+        "skills_additional": [],
+        "method": "regex+llm",
+        "model": "deepseek-ai/deepseek-v4-pro",
+        "tokens": 70,
+        "cost": 0.00021000000000000004,
+        "analyzed_at": "2026-04-29T11:22:54.557076Z"
+      }
+    },
+    {
+      "alio_id": "force-16",
+      "trimmed_len": 0,
+      "analysis": {
+        "explicit_skills": [],
+        "skills_found": [
+          "의료 행정 지식",
+          "조직 관리 능력",
+          "의사소통 능력"
+        ],
+        "core_logic": "의료기관 운영을 위한 행정 및 관리 업무 수행",
+        "domain_context": "보건의료",
+        "latent_skills": [
+          "의료 행정 지식",
+          "조직 관리 능력",
+          "의사소통 능력"
+        ],
+        "job_nature": "운영/관리",
+        "complexity": "medium",
+        "skills_additional": [],
+        "method": "regex+llm",
+        "model": "deepseek-ai/deepseek-v4-pro",
+        "tokens": 74,
+        "cost": 0.000222,
+        "analyzed_at": "2026-04-29T11:23:12.131399Z"
+      }
+    }
+  ]
+}

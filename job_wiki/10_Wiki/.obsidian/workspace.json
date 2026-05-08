@@ -1,0 +1,208 @@
+{
+  "main": {
+    "id": "0b89860c130180f9",
+    "type": "split",
+    "children": [
+      {
+        "id": "c270bfffb6d3733b",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "7a60625346c686e0",
+            "type": "leaf",
+            "state": {
+              "type": "graph",
+              "state": {},
+              "icon": "lucide-git-fork",
+              "title": "그래프 뷰"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "476307936201a7ec",
+    "type": "split",
+    "children": [
+      {
+        "id": "10432d14ff98e8b7",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "1ead3ee99782683e",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical",
+                "autoReveal": false
+              },
+              "icon": "lucide-folder-closed",
+              "title": "파일 탐색기"
+            }
+          },
+          {
+            "id": "7a2b3fbb3711a184",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              },
+              "icon": "lucide-search",
+              "title": "검색"
+            }
+          },
+          {
+            "id": "7121696dc0934f96",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {},
+              "icon": "lucide-bookmark",
+              "title": "북마크"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "right": {
+    "id": "e49c100c3c7b1d1a",
+    "type": "split",
+    "children": [
+      {
+        "id": "ede20a37f9eb40de",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "93c2255253b1b8dc",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-coming-in",
+              "title": "백링크"
+            }
+          },
+          {
+            "id": "04299287617c9891",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-going-out",
+              "title": "나가는 링크"
+            }
+          },
+          {
+            "id": "80a149e238c83f8b",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-tags",
+              "title": "태그"
+            }
+          },
+          {
+            "id": "7763605a359642ea",
+            "type": "leaf",
+            "state": {
+              "type": "all-properties",
+              "state": {
+                "sortOrder": "frequency",
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-archive",
+              "title": "모든 속성"
+            }
+          },
+          {
+            "id": "b2d94a072f4876d4",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "followCursor": false,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-list",
+              "title": "개요"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:빠른 전환기 열기": false,
+      "graph:그래프 뷰 열기": false,
+      "canvas:새 캔버스 만들기": false,
+      "daily-notes:오늘의 일일 노트 열기": false,
+      "templates:템플릿 삽입": false,
+      "command-palette:명령어 팔레트 열기": false,
+      "bases:새 베이스 생성하기": false
+    }
+  },
+  "active": "7a60625346c686e0",
+  "lastOpenFiles": [
+    "Analysis/20260429_한국도로공사_299967.md",
+    "Analysis/20260429_충남대학교병원_299970.md",
+    "Entities/Skills/의료기관 행정 관리.md",
+    "Analysis/20260429_충남대학교병원_299960.md",
+    "Entities/Skills/공간별 청소 방법 이해.md",
+    "Entities/Skills/위생 기준 준수.md",
+    "Entities/Skills/청소 도구 및 장비 운용 능력.md",
+    "Analysis/20260429_한국도로공사_299961.md",
+    "Entities/Skills/논리적 추론.md",
+    "Entities/Skills/실험 설계.md",
+    "Entities/Skills/가설 설정.md",
+    "Entities/Skills/문헌 조사.md",
+    "Entities/Companies/에너지경제연구원.md",
+    "Analysis/20260429_에너지경제연구원_299957.md",
+    "Entities/Skills/정보보안 위험 평가 및 대응.md",
+    "Entities/Skills/의료정보시스템 관리 역량.md",
+    "Entities/Skills/개인정보보호법 및 의료법 적용 능력.md",
+    "Entities/Skills/문서화.md",
+    "Entities/Skills/커뮤니케이션.md",
+    "Entities/Skills/프로젝트 조정.md",
+    "Entities/Skills/예산 관리.md",
+    "Entities/Companies/대한적십자사.md",
+    "Entities/Companies/한국문화예술위원회.md",
+    "Analysis/20260429_충남대학교병원_299962.md",
+    "Analysis/20260429_대한적십자사_299975.md",
+    "Analysis/20260429_한국문화예술위원회_299969.md"
+  ]
+}

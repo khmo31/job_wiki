@@ -1,0 +1,25 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "job-career"
+version = "0.1.0"
+description = "3단계 지능형 커리어 판단 에이전트"
+requires-python = ">=3.12"
+dependencies = [
+    "crewai",
+    "langchain-community",
+    "flask",
+    "flask-cors",
+    "pyyaml",
+]
+
+[project.scripts]
+job-career = "career_agent.main:run"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]

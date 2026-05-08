@@ -1,0 +1,22 @@
+# Python artifacts
+**/__pycache__/
+**/*.py[cod]
+**/*.egg-info/
+**/.venv/
+**/.env
+**/.pytest_cache/
+**/.mypy_cache/
+**/.ruff_cache/
+
+# Frontend / node artifacts
+**/node_modules/
+
+# Local debug files
+**/*.log
+**/tmp_*.json
+**/ontology_cache.json
+**/llm_calls.csv
+*.zip
+
+# VS Code workspace settings
+**/.vscode/

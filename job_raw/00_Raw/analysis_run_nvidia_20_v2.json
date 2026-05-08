@@ -1,0 +1,168 @@
+{
+  "timestamp": "2026-04-29T11:39:22.835066Z",
+  "provider": "nvidia",
+  "model": "deepseek-ai/deepseek-v4-pro",
+  "processed": 20,
+  "entries": [
+    {
+      "alio_id": "force-1",
+      "title": "신입",
+      "core_logic": "의료기관 운영을 위한 행정 및 관리 업무 수행",
+      "tokens": 74,
+      "cost": 0.000222,
+      "method": "regex+llm"
+    },
+    {
+      "alio_id": "force-2",
+      "title": "신입+경력",
+      "core_logic": "연구 / 연구과제에 대한 기획 및 수행",
+      "tokens": 70,
+      "cost": 0.00021000000000000004,
+      "method": "regex+llm"
+    },
+    {
+      "alio_id": "force-3",
+      "title": "신입+경력",
+      "core_logic": "환경/에너지/안전 분야의 경영/회계/사무 및 기계/재료/화학 관련 업무 수행",
+      "tokens": 91,
+      "cost": 0.000273,
+      "method": "regex+llm"
+    },
+    {
+      "alio_id": "force-4",
+      "title": "신입+경력",
+      "core_logic": "사업관리 / 경영·회계·사무 분야의 운영적 행위",
+      "tokens": 89,
+      "cost": 0.000267,
+      "method": "regex+llm"
+    },
+    {
+      "alio_id": "force-5",
+      "title": "신입+경력",
+      "core_logic": "경영·회계·사무 / 조직 운영 및 행정 지원에 대한 실무적 행위",
+      "tokens": 82,
+      "cost": 0.000246,
+      "method": "regex+llm"
+    },
+    {
+      "alio_id": "force-6",
+      "title": "신입+경력",
+      "core_logic": "의료기관 내 의료정보 보호 및 관리 체계 운영",
+      "tokens": 85,
+      "cost": 0.000255,
+      "method": "regex+llm"
+    },
+    {
+      "alio_id": "force-7",
+      "title": "신입",
+      "core_logic": "의료기관 내 의료정보 보호 및 관리 체계 운영",
+      "tokens": 81,
+      "cost": 0.00024300000000000002,
+      "method": "regex+llm"
+    },
+    {
+      "alio_id": "force-8",
+      "title": "신입",
+      "core_logic": "의료기관 운영 전반에 대한 관리적 행위",
+      "tokens": 85,
+      "cost": 0.000255,
+      "method": "regex+llm"
+    },
+    {
+      "alio_id": "force-9",
+      "title": "경력",
+      "core_logic": "문화예술 분야의 경영·회계·사무 및 디자인·방송 업무 수행",
+      "tokens": 86,
+      "cost": 0.000258,
+      "method": "regex+llm"
+    },
+    {
+      "alio_id": "force-10",
+      "title": "신입+경력",
+      "core_logic": "의료기관 운영 전반에 대한 관리적 행위",
+      "tokens": 74,
+      "cost": 0.000222,
+      "method": "regex+llm"
+    },
+    {
+      "alio_id": "force-11",
+      "title": "신입+경력",
+      "core_logic": "운전·운송 / 차량 운행 및 물류 이동에 대한 실무적 행위",
+      "tokens": 75,
+      "cost": 0.000225,
+      "method": "regex+llm"
+    },
+    {
+      "alio_id": "force-12",
+      "title": "신입",
+      "core_logic": "의료기관 운영을 위한 행정 및 관리 업무 수행",
+      "tokens": 83,
+      "cost": 0.00024900000000000004,
+      "method": "regex+llm"
+    },
+    {
+      "alio_id": "force-13",
+      "title": "신입",
+      "core_logic": "의료기관 내 의료정보 보호 및 관리 체계 운영",
+      "tokens": 82,
+      "cost": 0.000246,
+      "method": "regex+llm"
+    },
+    {
+      "alio_id": "force-14",
+      "title": "신입",
+      "core_logic": "의료기관 내 의료정보 보호 및 관리 체계 운영",
+      "tokens": 84,
+      "cost": 0.000252,
+      "method": "regex+llm"
+    },
+    {
+      "alio_id": "force-15",
+      "title": "신입",
+      "core_logic": "의료기관 운영 전반에 대한 관리적 행위",
+      "tokens": 75,
+      "cost": 0.000225,
+      "method": "regex+llm"
+    },
+    {
+      "alio_id": "force-16",
+      "title": "신입+경력",
+      "core_logic": "의료기관 운영을 위한 행정 및 관리 업무 수행",
+      "tokens": 74,
+      "cost": 0.000222,
+      "method": "regex+llm"
+    },
+    {
+      "alio_id": "force-17",
+      "title": "신입+경력",
+      "core_logic": "시설물의 청결 유지 및 위생 관리에 대한 실행적 행위",
+      "tokens": 78,
+      "cost": 0.000234,
+      "method": "regex+llm"
+    },
+    {
+      "alio_id": "force-18",
+      "title": "신입",
+      "core_logic": "의료기관 운영 전반에 대한 관리적 행위",
+      "tokens": 85,
+      "cost": 0.000255,
+      "method": "regex+llm"
+    },
+    {
+      "alio_id": "force-19",
+      "title": "신입+경력",
+      "core_logic": "운전·운송 / 차량 운행 및 물류 이동에 대한 실행적 행위",
+      "tokens": 77,
+      "cost": 0.000231,
+      "method": "regex+llm"
+    },
+    {
+      "alio_id": "force-20",
+      "title": "신입+경력",
+      "core_logic": "연구 / 미지의 대상에 대한 탐구적 행위",
+      "tokens": 76,
+      "cost": 0.000228,
+      "method": "regex+llm"
+    }
+  ]
+}
