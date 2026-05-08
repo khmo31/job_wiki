@@ -57,10 +57,13 @@ http-server -p 5000
 ## 필수 환경변수 (예시)
 
 루트에 `.env` 파일을 만들어 환경변수를 관리하거나, OS 환경변수로 설정하세요. **실제 키 값은 안전하게 보관**하시기 바랍니다.
+예시 템플릿은 루트의 `.env.example`을 복사해서 사용하면 됩니다.
 
 ```
-# LLM 제공자 키
+# FAST 모델용 필수 키
 GROQ_API_KEY=your_groq_api_key_here
+
+# SMART/EVALUATOR 모델용 키 (NVIDIA_API_KEY 또는 OPENAI_API_KEY 중 하나)
 OPENAI_API_KEY=your_openai_api_key_here
 NVIDIA_API_KEY=your_nvidia_api_key_here
 
