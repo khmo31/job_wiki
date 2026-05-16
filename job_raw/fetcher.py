@@ -153,6 +153,7 @@ def fetch_recent_jobs(api_key: Optional[str] = None, days: int = 7, mock: bool =
             data = {key_name: api_key, "numOfRows": page_size, "pageNo": page}
             attempts = 0
             while attempts < config.RETRY_ATTEMPTS:
+                print(f"[fetcher] page={page}/{max_pages} key={key_name} attempt={attempts+1}", file=sys.stderr)
                 try:
                     mode = getattr(config, "ALIO_REQUEST_BODY_MODE", "data") or "data"
                     if mode == "json":
@@ -188,16 +189,20 @@ def fetch_recent_jobs(api_key: Optional[str] = None, days: int = 7, mock: bool =
                         for it in items:
                             results.append(_normalize_item(it))
                         found_for_page = True
+                        print(f"[fetcher] page={page} OK ({len(items)} items, total={len(results)})", file=sys.stderr)
 
                         # if fewer items than page_size, finished
                         if len(items) < page_size:
+                            print(f"[fetcher] last page reached ({len(items)} < {page_size}), stopping", file=sys.stderr)
                             return results
                         break
                     else:
+                        print(f"[fetcher] page={page} key={key_name} got 200 but no items", file=sys.stderr)
                         # got 200 but no items -> try next key_name
                         break
-                except requests.RequestException:
+                except requests.RequestException as e:
                     attempts += 1
+                    print(f"[fetcher] page={page} key={key_name} attempt {attempts} failed: {e}", file=sys.stderr)
                     time.sleep((2 ** attempts) * config.RETRY_BACKOFF_FACTOR)
             if found_for_page:
                 break
