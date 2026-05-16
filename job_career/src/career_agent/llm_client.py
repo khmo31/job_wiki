@@ -9,9 +9,9 @@ import time
 from pathlib import Path
 from typing import Any
 
-# Groq 무료 티어 rate limit: 30 RPM → 2초 간격
+# Groq llama-3.3-70b-versatile 무료 티어 rate limit: 900 RPM → 0.1초 간격
 _RATE_LIMITER_LAST_CALL: float = 0.0
-_RATE_LIMITER_INTERVAL: float = 2.0  # seconds between requests
+_RATE_LIMITER_INTERVAL: float = 0.1  # seconds between requests
 
 
 def _rate_limit() -> None:

@@ -324,7 +324,7 @@ def _call_llm_for_dna(text: str, explicit_skills: List[str], domain_hint: Option
         if not api_key:
             return None, 0, 0.0
         base_url = os.getenv("GROQ_BASE_URL", "https://api.groq.com/openai/v1").rstrip("/")
-        model = os.getenv("LLM_EXTRACT_MODEL", "llama-3.1-8b-instant")
+        model = os.getenv("LLM_EXTRACT_MODEL", "llama-3.3-70b-versatile")
         payload = {
             "model": model,
             "messages": [
@@ -337,11 +337,11 @@ def _call_llm_for_dna(text: str, explicit_skills: List[str], domain_hint: Option
         max_attempts = int(getattr(config, "RETRY_ATTEMPTS", 3) or 3)
         backoff_factor = float(getattr(config, "RETRY_BACKOFF_FACTOR", 1.5) or 1.5)
         _last_groq_call: float = 0.0
-        _groq_min_interval: float = 2.0
+        _groq_min_interval: float = 0.1
         last_exc = None
         for attempt in range(1, max_attempts + 1):
             try:
-                # Rate limit: 30 RPM
+                # Rate limit: 900 RPM (llama-3.3-70b)
                 now = time.time()
                 if now - _last_groq_call < _groq_min_interval:
                     time.sleep(_groq_min_interval - (now - _last_groq_call))
