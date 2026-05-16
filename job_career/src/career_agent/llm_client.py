@@ -9,9 +9,16 @@ import time
 from pathlib import Path
 from typing import Any
 
-# Groq llama-3.3-70b-versatile 무료 티어 rate limit: 900 RPM → 0.1초 간격
+# Groq 무료 티어 rate limit: 30 RPM → 2초 간격
 _RATE_LIMITER_LAST_CALL: float = 0.0
-_RATE_LIMITER_INTERVAL: float = 0.1  # seconds between requests
+_RATE_LIMITER_INTERVAL: float = 2.0  # seconds between requests
+
+# Groq 모델 폴백 체인 (rate limit 도달 시 다음 모델로 자동 전환)
+_GROQ_FALLBACK_MODELS = [
+    os.getenv("LLM_EXTRACT_MODEL", "llama-3.3-70b-versatile"),
+    "meta-llama/llama-4-scout-17b-16e-instruct",
+    "llama-3.1-8b-instant",
+]
 
 
 def _rate_limit() -> None:
@@ -73,37 +80,52 @@ def _call_llm(system_prompt: str, user_prompt: str, max_tokens: int = 256) -> st
     if not cfg or not cfg["api_key"]:
         return None
 
-    headers = {
-        "Authorization": f"Bearer {cfg['api_key']}",
-        "Content-Type": "application/json",
-    }
+    # For Groq: try fallback models on rate limit
+    models_to_try = [cfg["model"]]
+    if provider == "groq":
+        models_to_try = list(dict.fromkeys([cfg["model"]] + _GROQ_FALLBACK_MODELS))
 
-    payload = {
-        "model": cfg["model"],
-        "messages": [
-            {"role": "system", "content": system_prompt},
-            {"role": "user", "content": user_prompt},
-        ],
-        "temperature": 0.0,
-        "max_tokens": max_tokens,
-    }
+    import requests
 
-    try:
-        import requests
-        _rate_limit()
-        resp = requests.post(
-            f"{cfg['base_url'].rstrip('/')}/chat/completions",
-            headers=headers,
-            json=payload,
-            timeout=30,
-        )
-        resp.raise_for_status()
-        data = resp.json()
-        content = data["choices"][0]["message"]["content"]
-        return content.strip()
-    except Exception as e:
-        _log(f"LLM call failed: {e}")
-        return None
+    for model_name in models_to_try:
+        payload = {
+            "model": model_name,
+            "messages": [
+                {"role": "system", "content": system_prompt},
+                {"role": "user", "content": user_prompt},
+            ],
+            "temperature": 0.0,
+            "max_tokens": max_tokens,
+        }
+        try:
+            _rate_limit()
+            resp = requests.post(
+                f"{cfg['base_url'].rstrip('/')}/chat/completions",
+                headers={"Authorization": f"Bearer {cfg['api_key']}", "Content-Type": "application/json"},
+                json=payload,
+                timeout=30,
+            )
+            if resp.status_code == 429:
+                _log(f"Groq rate limit hit for {model_name}, trying next model...")
+                continue
+            resp.raise_for_status()
+            data = resp.json()
+            content = data["choices"][0]["message"]["content"]
+            if model_name != models_to_try[0]:
+                _log(f"switched to fallback model: {model_name}")
+            return content.strip()
+        except requests.RequestException as e:
+            if "429" in str(e) or "Too Many Requests" in str(e):
+                _log(f"429 on {model_name}, trying fallback...")
+                continue
+            _log(f"LLM call failed ({model_name}): {e}")
+            return None
+        except Exception as e:
+            _log(f"LLM call failed ({model_name}): {e}")
+            return None
+
+    _log("all Groq models exhausted (rate limited)")
+    return None
 
 
 def _load_ontology_keywords() -> list[str]:

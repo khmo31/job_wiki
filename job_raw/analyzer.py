@@ -324,57 +324,68 @@ def _call_llm_for_dna(text: str, explicit_skills: List[str], domain_hint: Option
         if not api_key:
             return None, 0, 0.0
         base_url = os.getenv("GROQ_BASE_URL", "https://api.groq.com/openai/v1").rstrip("/")
-        model = os.getenv("LLM_EXTRACT_MODEL", "llama-3.3-70b-versatile")
-        payload = {
-            "model": model,
-            "messages": [
-                {"role": "system", "content": system},
-                {"role": "user", "content": user_msg},
-            ],
-            "max_tokens": 256,
-            "temperature": 0.0,
-        }
-        max_attempts = int(getattr(config, "RETRY_ATTEMPTS", 3) or 3)
-        backoff_factor = float(getattr(config, "RETRY_BACKOFF_FACTOR", 1.5) or 1.5)
+        primary_model = os.getenv("LLM_EXTRACT_MODEL", "llama-3.3-70b-versatile")
+        # Fallback models for rate limit handling (separate rate limit pools)
+        groq_fallbacks = [
+            primary_model,
+            "meta-llama/llama-4-scout-17b-16e-instruct",
+            "llama-3.1-8b-instant",
+        ]
         _last_groq_call: float = 0.0
-        _groq_min_interval: float = 0.1
-        last_exc = None
-        for attempt in range(1, max_attempts + 1):
-            try:
-                # Rate limit: 900 RPM (llama-3.3-70b)
-                now = time.time()
-                if now - _last_groq_call < _groq_min_interval:
-                    time.sleep(_groq_min_interval - (now - _last_groq_call))
-                _last_groq_call = time.time()
-                resp = requests.post(
-                    f"{base_url}/chat/completions",
-                    headers={"Authorization": f"Bearer {api_key}", "Content-Type": "application/json"},
-                    json=payload,
-                    timeout=30,
-                )
-                resp.raise_for_status()
-                j = resp.json()
-                content = j.get("choices", [{}])[0].get("message", {}).get("content", "")
+        _groq_min_interval: float = 2.0
+        for model_name in groq_fallbacks:
+            payload = {
+                "model": model_name,
+                "messages": [
+                    {"role": "system", "content": system},
+                    {"role": "user", "content": user_msg},
+                ],
+                "max_tokens": 256,
+                "temperature": 0.0,
+            }
+            max_attempts = int(getattr(config, "RETRY_ATTEMPTS", 3) or 3)
+            backoff_factor = float(getattr(config, "RETRY_BACKOFF_FACTOR", 1.5) or 1.5)
+            for attempt in range(1, max_attempts + 1):
                 try:
-                    parsed = json.loads(content)
+                    # Rate limit: 30 RPM
+                    now = time.time()
+                    if now - _last_groq_call < _groq_min_interval:
+                        time.sleep(_groq_min_interval - (now - _last_groq_call))
+                    _last_groq_call = time.time()
+                    resp = requests.post(
+                        f"{base_url}/chat/completions",
+                        headers={"Authorization": f"Bearer {api_key}", "Content-Type": "application/json"},
+                        json=payload,
+                        timeout=30,
+                    )
+                    if resp.status_code == 429:
+                        break  # Try next model
+                    resp.raise_for_status()
+                    j = resp.json()
+                    content = j.get("choices", [{}])[0].get("message", {}).get("content", "")
+                    try:
+                        parsed = json.loads(content)
+                    except Exception:
+                        m = re.search(r"\{[\s\S]*\}", content)
+                        if m:
+                            try:
+                                parsed = json.loads(m.group(0))
+                            except Exception:
+                                parsed = None
+                    if model_name != primary_model:
+                        print(f"[analyzer] switched to fallback model: {model_name}", file=sys.stderr)
+                    approx_tokens = int((len(user_msg) + len(content)) / 4)
+                    cost = (approx_tokens / 1000.0) * float(getattr(config, "ANALYSIS_COST_PER_1K_TOKENS", 0.003))
+                    return parsed, approx_tokens, cost
+                except requests.RequestException as e:
+                    if "429" in str(e) or "Too Many Requests" in str(e):
+                        break  # Try next model
+                    if attempt >= max_attempts:
+                        break
+                    sleep_for = backoff_factor * (2 ** (attempt - 1)) + random.uniform(0, 1)
+                    time.sleep(sleep_for)
                 except Exception:
-                    m = re.search(r"\{[\s\S]*\}", content)
-                    if m:
-                        try:
-                            parsed = json.loads(m.group(0))
-                        except Exception:
-                            parsed = None
-                approx_tokens = int((len(user_msg) + len(content)) / 4)
-                cost = (approx_tokens / 1000.0) * float(getattr(config, "ANALYSIS_COST_PER_1K_TOKENS", 0.003))
-                return parsed, approx_tokens, cost
-            except requests.RequestException as e:
-                last_exc = e
-                if attempt >= max_attempts:
                     break
-                sleep_for = backoff_factor * (2 ** (attempt - 1)) + random.uniform(0, 1)
-                time.sleep(sleep_for)
-            except Exception:
-                break
         return None, 0, 0.0
 
     # unsupported provider
