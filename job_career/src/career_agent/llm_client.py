@@ -3,7 +3,9 @@ from __future__ import annotations
 
 import json
 import os
+import re
 import sys
+from pathlib import Path
 from typing import Any
 
 
@@ -87,29 +89,65 @@ def _call_llm(system_prompt: str, user_prompt: str, max_tokens: int = 256) -> st
         return None
 
 
-EXTRACT_KEYWORDS_SYSTEM = """You are a career keyword extraction assistant.
-Given a user's career profile, extract the most relevant skill/domain keywords.
-Match them against the existing ontology keywords if possible.
-Output ONLY a JSON array of keyword strings, no other text.
-Example: ["의료 행정 지식", "의료정보 보호", "문서 작성 및 관리"]"""
+def _load_ontology_keywords() -> list[str]:
+    """Load the full list of standard ontology keywords from Ontology_Map.json."""
+    try:
+        # Locate project root relative to this file
+        root = Path(__file__).resolve().parents[3]
+        ontology_path = root / "job_wiki" / "20_Meta" / "Ontology_Map.json"
+        if not ontology_path.exists():
+            return []
+        data = json.loads(ontology_path.read_text(encoding="utf-8"))
+        mappings = data.get("mappings", {}) if isinstance(data, dict) else {}
+        if not isinstance(mappings, dict):
+            return []
+        return list(mappings.keys())
+    except Exception as e:
+        _log(f"failed to load ontology: {e}")
+        return []
+
+
+def _build_ontology_context() -> str:
+    """Build an ontology keyword list string for inclusion in prompts."""
+    keywords = _load_ontology_keywords()
+    if not keywords:
+        return ""
+    return "\nAvailable ontology keywords:\n" + "\n".join(f"- {kw}" for kw in keywords)
 
 
 def extract_keywords(user_profile: str) -> list[str] | None:
-    """LLM으로 사용자 프로필에서 wiki 키워드 추출. 실패 시 None 반환."""
-    result = _call_llm(EXTRACT_KEYWORDS_SYSTEM, user_profile, max_tokens=256)
+    """LLM으로 사용자 프로필에서 wiki 키워드 추출.
+
+    Ontology_Map.json의 표준 키워드 목록을 프롬프트에 포함시켜
+    LLM이 기존 온톨로지 키워드와 매칭하도록 유도.
+    실패 시 None 반환.
+    """
+    ontology_context = _build_ontology_context()
+
+    system = (
+        "You are a career keyword extraction assistant.\n"
+        "Given a user's career profile, extract the most relevant skill/domain keywords.\n"
+        "PRIORITIZE matching against the available ontology keywords below.\n"
+        "Only suggest NEW keywords if no ontology keyword adequately covers the skill.\n"
+        "Output ONLY a JSON array of keyword strings, no other text.\n"
+        'Example: ["의료 행정 지식", "의료정보 보호", "문서 작성 및 관리"]'
+    )
+
+    user_prompt = user_profile
+    if ontology_context:
+        user_prompt = f"{user_profile}\n\n{ontology_context}"
+
+    result = _call_llm(system, user_prompt, max_tokens=512)
     if not result:
         return None
 
     try:
-        # Parse JSON array
         parsed = json.loads(result)
         if isinstance(parsed, list):
             return [str(k).strip() for k in parsed if k]
     except json.JSONDecodeError:
         pass
 
-    # Fallback: extract bracketed keywords
-    import re
     matches = re.findall(r'"([^"]+)"', result)
     if matches:
         return [m.strip() for m in matches if m.strip()]
@@ -145,17 +183,29 @@ def classify_job_analysis(text: str) -> dict[str, Any] | None:
 
 
 def suggest_ontology_keywords(text: str, existing_skills: list[str]) -> list[str] | None:
-    """공고 텍스트에서 기존 온톨로지에 없는 신규 키워드 제안."""
+    """공고 텍스트에서 기존 온톨로지에 없는 신규 키워드 제안.
+
+    Ontology_Map.json의 전체 표준 키워드 목록을 컨텍스트로 제공하여
+    중복 제안을 방지.
+    """
+    ontology_context = _build_ontology_context()
     existing_str = ", ".join(existing_skills) if existing_skills else "(none yet)"
+
     prompt = (
         f"Existing ontology skills: [{existing_str}]\n\n"
         f"Job posting text:\n{text[:2000]}\n\n"
-        "Extract skill/domain keywords that are NOT in the existing list above. "
+        "Extract skill/domain keywords that are NOT in any of the existing lists above (neither ontology nor existing_skills). "
+        "If all relevant skills are already covered, output an empty array []."
         "Output ONLY a JSON array of strings."
     )
+
+    full_prompt = prompt
+    if ontology_context:
+        full_prompt = f"{prompt}\n\n{ontology_context}"
+
     result = _call_llm(
-        "You are an ontology expansion assistant. Find new skill keywords in the job text.",
-        prompt,
+        "You are an ontology expansion assistant. Find new skill keywords that do NOT exist in the provided ontology.",
+        full_prompt,
         max_tokens=256,
     )
     if not result:

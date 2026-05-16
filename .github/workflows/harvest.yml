@@ -37,6 +37,13 @@ jobs:
           pip install --upgrade pip
           pip install -r requirements.txt
 
+      # ── Step 0: 만료 공고 정리 ──
+      - name: Step 0 — 기한 만료 공고 정리 (Cleanup)
+        id: cleanup
+        run: |
+          cd job_raw
+          python scripts/cleanup_expired.py 2>&1
+
       # ── Step 1: 수집 ──
       - name: Step 1 — 채용공고 수집 (Harvester)
         id: harvest
@@ -61,8 +68,15 @@ jobs:
           cd job_raw
           python scripts/wiki_generator.py 2>&1
 
-      # ── Step 3: Commit & Push ──
-      - name: Step 3 — 변경사항 커밋 및 푸시
+      # ── Step 3: 온톨로지 자동 병합 ──
+      - name: Step 3 — 신규 키워드 온톨로지 자동 병합 (Merge Ontology)
+        id: merge_ontology
+        run: |
+          cd job_raw
+          python scripts/merge_ontology.py 2>&1
+
+      # ── Step 4: Commit & Push ──
+      - name: Step 4 — 변경사항 커밋 및 푸시
         run: |
           git config user.name "job-wiki-bot"
           git config user.email "bot@job-wiki.gh"
