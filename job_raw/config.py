@@ -53,7 +53,7 @@ FORCE_COMPOSE_CONTEXT = str(os.getenv("FORCE_COMPOSE_CONTEXT", "1") or "1").lowe
 
 # ALIO / API settings - prefer environment variables, fallback to .env in project root
 ALIO_API_KEY = os.getenv("ALIO_API_KEY")
-ALIO_ENDPOINT = os.getenv("ALIO_ENDPOINT")  # set to the ALIO endpoint if known
+ALIO_ENDPOINT = os.getenv("ALIO_ENDPOINT") or "https://opendata.alio.go.kr/openapi/service/rest/RecruitService/getRecruitList"
 ALIO_PAGE_SIZE = int(os.getenv("ALIO_PAGE_SIZE", "50"))
 ALIO_MAX_PAGES = int(os.getenv("ALIO_MAX_PAGES", "20"))
 RETRY_ATTEMPTS = int(os.getenv("RETRY_ATTEMPTS", "3"))

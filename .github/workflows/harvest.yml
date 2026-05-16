@@ -49,6 +49,7 @@ jobs:
         id: harvest
         env:
           ALIO_API_KEY: ${{ secrets.ALIO_API_KEY }}
+          ALIO_ENDPOINT: ${{ secrets.ALIO_ENDPOINT || 'https://opendata.alio.go.kr/openapi/service/rest/RecruitService/getRecruitList' }}
           NVIDIA_API_KEY: ${{ secrets.NVIDIA_API_KEY }}
           FORCE_LLM_OVERRIDE: ${{ secrets.NVIDIA_API_KEY && '1' || '0' }}
         run: |
