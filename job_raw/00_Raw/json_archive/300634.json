@@ -1,0 +1,56 @@
+{
+  "raw": {
+    "list": {
+      "pbadmsStdInstCd": "B554848",
+      "ongoingYn": "Y",
+      "ncsCdLst": "R600001",
+      "recrutPblntSn": 300634,
+      "aplyQlfcCn": "[계약직 책임급]\r\n- 박사학위 소지자\r\n- 12대 국가전략기술 등 첨단기술 분야에 대한 이해 및 기술사업화·기술이전·산학연 ㅎ벼력 실무 경력 유경험자\r\n- 국가공무원법 제33조의 결격 사유가 없는 자\r\n\r\n[계약직 원급]\r\n- 위 채용하고자 하는 분야 직무를 수행할 수 있는 자\r\n- 국가공무원법 제33조의 결격 사유가 없는 자",
+      "pblntInstCd": "C1038",
+      "instNm": "과학기술사업화진흥원",
+      "srcUrl": "https://compa.re.kr/cop/bbs/rnw/selectBoardArticle.do?bbsId=BBSMSTR_000000000091&nttId=3982&goMenuNo=1233000",
+      "pbancBgngYmd": "20260515",
+      "recrutPbancTtl": "[제2026-025호] 과학기술사업화진흥원 2026년 3차 신규직원(계약직_책임급, 원급) 채용 공고",
+      "replmprYn": "N",
+      "prefCondCn": "장애인(전형단계별 가점 부여 5%)",
+      "pbancEndYmd": "20260604",
+      "acbgCondLst": "R7010,R7070",
+      "nonatchRsn": null,
+      "workRgnNmLst": "서울",
+      "disqlfcRsn": "1. 국가공무원법 제33조 각 호에 해당하는 자\r\n2. 병역의무를 기피한 사실이 있는 자\r\n3. 법률에 의하여 공민원이 정지 또는 박탈된 사람\r\n4. 신체검사결과 정상적인 업무수행이 어렵다고 인정된 사람\r\n5. 구비서류 등에 중대한 허위 사실이 밝혀진 경우\r\n6. 채용에 따른 소정의 서류를 특별한 사유 없이 기일 내 제출하지 않은 경우\r\n7. 부패방지 및 국민권익위원회의 설치와 운영에 관한 법률 제82조에 따른 취업제한 기간 중인 사람\r\n8. 기타 부정한 방법으로 전형에 임한 경우",
+      "hireTypeLst": "R1040",
+      "acbgCondNmLst": "학력무관,박사",
+      "recrutNope": 4,
+      "recrutSeNm": "신입+경력",
+      "steps": [],
+      "decimalDay": 19,
+      "workRgnLst": "R3010",
+      "files": [],
+      "scrnprcdrMthdExpln": "ㅇ 1차 전형(서류): 입사지원서(제출서류)를 통해 자격 등을 심사\r\n - 선발인원: 분야별 채용예정인원의 5배수 내외\r\n   * 동점자 포함하여 5배수 내외, 동점자가 없는 경우에는 5배수 이하\r\nㅇ 필기전형: 생략(인사지침 제4조 제3항 근거)\r\nㅇ 2차 전형(면접): 면접 심사표(채용분야 이해정도, 발전가능성 등)에 따라 심사\r\n - 선발인원: 분야별 채용예정인원의 1배수(최종)\r\n   ※ 경력 및 제증빙 서류에 대해 채용 홈페이지를 통해 제출토록 하여 채용결격자 검증 실시(면접관에게는 미공개)",
+      "prefCn": "[계약직 책임급]\r\n- 사회문제해결형 R&D, 리빙랩(Living Lab), 시민참여형 연구개발 등 관련 기획·수행·평가·현장 실증 유경험자\r\n- 변리사, 기업기술가치평가사, 기술거래사 등 관련 자격증 소지자\r\n\r\n[계약직 원급]\r\n- 국가 R&D 사업 관리 지원 유경험자",
+      "recrutSe": "R2030",
+      "hireTypeNmLst": "비정규직",
+      "ncsCdNmLst": "사업관리"
+    },
+    "detail": {
+      "resultCode": "6",
+      "resultMsgEng": "SERVER_UNKNOWN_ERROR",
+      "resultMsg": "서버 에러"
+    }
+  },
+  "analysis": {
+    "explicit_skills": [],
+    "skills_found": [],
+    "core_logic": "주요 업무 로직이 공고에 명시되어있음",
+    "domain_context": "일반 소프트웨어/IT",
+    "latent_skills": [],
+    "job_nature": "실무/혼합",
+    "complexity": "low",
+    "skills_additional": [],
+    "method": "regex+heuristic",
+    "model": null,
+    "tokens": 0,
+    "cost": 0.0,
+    "analyzed_at": "2026-05-16T07:06:12.104592Z"
+  }
+}
