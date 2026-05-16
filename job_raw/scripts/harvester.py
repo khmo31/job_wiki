@@ -56,6 +56,11 @@ def main(mock: bool = True, dry_run: bool = False, count: int | None = None, day
             if config.DETAIL_MAX_DETAIL_CALLS is not None and detail_calls >= config.DETAIL_MAX_DETAIL_CALLS:
                 need_detail = False
 
+            # === SKIP if already exists (BEFORE any analysis!) ===
+            if alio_id and exists_for_id(alio_id, base_dir=str(config.BASE_DIR), raw_dir=config.RAW_DIR):
+                stats["skipped"] += 1
+                continue
+
             # fetch and merge detail if needed
             if need_detail and alio_id:
                 detail = fetch_detail_by_id(alio_id, api_key=config.ALIO_API_KEY, mock=mock)
@@ -80,14 +85,9 @@ def main(mock: bool = True, dry_run: bool = False, count: int | None = None, day
             filename = filename_from_job(job)
             if dry_run:
                 print(f"[DRY RUN] would write: {os.path.join(config.RAW_DIR, filename)} (ALIO_ID={alio_id})")
-                # avoid UnicodeEncodeError on consoles with limited encodings
                 print(repr(md[:200]))
                 stats["saved" if False else "skipped"] += 0
             else:
-                # skip if id exists
-                if alio_id and exists_for_id(alio_id, base_dir=str(config.BASE_DIR), raw_dir=config.RAW_DIR):
-                    stats["skipped"] += 1
-                    continue
                 path = save_markdown(md, base_dir=str(config.BASE_DIR), filename=filename, alio_id=alio_id, job_raw=job.get("raw"))
                 if path:
                     stats["saved"] += 1
