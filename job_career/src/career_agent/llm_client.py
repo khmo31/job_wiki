@@ -149,12 +149,16 @@ def _load_ontology_keywords() -> list[str]:
         return []
 
 
-def _build_ontology_context() -> str:
-    """Build an ontology keyword list string for inclusion in prompts."""
+def _build_ontology_context(max_keywords: int = 15) -> str:
+    """Build an ontology keyword list string for inclusion in prompts.
+    Limits to max_keywords to save input tokens.
+    """
     keywords = _load_ontology_keywords()
     if not keywords:
         return ""
-    return "\nAvailable ontology keywords:\n" + "\n".join(f"- {kw}" for kw in keywords)
+    if len(keywords) > max_keywords:
+        keywords = keywords[:max_keywords]
+    return "\nAvailable ontology keywords (match these if possible):\n" + "\n".join(f"- {kw}" for kw in keywords)
 
 
 def extract_keywords(user_profile: str) -> list[str] | None:
@@ -164,7 +168,7 @@ def extract_keywords(user_profile: str) -> list[str] | None:
     LLM이 기존 온톨로지 키워드와 매칭하도록 유도.
     실패 시 None 반환.
     """
-    ontology_context = _build_ontology_context()
+    ontology_context = _build_ontology_context(max_keywords=15)
 
     system = (
         "You are a career keyword extraction assistant.\n"
@@ -179,7 +183,7 @@ def extract_keywords(user_profile: str) -> list[str] | None:
     if ontology_context:
         user_prompt = f"{user_profile}\n\n{ontology_context}"
 
-    result = _call_llm(system, user_prompt, max_tokens=512)
+    result = _call_llm(system, user_prompt, max_tokens=256)
     if not result:
         return None
 
@@ -210,7 +214,7 @@ Output ONLY valid JSON with these keys."""
 
 def classify_job_analysis(text: str) -> dict[str, Any] | None:
     """LLM으로 직무 분석 분류. 실패 시 None 반환."""
-    result = _call_llm(CLASSIFY_SYSTEM, text[:2000], max_tokens=512)
+    result = _call_llm(CLASSIFY_SYSTEM, text[:1000], max_tokens=512)
     if not result:
         return None
 
@@ -228,14 +232,17 @@ def suggest_ontology_keywords(text: str, existing_skills: list[str]) -> list[str
     """공고 텍스트에서 기존 온톨로지에 없는 신규 키워드 제안.
 
     Ontology_Map.json의 전체 표준 키워드 목록을 컨텍스트로 제공하여
-    중복 제안을 방지.
+    중복 제안을 방지. Input token 절약을 위해 텍스트와 온톨로지를 제한.
     """
-    ontology_context = _build_ontology_context()
+    ontology_context = _build_ontology_context(max_keywords=15)
     existing_str = ", ".join(existing_skills) if existing_skills else "(none yet)"
+
+    # Truncate job text to save input tokens (800 chars ≈ 320 tokens)
+    truncated_text = text[:800].strip()
 
     prompt = (
         f"Existing ontology skills: [{existing_str}]\n\n"
-        f"Job posting text:\n{text[:2000]}\n\n"
+        f"Job posting text:\n{truncated_text}\n\n"
         "Extract skill/domain keywords that are NOT in any of the existing lists above (neither ontology nor existing_skills). "
         "If all relevant skills are already covered, output an empty array []."
         "Output ONLY a JSON array of strings."
@@ -246,7 +253,7 @@ def suggest_ontology_keywords(text: str, existing_skills: list[str]) -> list[str
         full_prompt = f"{prompt}\n\n{ontology_context}"
 
     result = _call_llm(
-        "You are an ontology expansion assistant. Find new skill keywords that do NOT exist in the provided ontology.",
+        "You are an ontology expansion assistant. (Input) Find new skill keywords that do NOT exist in the provided ontology.",
         full_prompt,
         max_tokens=256,
     )
