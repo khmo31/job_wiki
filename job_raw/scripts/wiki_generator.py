@@ -378,7 +378,21 @@ def generate_wiki_entry(alio_id: str, raw_index: dict) -> bool:
             _log(f"company profile created: {company_filename}")
 
     # Suggest new ontology keywords
-    _suggest_keywords(alio_id, skills, raw_text or "")
+    suggest_text = raw_text or ""
+    if not suggest_text or len(suggest_text) < 100:
+        # Fallback: read from json_archive raw data
+        archive = _read_analysis_from_archive(alio_id)
+        if archive:
+            rd = archive.get("raw", {})
+            if isinstance(rd, dict):
+                parts = []
+                for key in ("recrutPbancTtl", "aplyQlfcCn", "prefCondCn", "prefCn", "scrnprcdrMthdExpln"):
+                    val = rd.get(key, "")
+                    if val and isinstance(val, str):
+                        parts.append(val)
+                if parts:
+                    suggest_text = "\n".join(parts)
+    _suggest_keywords(alio_id, skills, suggest_text)
 
     return True
 
@@ -400,7 +414,7 @@ def _suggest_keywords(alio_id: str, existing_skills: list[str], text: str) -> No
         _log("llm_client not available for keyword suggestions")
         return
 
-    if not text or len(text) < 100:
+    if not text or len(text) < 50:
         return
 
     suggestions = suggest_ontology_keywords(text, existing_skills)
