@@ -53,7 +53,7 @@ FORCE_COMPOSE_CONTEXT = str(os.getenv("FORCE_COMPOSE_CONTEXT", "1") or "1").lowe
 
 # ALIO / API settings - prefer environment variables, fallback to .env in project root
 ALIO_API_KEY = os.getenv("ALIO_API_KEY")
-ALIO_ENDPOINT = os.getenv("ALIO_ENDPOINT") or "https://opendata.alio.go.kr/openapi/service/rest/RecruitService/getRecruitList"
+ALIO_ENDPOINT = os.getenv("ALIO_ENDPOINT") or "https://opendata.alio.go.kr/new/v1/recruit/list.do"
 ALIO_PAGE_SIZE = int(os.getenv("ALIO_PAGE_SIZE", "50"))
 ALIO_MAX_PAGES = int(os.getenv("ALIO_MAX_PAGES", "20"))
 RETRY_ATTEMPTS = int(os.getenv("RETRY_ATTEMPTS", "3"))
@@ -105,13 +105,13 @@ NCS_MAP = {
 
 # Detail endpoint & fetching policy
 # If not provided via environment, set defaults
-ALIO_DETAIL_ENDPOINT = os.getenv("ALIO_DETAIL_ENDPOINT") or "https://opendata.alio.go.kr/openapi/service/rest/RecruitService/getRecruitDetail"
+ALIO_DETAIL_ENDPOINT = os.getenv("ALIO_DETAIL_ENDPOINT") or "https://opendata.alio.go.kr/new/v1/recruit/detail.do"
 # Candidate parameter names that detail endpoint might accept for an item id
 ALIO_DETAIL_PARAM_NAMES = ["idx", "noticeNo", "recruitmentNo", "postNo", "jobId", "num", "recruitNo"]
 
 # Request header defaults (many public portals block non-browser UA or require Referer)
 ALIO_USER_AGENT = os.getenv("ALIO_USER_AGENT") or "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
-ALIO_REFERER = os.getenv("ALIO_REFERER") or "https://opendata.alio.go.kr/new/odaApiUserInqDataMng/openApiRecrutDetail.do"
+ALIO_REFERER = os.getenv("ALIO_REFERER") or "https://opendata.alio.go.kr/new/v1/recruit/list.do"
 # How to send request body: 'data' (form-encoded), 'json' (application/json), or 'params' (query string)
 ALIO_REQUEST_BODY_MODE = os.getenv("ALIO_REQUEST_BODY_MODE", "data").lower()
 
