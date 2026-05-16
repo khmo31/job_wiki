@@ -386,9 +386,17 @@ def generate_wiki_entry(alio_id: str, raw_index: dict) -> bool:
 def _suggest_keywords(alio_id: str, existing_skills: list[str], text: str) -> None:
     """Use LLM to suggest new ontology keywords, save for manual review."""
     try:
-        sys.path.insert(0, str(PROJECT_ROOT))
-        from job_career.src.career_agent.llm_client import suggest_ontology_keywords
-    except ImportError:
+        import importlib.util
+        llm_path = PROJECT_ROOT / "job_career" / "src" / "career_agent" / "llm_client.py"
+        spec = importlib.util.spec_from_file_location("llm_client", llm_path)
+        if spec and spec.loader:
+            llm_mod = importlib.util.module_from_spec(spec)
+            spec.loader.exec_module(llm_mod)
+            suggest_ontology_keywords = llm_mod.suggest_ontology_keywords
+        else:
+            _log("llm_client module not found")
+            return
+    except Exception:
         _log("llm_client not available for keyword suggestions")
         return
 
