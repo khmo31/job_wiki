@@ -336,9 +336,16 @@ def _call_llm_for_dna(text: str, explicit_skills: List[str], domain_hint: Option
         }
         max_attempts = int(getattr(config, "RETRY_ATTEMPTS", 3) or 3)
         backoff_factor = float(getattr(config, "RETRY_BACKOFF_FACTOR", 1.5) or 1.5)
+        _last_groq_call: float = 0.0
+        _groq_min_interval: float = 2.0
         last_exc = None
         for attempt in range(1, max_attempts + 1):
             try:
+                # Rate limit: 30 RPM
+                now = time.time()
+                if now - _last_groq_call < _groq_min_interval:
+                    time.sleep(_groq_min_interval - (now - _last_groq_call))
+                _last_groq_call = time.time()
                 resp = requests.post(
                     f"{base_url}/chat/completions",
                     headers={"Authorization": f"Bearer {api_key}", "Content-Type": "application/json"},

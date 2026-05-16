@@ -5,8 +5,24 @@ import json
 import os
 import re
 import sys
+import time
 from pathlib import Path
 from typing import Any
+
+# Groq 무료 티어 rate limit: 30 RPM → 2초 간격
+_RATE_LIMITER_LAST_CALL: float = 0.0
+_RATE_LIMITER_INTERVAL: float = 2.0  # seconds between requests
+
+
+def _rate_limit() -> None:
+    """Rate limiter: 30 RPM (2초 간격) 유지"""
+    global _RATE_LIMITER_LAST_CALL
+    now = time.time()
+    elapsed = now - _RATE_LIMITER_LAST_CALL
+    if elapsed < _RATE_LIMITER_INTERVAL:
+        sleep_for = _RATE_LIMITER_INTERVAL - elapsed
+        time.sleep(sleep_for)
+    _RATE_LIMITER_LAST_CALL = time.time()
 
 
 def _log(message: str) -> None:
@@ -74,6 +90,7 @@ def _call_llm(system_prompt: str, user_prompt: str, max_tokens: int = 256) -> st
 
     try:
         import requests
+        _rate_limit()
         resp = requests.post(
             f"{cfg['base_url'].rstrip('/')}/chat/completions",
             headers=headers,
