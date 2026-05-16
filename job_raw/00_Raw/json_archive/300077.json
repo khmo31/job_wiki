@@ -34,24 +34,39 @@
   "analysis": {
     "explicit_skills": [],
     "skills_found": [
-      "행정",
-      "사무",
-      "조직 관리"
+      "장애인 등록",
+      "정보처리기사",
+      "빅데이터 분석기사",
+      "ADP",
+      "ADsP",
+      "AICE Associate",
+      "AICE Professional",
+      "조직 적응",
+      "커뮤니케이션",
+      "문제 해결"
     ],
-    "core_logic": "행정 및 사무 지원",
+    "core_logic": "행정 / 지원에 대한 보조적 행위",
     "domain_context": "경영.회계.사무",
     "latent_skills": [
-      "행정",
-      "사무",
-      "조직 관리"
+      "조직 적응",
+      "커뮤니케이션",
+      "문제 해결"
     ],
     "job_nature": "운영/관리",
     "complexity": "low",
-    "skills_additional": [],
+    "skills_additional": [
+      "장애인 등록",
+      "정보처리기사",
+      "빅데이터 분석기사",
+      "ADP",
+      "ADsP",
+      "AICE Associate",
+      "AICE Professional"
+    ],
     "method": "regex+llm",
     "model": "gpt-4o-mini",
-    "tokens": 308,
-    "cost": 0.000924,
-    "analyzed_at": "2026-05-16T06:24:03.970570Z"
+    "tokens": 332,
+    "cost": 0.0009960000000000001,
+    "analyzed_at": "2026-05-16T06:45:55.477315Z"
   }
 }

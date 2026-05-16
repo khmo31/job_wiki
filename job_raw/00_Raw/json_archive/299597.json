@@ -42,7 +42,7 @@
       "운영"
     ],
     "core_logic": "기계 / 설비에 대한 유지관리적 행위",
-    "domain_context": "기계설비 유지관리",
+    "domain_context": "기계",
     "latent_skills": [
       "문제해결",
       "분석",
@@ -59,6 +59,6 @@
     "model": "gpt-4o-mini",
     "tokens": 187,
     "cost": 0.000561,
-    "analyzed_at": "2026-05-16T06:29:22.908442Z"
+    "analyzed_at": "2026-05-16T06:51:03.392546Z"
   }
 }

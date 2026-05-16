@@ -35,28 +35,28 @@
     "explicit_skills": [],
     "skills_found": [
       "오피스 활용",
-      "운전",
-      "커뮤니케이션",
-      "조직관리",
-      "서비스 제공"
+      "운전 능력",
+      "행정 관리",
+      "장애인 지원",
+      "팀워크"
     ],
     "core_logic": "장애인 지원 / 서비스 제공에 대한 관리적 행위",
     "domain_context": "사회복지",
     "latent_skills": [
-      "커뮤니케이션",
-      "조직관리",
-      "서비스 제공"
+      "행정 관리",
+      "장애인 지원",
+      "팀워크"
     ],
     "job_nature": "운영/관리",
     "complexity": "medium",
     "skills_additional": [
       "오피스 활용",
-      "운전"
+      "운전 능력"
     ],
     "method": "regex+llm",
     "model": "gpt-4o-mini",
-    "tokens": 351,
-    "cost": 0.001053,
-    "analyzed_at": "2026-05-16T06:28:34.013857Z"
+    "tokens": 358,
+    "cost": 0.001074,
+    "analyzed_at": "2026-05-16T06:50:16.150470Z"
   }
 }

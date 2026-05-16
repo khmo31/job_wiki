@@ -34,16 +34,16 @@
   "analysis": {
     "explicit_skills": [],
     "skills_found": [
-      "운영",
-      "관리",
-      "고객서비스"
+      "인사관리",
+      "채용절차",
+      "지원자평가"
     ],
-    "core_logic": "복지시설 / 관리에 대한 운영적 행위",
+    "core_logic": "인사/채용에 대한 관리적 행위",
     "domain_context": "이용.숙박.여행.오락.스포츠",
     "latent_skills": [
-      "운영",
-      "관리",
-      "고객서비스"
+      "인사관리",
+      "채용절차",
+      "지원자평가"
     ],
     "job_nature": "운영/관리",
     "complexity": "low",
@@ -52,6 +52,6 @@
     "model": "gpt-4o-mini",
     "tokens": 186,
     "cost": 0.000558,
-    "analyzed_at": "2026-05-16T06:25:32.187157Z"
+    "analyzed_at": "2026-05-16T06:47:18.290897Z"
   }
 }

@@ -33,28 +33,17 @@
   },
   "analysis": {
     "explicit_skills": [],
-    "skills_found": [
-      "법률 지식",
-      "행정 능력",
-      "인사관리",
-      "규정 준수"
-    ],
-    "core_logic": "인사/채용 관리",
+    "skills_found": [],
+    "core_logic": "",
     "domain_context": "사업관리, 경영, 회계, 사무, 정보통신",
-    "latent_skills": [
-      "인사관리",
-      "규정 준수"
-    ],
-    "job_nature": "운영/관리",
-    "complexity": "low",
-    "skills_additional": [
-      "법률 지식",
-      "행정 능력"
-    ],
+    "latent_skills": [],
+    "job_nature": "",
+    "complexity": "",
+    "skills_additional": [],
     "method": "regex+llm",
     "model": "gpt-4o-mini",
-    "tokens": 178,
-    "cost": 0.000534,
-    "analyzed_at": "2026-05-16T06:25:48.095940Z"
+    "tokens": 167,
+    "cost": 0.000501,
+    "analyzed_at": "2026-05-16T06:47:34.180015Z"
   }
 }

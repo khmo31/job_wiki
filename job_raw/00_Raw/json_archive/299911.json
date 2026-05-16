@@ -38,14 +38,14 @@
       "시설 관리",
       "문제해결",
       "분석적 사고",
-      "커뮤니케이션"
+      "의사소통"
     ],
     "core_logic": "시설 관리 / 기계설비에 대한 유지관리적 행위",
-    "domain_context": "기계",
+    "domain_context": "기계, 환경, 에너지, 안전",
     "latent_skills": [
       "문제해결",
       "분석적 사고",
-      "커뮤니케이션"
+      "의사소통"
     ],
     "job_nature": "운영/관리",
     "complexity": "medium",
@@ -55,8 +55,8 @@
     ],
     "method": "regex+llm",
     "model": "gpt-4o-mini",
-    "tokens": 185,
-    "cost": 0.000555,
-    "analyzed_at": "2026-05-16T06:25:23.233547Z"
+    "tokens": 187,
+    "cost": 0.000561,
+    "analyzed_at": "2026-05-16T06:47:10.631572Z"
   }
 }

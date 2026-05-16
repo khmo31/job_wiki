@@ -34,6 +34,8 @@
   "analysis": {
     "explicit_skills": [],
     "skills_found": [
+      "경영일반",
+      "사무행정",
       "경영 관리",
       "행정 업무",
       "사무 관리"
@@ -47,11 +49,14 @@
     ],
     "job_nature": "운영/관리",
     "complexity": "low",
-    "skills_additional": [],
+    "skills_additional": [
+      "경영일반",
+      "사무행정"
+    ],
     "method": "regex+llm",
     "model": "gpt-4o-mini",
-    "tokens": 392,
-    "cost": 0.001176,
-    "analyzed_at": "2026-05-16T06:24:51.645045Z"
+    "tokens": 391,
+    "cost": 0.001173,
+    "analyzed_at": "2026-05-16T06:46:40.326148Z"
   }
 }

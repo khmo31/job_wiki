@@ -35,8 +35,8 @@
     "explicit_skills": [],
     "skills_found": [
       "인사관리",
-      "계약직 관리",
       "복지행정",
+      "언어재활",
       "행정 관리",
       "복지 서비스 제공",
       "대상자 지원"
@@ -52,13 +52,13 @@
     "complexity": "medium",
     "skills_additional": [
       "인사관리",
-      "계약직 관리",
-      "복지행정"
+      "복지행정",
+      "언어재활"
     ],
     "method": "regex+llm",
     "model": "gpt-4o-mini",
     "tokens": 231,
     "cost": 0.000693,
-    "analyzed_at": "2026-05-16T06:24:27.942748Z"
+    "analyzed_at": "2026-05-16T06:46:17.888416Z"
   }
 }

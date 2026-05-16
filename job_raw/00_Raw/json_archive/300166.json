@@ -38,14 +38,14 @@
       "신경외과",
       "리더십",
       "커뮤니케이션",
-      "환자관리"
+      "문제해결"
     ],
-    "core_logic": "의료 / 환자에 대한 진료적 행위",
+    "core_logic": "의료 / 환자에 대한 진단 및 치료적 행위",
     "domain_context": "보건.의료",
     "latent_skills": [
       "리더십",
       "커뮤니케이션",
-      "환자관리"
+      "문제해결"
     ],
     "job_nature": "운영/관리",
     "complexity": "high",
@@ -55,8 +55,8 @@
     ],
     "method": "regex+llm",
     "model": "gpt-4o-mini",
-    "tokens": 155,
-    "cost": 0.000465,
-    "analyzed_at": "2026-05-16T06:23:52.526775Z"
+    "tokens": 156,
+    "cost": 0.000468,
+    "analyzed_at": "2026-05-16T06:45:46.075489Z"
   }
 }

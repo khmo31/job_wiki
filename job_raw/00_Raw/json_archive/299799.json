@@ -35,23 +35,28 @@
     "explicit_skills": [],
     "skills_found": [
       "인사관리",
-      "규정관리",
-      "심사평가"
+      "규정해석",
+      "심사",
+      "평가",
+      "관리"
     ],
-    "core_logic": "채용 / 지원자 선발에 대한 심사 및 관리",
+    "core_logic": "채용 / 지원자 선발에 대한 심사적 행위",
     "domain_context": "경영.회계.사무",
     "latent_skills": [
-      "인사관리",
-      "규정관리",
-      "심사평가"
+      "심사",
+      "평가",
+      "관리"
     ],
     "job_nature": "운영/관리",
     "complexity": "low",
-    "skills_additional": [],
+    "skills_additional": [
+      "인사관리",
+      "규정해석"
+    ],
     "method": "regex+llm",
     "model": "gpt-4o-mini",
-    "tokens": 226,
-    "cost": 0.000678,
-    "analyzed_at": "2026-05-16T06:26:32.747711Z"
+    "tokens": 228,
+    "cost": 0.000684,
+    "analyzed_at": "2026-05-16T06:48:17.025522Z"
   }
 }

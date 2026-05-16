@@ -34,27 +34,31 @@
   "analysis": {
     "explicit_skills": [],
     "skills_found": [
-      "행정",
+      "일반행정",
+      "경비업법",
+      "운전면허",
       "조직관리",
-      "인사관리"
+      "인사관리",
+      "운영관리"
     ],
-    "core_logic": "인사관리 / 인력관리에 대한 운영적 행위",
+    "core_logic": "인사/관리에 대한 운영적 행위",
     "domain_context": "사업관리, 경영",
     "latent_skills": [
       "조직관리",
       "인사관리",
-      "행정"
+      "운영관리"
     ],
     "job_nature": "운영/관리",
     "complexity": "low",
     "skills_additional": [
-      "행정",
-      "조직관리"
+      "일반행정",
+      "경비업법",
+      "운전면허"
     ],
     "method": "regex+llm",
     "model": "gpt-4o-mini",
-    "tokens": 255,
-    "cost": 0.0007650000000000001,
-    "analyzed_at": "2026-05-16T06:25:29.352302Z"
+    "tokens": 256,
+    "cost": 0.000768,
+    "analyzed_at": "2026-05-16T06:47:15.608530Z"
   }
 }

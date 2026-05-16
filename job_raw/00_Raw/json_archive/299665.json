@@ -39,13 +39,15 @@
       "사회복지",
       "보건의료정보관리",
       "의사소통",
-      "조직 적응"
+      "조직 적응",
+      "문제 해결"
     ],
-    "core_logic": "보건의료 인력 / 채용에 대한 관리적 행위",
-    "domain_context": "보건의료",
+    "core_logic": "보건의료 / 인력에 대한 관리적 행위",
+    "domain_context": "보건.의료",
     "latent_skills": [
       "의사소통",
-      "조직 적응"
+      "조직 적응",
+      "문제 해결"
     ],
     "job_nature": "운영/관리",
     "complexity": "low",
@@ -57,8 +59,8 @@
     ],
     "method": "regex+llm",
     "model": "gpt-4o-mini",
-    "tokens": 181,
-    "cost": 0.000543,
-    "analyzed_at": "2026-05-16T06:28:06.540210Z"
+    "tokens": 183,
+    "cost": 0.000549,
+    "analyzed_at": "2026-05-16T06:49:46.484122Z"
   }
 }

@@ -34,22 +34,29 @@
   "analysis": {
     "explicit_skills": [],
     "skills_found": [
+      "장애인 고용 관련 규정 이해",
+      "인사규정 해석",
       "행정",
-      "인사관리"
+      "인사관리",
+      "규정해석"
     ],
-    "core_logic": "인사 채용에 대한 관리적 행위",
+    "core_logic": "인사 관리에 대한 지원/운영적 행위",
     "domain_context": "경영.회계.사무",
     "latent_skills": [
       "행정",
-      "인사관리"
+      "인사관리",
+      "규정해석"
     ],
     "job_nature": "운영/관리",
     "complexity": "low",
-    "skills_additional": [],
+    "skills_additional": [
+      "장애인 고용 관련 규정 이해",
+      "인사규정 해석"
+    ],
     "method": "regex+llm",
     "model": "gpt-4o-mini",
-    "tokens": 178,
-    "cost": 0.000534,
-    "analyzed_at": "2026-05-16T06:23:55.247605Z"
+    "tokens": 187,
+    "cost": 0.000561,
+    "analyzed_at": "2026-05-16T06:45:48.581929Z"
   }
 }

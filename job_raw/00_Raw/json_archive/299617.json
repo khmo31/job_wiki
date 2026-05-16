@@ -35,32 +35,32 @@
     "explicit_skills": [],
     "skills_found": [
       "공인영어성적",
-      "면허",
+      "면허증",
       "기사 자격증",
       "학위",
-      "영어 커뮤니케이션",
-      "자격증 관리",
-      "팀 운영"
+      "영어 소통",
+      "행정 관리",
+      "기술 운영"
     ],
-    "core_logic": "보건, 의료 조직 운영 / 관리에 대한 행정, 기술, 연구 지원 행위",
-    "domain_context": "보건, 의료",
+    "core_logic": "인사, 시설, 전산, 보건, 연구 관리",
+    "domain_context": "보건.의료",
     "latent_skills": [
-      "영어 커뮤니케이션",
-      "자격증 관리",
-      "팀 운영"
+      "영어 소통",
+      "행정 관리",
+      "기술 운영"
     ],
     "job_nature": "운영/관리",
     "complexity": "medium",
     "skills_additional": [
       "공인영어성적",
-      "면허",
+      "면허증",
       "기사 자격증",
       "학위"
     ],
     "method": "regex+llm",
     "model": "gpt-4o-mini",
-    "tokens": 210,
-    "cost": 0.00063,
-    "analyzed_at": "2026-05-16T06:28:58.990917Z"
+    "tokens": 204,
+    "cost": 0.000612,
+    "analyzed_at": "2026-05-16T06:50:40.289337Z"
   }
 }

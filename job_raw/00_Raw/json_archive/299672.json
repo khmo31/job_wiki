@@ -34,24 +34,24 @@
   "analysis": {
     "explicit_skills": [],
     "skills_found": [
-      "심사",
+      "의사결정",
       "평가",
-      "검증"
+      "검토"
     ],
-    "core_logic": "채용 자격 요건에 대한 검증",
+    "core_logic": "채용 조건에 대한 검토 및 평가",
     "domain_context": "사업관리, 경영, 회계, 사무",
     "latent_skills": [
-      "심사",
+      "의사결정",
       "평가",
-      "검증"
+      "검토"
     ],
     "job_nature": "운영/관리",
     "complexity": "low",
     "skills_additional": [],
     "method": "regex+llm",
     "model": "gpt-4o-mini",
-    "tokens": 159,
-    "cost": 0.000477,
-    "analyzed_at": "2026-05-16T06:27:54.921142Z"
+    "tokens": 160,
+    "cost": 0.00048,
+    "analyzed_at": "2026-05-16T06:49:37.068162Z"
   }
 }

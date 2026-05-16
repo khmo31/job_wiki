@@ -34,29 +34,29 @@
   "analysis": {
     "explicit_skills": [],
     "skills_found": [
-      "해양조사",
+      "해양조사기술",
       "정보관리",
-      "분석",
-      "조사",
-      "정보처리"
+      "데이터 분석",
+      "해양학",
+      "정보 관리"
     ],
-    "core_logic": "해양조사 / 정보에 대한 분석적 행위",
+    "core_logic": "해양조사 / 정보 분야에 대한 지원 및 관리",
     "domain_context": "해양수산",
     "latent_skills": [
-      "분석",
-      "조사",
-      "정보처리"
+      "데이터 분석",
+      "해양학",
+      "정보 관리"
     ],
     "job_nature": "운영/관리",
     "complexity": "medium",
     "skills_additional": [
-      "해양조사",
+      "해양조사기술",
       "정보관리"
     ],
     "method": "regex+llm",
     "model": "gpt-4o-mini",
-    "tokens": 242,
-    "cost": 0.000726,
-    "analyzed_at": "2026-05-16T06:29:34.390665Z"
+    "tokens": 245,
+    "cost": 0.000735,
+    "analyzed_at": "2026-05-16T06:51:12.265651Z"
   }
 }

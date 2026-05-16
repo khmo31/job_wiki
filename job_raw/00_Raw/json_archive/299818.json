@@ -35,28 +35,28 @@
     "explicit_skills": [],
     "skills_found": [
       "경영관리",
-      "행정관리",
+      "인사행정",
       "인사관리",
-      "정책 평가",
-      "행정"
+      "운영관리",
+      "리더십"
     ],
-    "core_logic": "보건의료 기관 / 인력관리에 대한 심사 및 평가 행위",
-    "domain_context": "보건의료",
+    "core_logic": "보건의료 기관 / 인사 관리에 대한 운영적 행위",
+    "domain_context": "경영.회계.사무, 보건.의료",
     "latent_skills": [
       "인사관리",
-      "정책 평가",
-      "행정"
+      "운영관리",
+      "리더십"
     ],
     "job_nature": "운영/관리",
-    "complexity": "high",
+    "complexity": "medium",
     "skills_additional": [
       "경영관리",
-      "행정관리"
+      "인사행정"
     ],
     "method": "regex+llm",
     "model": "gpt-4o-mini",
-    "tokens": 243,
-    "cost": 0.000729,
-    "analyzed_at": "2026-05-16T06:26:15.284603Z"
+    "tokens": 245,
+    "cost": 0.000735,
+    "analyzed_at": "2026-05-16T06:47:59.544045Z"
   }
 }

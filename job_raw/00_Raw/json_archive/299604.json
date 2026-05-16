@@ -38,7 +38,7 @@
       "채용관리"
     ],
     "core_logic": "인사/채용에 대한 관리적 행위",
-    "domain_context": "사업관리",
+    "domain_context": "사업관리, 경영",
     "latent_skills": [
       "인사관리",
       "채용관리"
@@ -48,8 +48,8 @@
     "skills_additional": [],
     "method": "regex+llm",
     "model": "gpt-4o-mini",
-    "tokens": 217,
-    "cost": 0.000651,
-    "analyzed_at": "2026-05-16T06:29:08.991491Z"
+    "tokens": 218,
+    "cost": 0.000654,
+    "analyzed_at": "2026-05-16T06:50:49.706609Z"
   }
 }

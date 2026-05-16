@@ -35,7 +35,7 @@
     "explicit_skills": [],
     "skills_found": [
       "행정관리",
-      "인사행정",
+      "인사규정 관리",
       "조직관리",
       "인사관리",
       "커뮤니케이션"
@@ -51,12 +51,12 @@
     "complexity": "low",
     "skills_additional": [
       "행정관리",
-      "인사행정"
+      "인사규정 관리"
     ],
     "method": "regex+llm",
     "model": "gpt-4o-mini",
-    "tokens": 275,
-    "cost": 0.0008250000000000001,
-    "analyzed_at": "2026-05-16T06:26:27.859609Z"
+    "tokens": 269,
+    "cost": 0.0008070000000000001,
+    "analyzed_at": "2026-05-16T06:48:11.062806Z"
   }
 }

@@ -34,12 +34,11 @@
   "analysis": {
     "explicit_skills": [],
     "skills_found": [
-      "장애인 지원",
-      "복지행정",
-      "팀원 관리",
+      "의사소통",
+      "조직 관리",
+      "서비스 제공",
       "계획 수립",
-      "경험 관리",
-      "서비스 제공"
+      "경험 관리"
     ],
     "core_logic": "복지 서비스 / 대상자 지원에 대한 관리적 행위",
     "domain_context": "사업관리, 사회복지",
@@ -51,14 +50,14 @@
     "job_nature": "운영/관리",
     "complexity": "medium",
     "skills_additional": [
-      "장애인 지원",
-      "복지행정",
-      "팀원 관리"
+      "의사소통",
+      "조직 관리",
+      "서비스 제공"
     ],
     "method": "regex+llm",
     "model": "gpt-4o-mini",
     "tokens": 195,
     "cost": 0.000585,
-    "analyzed_at": "2026-05-16T06:25:10.100873Z"
+    "analyzed_at": "2026-05-16T06:46:57.331547Z"
   }
 }

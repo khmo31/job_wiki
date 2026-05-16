@@ -34,24 +34,29 @@
   "analysis": {
     "explicit_skills": [],
     "skills_found": [
+      "경영 관리",
+      "전략 기획",
       "리더십",
-      "관리능력",
-      "커뮤니케이션"
+      "경험 관리",
+      "연구 계획 수립"
     ],
-    "core_logic": "정부 / 인력관리에 대한 평가/관리적 행위",
-    "domain_context": "연구/정책",
+    "core_logic": "연구 인력 선발",
+    "domain_context": "연구",
     "latent_skills": [
       "리더십",
-      "관리능력",
-      "커뮤니케이션"
+      "경험 관리",
+      "연구 계획 수립"
     ],
-    "job_nature": "운영/관리",
+    "job_nature": "연구/개발",
     "complexity": "high",
-    "skills_additional": [],
+    "skills_additional": [
+      "경영 관리",
+      "전략 기획"
+    ],
     "method": "regex+llm",
     "model": "gpt-4o-mini",
     "tokens": 192,
     "cost": 0.000576,
-    "analyzed_at": "2026-05-16T06:25:37.262567Z"
+    "analyzed_at": "2026-05-16T06:47:23.162279Z"
   }
 }

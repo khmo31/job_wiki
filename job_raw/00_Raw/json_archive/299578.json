@@ -33,17 +33,32 @@
   },
   "analysis": {
     "explicit_skills": [],
-    "skills_found": [],
-    "core_logic": "",
-    "domain_context": "",
-    "latent_skills": [],
-    "job_nature": "",
-    "complexity": "",
-    "skills_additional": [],
+    "skills_found": [
+      "운전면허",
+      "가스기능사",
+      "안전점검 경력",
+      "운영관리",
+      "안전점검",
+      "팀워크"
+    ],
+    "core_logic": "가스 안전 / 점검에 대한 운영적 행위",
+    "domain_context": "사업관리, 경영, 회계, 사무, 기계, 재료, 화학, 환경, 에너지, 안전",
+    "latent_skills": [
+      "운영관리",
+      "안전점검",
+      "팀워크"
+    ],
+    "job_nature": "운영/관리",
+    "complexity": "medium",
+    "skills_additional": [
+      "운전면허",
+      "가스기능사",
+      "안전점검 경력"
+    ],
     "method": "regex+llm",
     "model": "gpt-4o-mini",
-    "tokens": 274,
-    "cost": 0.000822,
-    "analyzed_at": "2026-05-16T06:29:41.856440Z"
+    "tokens": 304,
+    "cost": 0.000912,
+    "analyzed_at": "2026-05-16T06:51:19.324230Z"
   }
 }

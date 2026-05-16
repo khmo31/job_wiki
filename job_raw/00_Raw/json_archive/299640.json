@@ -34,27 +34,27 @@
   "analysis": {
     "explicit_skills": [],
     "skills_found": [
-      "간호조무사 자격증",
-      "팀워크",
-      "소통",
-      "적극성"
+      "간호조무사",
+      "의사소통",
+      "고객지원",
+      "건강관리"
     ],
-    "core_logic": "국립암센터 / 환자 간호에 대한 지원적 행위",
+    "core_logic": "암 환자 관리 / 지원에 대한 서비스적 행위",
     "domain_context": "보건.의료",
     "latent_skills": [
-      "팀워크",
-      "소통",
-      "적극성"
+      "의사소통",
+      "고객지원",
+      "건강관리"
     ],
     "job_nature": "실무/혼합",
     "complexity": "low",
     "skills_additional": [
-      "간호조무사 자격증"
+      "간호조무사"
     ],
     "method": "regex+llm",
     "model": "gpt-4o-mini",
-    "tokens": 156,
-    "cost": 0.000468,
-    "analyzed_at": "2026-05-16T06:28:41.256842Z"
+    "tokens": 150,
+    "cost": 0.00045,
+    "analyzed_at": "2026-05-16T06:50:23.033215Z"
   }
 }

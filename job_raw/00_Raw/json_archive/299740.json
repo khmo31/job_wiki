@@ -35,23 +35,21 @@
     "explicit_skills": [],
     "skills_found": [
       "데이터 분석",
-      "통계 관리",
-      "연구 설계"
+      "통계 관리"
     ],
-    "core_logic": "사회보장재정통계 / 조사데이터 관리에 대한 분석/관리 행위",
+    "core_logic": "사회보장재정통계 / 데이터에 대한 분석적 행위",
     "domain_context": "사업관리, 연구",
     "latent_skills": [
       "데이터 분석",
-      "통계 관리",
-      "연구 설계"
+      "통계 관리"
     ],
     "job_nature": "연구/개발",
     "complexity": "medium",
     "skills_additional": [],
     "method": "regex+llm",
     "model": "gpt-4o-mini",
-    "tokens": 163,
-    "cost": 0.0004890000000000001,
-    "analyzed_at": "2026-05-16T06:27:21.670077Z"
+    "tokens": 159,
+    "cost": 0.000477,
+    "analyzed_at": "2026-05-16T06:49:03.979875Z"
   }
 }

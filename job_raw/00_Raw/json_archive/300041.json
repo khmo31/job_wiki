@@ -40,7 +40,7 @@
       "평가",
       "관리"
     ],
-    "core_logic": "법률사무 / 대상에 대한 관리적 행위",
+    "core_logic": "법률사무 / 실무에 대한 관리적 행위",
     "domain_context": "법률",
     "latent_skills": [
       "분석",
@@ -57,6 +57,6 @@
     "model": "gpt-4o-mini",
     "tokens": 188,
     "cost": 0.000564,
-    "analyzed_at": "2026-05-16T06:24:11.576122Z"
+    "analyzed_at": "2026-05-16T06:46:02.387322Z"
   }
 }

@@ -33,17 +33,23 @@
   },
   "analysis": {
     "explicit_skills": [],
-    "skills_found": [],
-    "core_logic": "",
-    "domain_context": "",
-    "latent_skills": [],
-    "job_nature": "",
-    "complexity": "",
+    "skills_found": [
+      "인사관리",
+      "행정지원"
+    ],
+    "core_logic": "연구 / 인력에 대한 관리적 행위",
+    "domain_context": "경영.회계.사무,연구",
+    "latent_skills": [
+      "인사관리",
+      "행정지원"
+    ],
+    "job_nature": "운영/관리",
+    "complexity": "low",
     "skills_additional": [],
     "method": "regex+llm",
     "model": "gpt-4o-mini",
-    "tokens": 181,
-    "cost": 0.000543,
-    "analyzed_at": "2026-05-16T06:28:51.255861Z"
+    "tokens": 195,
+    "cost": 0.000585,
+    "analyzed_at": "2026-05-16T06:50:32.858214Z"
   }
 }

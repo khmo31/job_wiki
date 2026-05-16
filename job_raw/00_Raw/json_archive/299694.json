@@ -35,7 +35,7 @@
     "explicit_skills": [],
     "skills_found": [
       "인사 규정 해석",
-      "채용 공고 관리",
+      "지원자 자격 평가",
       "채용 관리",
       "인사 규정 관리",
       "지원자 평가"
@@ -51,12 +51,12 @@
     "complexity": "low",
     "skills_additional": [
       "인사 규정 해석",
-      "채용 공고 관리"
+      "지원자 자격 평가"
     ],
     "method": "regex+llm",
     "model": "gpt-4o-mini",
     "tokens": 245,
     "cost": 0.000735,
-    "analyzed_at": "2026-05-16T06:27:39.103146Z"
+    "analyzed_at": "2026-05-16T06:49:21.572622Z"
   }
 }

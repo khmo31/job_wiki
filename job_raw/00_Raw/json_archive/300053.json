@@ -34,29 +34,22 @@
   "analysis": {
     "explicit_skills": [],
     "skills_found": [
-      "교육행정",
-      "교수법",
       "커뮤니케이션",
-      "멘토링",
-      "커리큘럼 개발"
+      "교육 기획"
     ],
-    "core_logic": "교육 / 커리큘럼에 대한 교수적 행위",
+    "core_logic": "교육 / 교수내용에 대한 전달적 행위",
     "domain_context": "교육",
     "latent_skills": [
       "커뮤니케이션",
-      "멘토링",
-      "커리큘럼 개발"
+      "교육 기획"
     ],
     "job_nature": "운영/관리",
     "complexity": "medium",
-    "skills_additional": [
-      "교육행정",
-      "교수법"
-    ],
+    "skills_additional": [],
     "method": "regex+llm",
     "model": "gpt-4o-mini",
-    "tokens": 211,
-    "cost": 0.000633,
-    "analyzed_at": "2026-05-16T06:24:09.538790Z"
+    "tokens": 206,
+    "cost": 0.000618,
+    "analyzed_at": "2026-05-16T06:46:00.191433Z"
   }
 }

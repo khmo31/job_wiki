@@ -35,7 +35,7 @@
     "explicit_skills": [],
     "skills_found": [],
     "core_logic": "주요 업무 로직이 공고에 명시되어있음",
-    "domain_context": "일반 소프트웨어/IT",
+    "domain_context": "경영.회계.사무,법률.경찰.소방.교도.국방,문화.예술.디자인.방송,경비.청소,이용.숙박.여행.오락.스포츠,건설,전기.전자,정보통신",
     "latent_skills": [],
     "job_nature": "실무/혼합",
     "complexity": "low",
@@ -44,6 +44,6 @@
     "model": null,
     "tokens": 0,
     "cost": 0.0,
-    "analyzed_at": "2026-05-16T06:23:43.733875Z"
+    "analyzed_at": "2026-05-16T06:45:38.539644Z"
   }
 }

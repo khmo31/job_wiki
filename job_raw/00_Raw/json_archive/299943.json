@@ -35,23 +35,21 @@
     "explicit_skills": [],
     "skills_found": [
       "의사소통",
-      "적응성",
-      "문제 해결"
+      "조직 적응"
     ],
-    "core_logic": "장애인 고용 지원",
+    "core_logic": "장애인 고용 촉진 및 직업 재활 지원",
     "domain_context": "경영.회계.사무",
     "latent_skills": [
       "의사소통",
-      "적응성",
-      "문제 해결"
+      "조직 적응"
     ],
     "job_nature": "운영/관리",
     "complexity": "low",
     "skills_additional": [],
     "method": "regex+llm",
     "model": "gpt-4o-mini",
-    "tokens": 171,
-    "cost": 0.000513,
-    "analyzed_at": "2026-05-16T06:25:00.192094Z"
+    "tokens": 172,
+    "cost": 0.000516,
+    "analyzed_at": "2026-05-16T06:46:47.530527Z"
   }
 }

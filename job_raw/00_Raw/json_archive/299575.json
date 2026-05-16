@@ -38,7 +38,7 @@
       "조직 적응",
       "지원 업무"
     ],
-    "core_logic": "장애인 고용 촉진 및 직업 재활 지원",
+    "core_logic": "장애인 고용 지원 및 직업 재활",
     "domain_context": "경영.회계.사무, 교육",
     "latent_skills": [
       "의사소통",
@@ -50,8 +50,8 @@
     "skills_additional": [],
     "method": "regex+llm",
     "model": "gpt-4o-mini",
-    "tokens": 187,
-    "cost": 0.000561,
-    "analyzed_at": "2026-05-16T06:29:48.278481Z"
+    "tokens": 186,
+    "cost": 0.000558,
+    "analyzed_at": "2026-05-16T06:51:24.261395Z"
   }
 }

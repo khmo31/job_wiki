@@ -34,27 +34,29 @@
   "analysis": {
     "explicit_skills": [],
     "skills_found": [
-      "리더십",
-      "커뮤니케이션",
-      "팀 관리",
-      "연구 계획 수립"
-    ],
-    "core_logic": "연구개발 인력 채용",
-    "domain_context": "사업관리, 경영, 회계, 사무",
-    "latent_skills": [
-      "팀 관리",
-      "연구 계획 수립"
-    ],
-    "job_nature": "연구/개발",
-    "complexity": "high",
-    "skills_additional": [
-      "리더십",
+      "인사관리",
+      "채용 프로세스",
+      "분석적 사고",
+      "판단력",
       "커뮤니케이션"
+    ],
+    "core_logic": "인력 채용 및 관리에 대한 심사/평가적 행위",
+    "domain_context": "사업관리, 경영",
+    "latent_skills": [
+      "분석적 사고",
+      "판단력",
+      "커뮤니케이션"
+    ],
+    "job_nature": "운영/관리",
+    "complexity": "medium",
+    "skills_additional": [
+      "인사관리",
+      "채용 프로세스"
     ],
     "method": "regex+llm",
     "model": "gpt-4o-mini",
-    "tokens": 174,
-    "cost": 0.000522,
-    "analyzed_at": "2026-05-16T06:24:16.717044Z"
+    "tokens": 179,
+    "cost": 0.000537,
+    "analyzed_at": "2026-05-16T06:46:07.202271Z"
   }
 }

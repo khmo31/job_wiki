@@ -33,28 +33,17 @@
   },
   "analysis": {
     "explicit_skills": [],
-    "skills_found": [
-      "외국어 능력 (영어)",
-      "조직관리",
-      "인사관리",
-      "커뮤니케이션"
-    ],
-    "core_logic": "인사관리 / 인력운영에 대한 관리적 행위",
-    "domain_context": "경영.회계.사무",
-    "latent_skills": [
-      "조직관리",
-      "인사관리",
-      "커뮤니케이션"
-    ],
-    "job_nature": "운영/관리",
-    "complexity": "medium",
-    "skills_additional": [
-      "외국어 능력 (영어)"
-    ],
-    "method": "regex+llm",
-    "model": "gpt-4o-mini",
-    "tokens": 207,
-    "cost": 0.000621,
-    "analyzed_at": "2026-05-16T06:27:36.450851Z"
+    "skills_found": [],
+    "core_logic": "주요 업무 로직이 공고에 명시되어있음",
+    "domain_context": "경영.회계.사무,기계,재료,화학,환경.에너지.안전",
+    "latent_skills": [],
+    "job_nature": "실무/혼합",
+    "complexity": "low",
+    "skills_additional": [],
+    "method": "regex+heuristic",
+    "model": null,
+    "tokens": 0,
+    "cost": 0.0,
+    "analyzed_at": "2026-05-16T06:49:19.242465Z"
   }
 }

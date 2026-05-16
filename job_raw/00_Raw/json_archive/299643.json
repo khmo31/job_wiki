@@ -33,30 +33,17 @@
   },
   "analysis": {
     "explicit_skills": [],
-    "skills_found": [
-      "관련 분야 자격증 소지",
-      "어학 능력",
-      "운영관리",
-      "유지보수",
-      "안전관리"
-    ],
-    "core_logic": "발전설비 / 운영에 대한 관리적 행위",
-    "domain_context": "발전설비운영",
-    "latent_skills": [
-      "운영관리",
-      "유지보수",
-      "안전관리"
-    ],
+    "skills_found": [],
+    "core_logic": "주요 업무 로직이 공고에 명시되어있음",
+    "domain_context": "경영.회계.사무,건설,기계,전기.전자,환경.에너지.안전",
+    "latent_skills": [],
     "job_nature": "운영/관리",
-    "complexity": "medium",
-    "skills_additional": [
-      "관련 분야 자격증 소지",
-      "어학 능력"
-    ],
-    "method": "regex+llm",
-    "model": "gpt-4o-mini",
-    "tokens": 221,
-    "cost": 0.0006630000000000001,
-    "analyzed_at": "2026-05-16T06:28:36.427343Z"
+    "complexity": "low",
+    "skills_additional": [],
+    "method": "regex+heuristic",
+    "model": null,
+    "tokens": 0,
+    "cost": 0.0,
+    "analyzed_at": "2026-05-16T06:50:18.468930Z"
   }
 }

@@ -35,7 +35,7 @@
     "explicit_skills": [],
     "skills_found": [],
     "core_logic": "주요 업무 로직이 공고에 명시되어있음",
-    "domain_context": "일반 소프트웨어/IT",
+    "domain_context": "건설,전기.전자",
     "latent_skills": [],
     "job_nature": "실무/혼합",
     "complexity": "low",
@@ -44,6 +44,6 @@
     "model": null,
     "tokens": 0,
     "cost": 0.0,
-    "analyzed_at": "2026-05-16T06:25:12.671952Z"
+    "analyzed_at": "2026-05-16T06:46:59.361333Z"
   }
 }

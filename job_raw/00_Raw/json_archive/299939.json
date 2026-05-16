@@ -34,27 +34,22 @@
   "analysis": {
     "explicit_skills": [],
     "skills_found": [
-      "경비원 신임교육과정",
       "문제해결",
-      "의사소통",
-      "시간관리"
+      "의사소통"
     ],
-    "core_logic": "경비 / 시설에 대한 관리적 행위",
-    "domain_context": "경비.청소",
+    "core_logic": "경비 / 대상에 대한 관리적 행위",
+    "domain_context": "경비",
     "latent_skills": [
       "문제해결",
-      "의사소통",
-      "시간관리"
+      "의사소통"
     ],
     "job_nature": "운영/관리",
     "complexity": "low",
-    "skills_additional": [
-      "경비원 신임교육과정"
-    ],
+    "skills_additional": [],
     "method": "regex+llm",
     "model": "gpt-4o-mini",
-    "tokens": 150,
-    "cost": 0.00045,
-    "analyzed_at": "2026-05-16T06:25:02.465967Z"
+    "tokens": 145,
+    "cost": 0.000435,
+    "analyzed_at": "2026-05-16T06:46:49.962154Z"
   }
 }

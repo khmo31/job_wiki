@@ -34,31 +34,31 @@
   "analysis": {
     "explicit_skills": [],
     "skills_found": [
-      "채용 관리",
-      "지원자 평가",
+      "채용관리",
+      "인사관리",
       "공고문 작성",
       "분석력",
-      "판단력",
+      "평가 능력",
       "의사소통"
     ],
-    "core_logic": "채용 공고 관리 / 지원자 선발에 대한 평가 및 결정적 행위",
+    "core_logic": "채용 공고 관리 / 지원자 선발에 대한 심사 및 평가적 행위",
     "domain_context": "사업관리, 경영",
     "latent_skills": [
       "분석력",
-      "판단력",
+      "평가 능력",
       "의사소통"
     ],
     "job_nature": "운영/관리",
     "complexity": "low",
     "skills_additional": [
-      "채용 관리",
-      "지원자 평가",
+      "채용관리",
+      "인사관리",
       "공고문 작성"
     ],
     "method": "regex+llm",
     "model": "gpt-4o-mini",
-    "tokens": 460,
-    "cost": 0.0013800000000000002,
-    "analyzed_at": "2026-05-16T06:23:48.669720Z"
+    "tokens": 459,
+    "cost": 0.0013770000000000002,
+    "analyzed_at": "2026-05-16T06:45:42.585134Z"
   }
 }

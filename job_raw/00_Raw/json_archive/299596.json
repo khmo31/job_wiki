@@ -33,17 +33,23 @@
   },
   "analysis": {
     "explicit_skills": [],
-    "skills_found": [],
-    "core_logic": "",
-    "domain_context": "",
-    "latent_skills": [],
-    "job_nature": "",
-    "complexity": "",
+    "skills_found": [
+      "인사관리",
+      "규정관리"
+    ],
+    "core_logic": "인사관리규정 / 채용관리에 대한 관리적 행위",
+    "domain_context": "경영.회계.사무",
+    "latent_skills": [
+      "인사관리",
+      "규정관리"
+    ],
+    "job_nature": "운영/관리",
+    "complexity": "low",
     "skills_additional": [],
     "method": "regex+llm",
     "model": "gpt-4o-mini",
-    "tokens": 169,
-    "cost": 0.0005070000000000001,
-    "analyzed_at": "2026-05-16T06:29:25.962904Z"
+    "tokens": 183,
+    "cost": 0.000549,
+    "analyzed_at": "2026-05-16T06:51:05.783946Z"
   }
 }

@@ -34,29 +34,29 @@
   "analysis": {
     "explicit_skills": [],
     "skills_found": [
+      "면허증 소지",
+      "자격증 소지",
       "의사소통",
-      "팀워크",
-      "환자 상담",
-      "의료 서비스 제공",
-      "보건 관리"
+      "협업",
+      "문제해결"
     ],
     "core_logic": "의료 / 환자에 대한 지원적 행위",
     "domain_context": "보건.의료",
     "latent_skills": [
-      "환자 상담",
-      "의료 서비스 제공",
-      "보건 관리"
+      "의사소통",
+      "협업",
+      "문제해결"
     ],
     "job_nature": "실무/혼합",
     "complexity": "medium",
     "skills_additional": [
-      "의사소통",
-      "팀워크"
+      "면허증 소지",
+      "자격증 소지"
     ],
     "method": "regex+llm",
     "model": "gpt-4o-mini",
-    "tokens": 160,
-    "cost": 0.00048,
-    "analyzed_at": "2026-05-16T06:27:49.731843Z"
+    "tokens": 159,
+    "cost": 0.000477,
+    "analyzed_at": "2026-05-16T06:49:31.750421Z"
   }
 }

@@ -35,15 +35,15 @@
     "explicit_skills": [],
     "skills_found": [
       "약사 면허",
-      "의사소통",
       "문제해결",
+      "의사소통",
       "적극성"
     ],
     "core_logic": "보건의료 / 약제 관리에 대한 운영적 행위",
     "domain_context": "보건의료",
     "latent_skills": [
-      "의사소통",
       "문제해결",
+      "의사소통",
       "적극성"
     ],
     "job_nature": "운영/관리",
@@ -55,6 +55,6 @@
     "model": "gpt-4o-mini",
     "tokens": 366,
     "cost": 0.001098,
-    "analyzed_at": "2026-05-16T06:25:56.120751Z"
+    "analyzed_at": "2026-05-16T06:47:41.835871Z"
   }
 }

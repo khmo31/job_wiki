@@ -35,21 +35,23 @@
     "explicit_skills": [],
     "skills_found": [
       "의사소통",
-      "조직 관리"
+      "팀워크",
+      "적응성"
     ],
-    "core_logic": "채용 공고 관리",
-    "domain_context": "금융.보험",
+    "core_logic": "장애인 고용 촉진 및 직업재활 지원",
+    "domain_context": "장애인 고용 촉진",
     "latent_skills": [
       "의사소통",
-      "조직 관리"
+      "팀워크",
+      "적응성"
     ],
     "job_nature": "운영/관리",
     "complexity": "low",
     "skills_additional": [],
     "method": "regex+llm",
     "model": "gpt-4o-mini",
-    "tokens": 144,
-    "cost": 0.000432,
-    "analyzed_at": "2026-05-16T06:26:58.269278Z"
+    "tokens": 145,
+    "cost": 0.000435,
+    "analyzed_at": "2026-05-16T06:48:41.384606Z"
   }
 }

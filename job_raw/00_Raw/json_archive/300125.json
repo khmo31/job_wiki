@@ -34,15 +34,14 @@
   "analysis": {
     "explicit_skills": [],
     "skills_found": [
-      "출입 관리",
-      "시설물 관리",
-      "환경 관리",
+      "출퇴근 가능",
+      "공단 인사규정 숙지",
       "의사소통",
       "문제 해결",
       "시간 관리"
     ],
-    "core_logic": "경비/청소 업무 수행",
-    "domain_context": "경비, 청소",
+    "core_logic": "경비 / 시설에 대한 관리적 행위",
+    "domain_context": "경비.청소",
     "latent_skills": [
       "의사소통",
       "문제 해결",
@@ -51,14 +50,13 @@
     "job_nature": "운영/관리",
     "complexity": "low",
     "skills_additional": [
-      "출입 관리",
-      "시설물 관리",
-      "환경 관리"
+      "출퇴근 가능",
+      "공단 인사규정 숙지"
     ],
     "method": "regex+llm",
     "model": "gpt-4o-mini",
-    "tokens": 430,
-    "cost": 0.00129,
-    "analyzed_at": "2026-05-16T06:23:54.365892Z"
+    "tokens": 431,
+    "cost": 0.001293,
+    "analyzed_at": "2026-05-16T06:45:47.833561Z"
   }
 }

@@ -35,9 +35,9 @@
     "explicit_skills": [],
     "skills_found": [
       "도시계획",
-      "건축",
-      "토목",
       "지역개발",
+      "토목",
+      "건축",
       "계획",
       "개발",
       "관리"
@@ -53,14 +53,14 @@
     "complexity": "high",
     "skills_additional": [
       "도시계획",
-      "건축",
+      "지역개발",
       "토목",
-      "지역개발"
+      "건축"
     ],
     "method": "regex+llm",
     "model": "gpt-4o-mini",
-    "tokens": 170,
-    "cost": 0.00051,
-    "analyzed_at": "2026-05-16T06:27:10.504151Z"
+    "tokens": 161,
+    "cost": 0.00048300000000000003,
+    "analyzed_at": "2026-05-16T06:48:53.347956Z"
   }
 }

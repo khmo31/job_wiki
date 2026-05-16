@@ -33,17 +33,28 @@
   },
   "analysis": {
     "explicit_skills": [],
-    "skills_found": [],
-    "core_logic": "",
-    "domain_context": "",
-    "latent_skills": [],
-    "job_nature": "",
-    "complexity": "",
-    "skills_additional": [],
+    "skills_found": [
+      "기본적인 사무 및 관리 능력",
+      "문제해결",
+      "의사소통",
+      "시간관리"
+    ],
+    "core_logic": "시설 관리 / 유지 보수에 대한 관리적 행위",
+    "domain_context": "경영.회계.사무, 경비.청소",
+    "latent_skills": [
+      "문제해결",
+      "의사소통",
+      "시간관리"
+    ],
+    "job_nature": "운영/관리",
+    "complexity": "low",
+    "skills_additional": [
+      "기본적인 사무 및 관리 능력"
+    ],
     "method": "regex+llm",
     "model": "gpt-4o-mini",
-    "tokens": 177,
-    "cost": 0.000531,
-    "analyzed_at": "2026-05-16T06:23:51.476566Z"
+    "tokens": 197,
+    "cost": 0.000591,
+    "analyzed_at": "2026-05-16T06:45:44.896444Z"
   }
 }

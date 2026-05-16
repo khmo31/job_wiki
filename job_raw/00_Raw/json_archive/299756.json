@@ -34,31 +34,31 @@
   "analysis": {
     "explicit_skills": [],
     "skills_found": [
-      "건설업 기초 안전보건교육",
+      "OA 자격증",
+      "운전면허증",
       "ICT 분야 실무경험",
       "현장 관리",
       "자재 관리",
-      "OA 관련 자격증",
-      "운전면허증"
+      "업무 지원"
     ],
     "core_logic": "건설 현장 / 관리에 대한 지원 및 보조 행위",
     "domain_context": "전기.전자, 정보통신",
     "latent_skills": [
       "현장 관리",
       "자재 관리",
-      "OA 관련 자격증",
-      "운전면허증"
+      "업무 지원"
     ],
     "job_nature": "운영/관리",
     "complexity": "low",
     "skills_additional": [
-      "건설업 기초 안전보건교육",
+      "OA 자격증",
+      "운전면허증",
       "ICT 분야 실무경험"
     ],
     "method": "regex+llm",
     "model": "gpt-4o-mini",
-    "tokens": 171,
-    "cost": 0.000513,
-    "analyzed_at": "2026-05-16T06:27:02.955976Z"
+    "tokens": 168,
+    "cost": 0.000504,
+    "analyzed_at": "2026-05-16T06:48:46.637940Z"
   }
 }

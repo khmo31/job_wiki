@@ -34,15 +34,15 @@
   "analysis": {
     "explicit_skills": [],
     "skills_found": [
+      "외국어(영어)",
       "한국어",
-      "영어",
-      "인사규정 이해",
+      "인사규정 관리",
       "비자 관리",
       "인사관리",
       "국제업무",
       "의사소통"
     ],
-    "core_logic": "국제 스포츠 조직 / 인력관리에 대한 운영적 행위",
+    "core_logic": "국제 스포츠 교류 / 인력 선발에 대한 관리적 행위",
     "domain_context": "사업관리, 경영, 회계, 사무, 이용, 숙박, 여행, 오락, 스포츠",
     "latent_skills": [
       "인사관리",
@@ -52,15 +52,15 @@
     "job_nature": "운영/관리",
     "complexity": "medium",
     "skills_additional": [
+      "외국어(영어)",
       "한국어",
-      "영어",
-      "인사규정 이해",
+      "인사규정 관리",
       "비자 관리"
     ],
     "method": "regex+llm",
     "model": "gpt-4o-mini",
-    "tokens": 218,
-    "cost": 0.000654,
-    "analyzed_at": "2026-05-16T06:23:47.101359Z"
+    "tokens": 219,
+    "cost": 0.000657,
+    "analyzed_at": "2026-05-16T06:45:41.335002Z"
   }
 }

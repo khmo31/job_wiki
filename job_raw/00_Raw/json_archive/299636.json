@@ -34,24 +34,29 @@
   "analysis": {
     "explicit_skills": [],
     "skills_found": [
-      "조직관리",
+      "행정업무",
+      "인사규정 관리",
       "인사관리",
-      "행정지원"
+      "채용관리",
+      "행정"
     ],
-    "core_logic": "조직 운영 / 인력관리에 대한 지원적 행위",
+    "core_logic": "인사/채용에 대한 관리적 행위",
     "domain_context": "사업관리, 경영, 회계, 사무",
     "latent_skills": [
-      "조직관리",
       "인사관리",
-      "행정지원"
+      "채용관리",
+      "행정"
     ],
     "job_nature": "운영/관리",
     "complexity": "low",
-    "skills_additional": [],
+    "skills_additional": [
+      "행정업무",
+      "인사규정 관리"
+    ],
     "method": "regex+llm",
     "model": "gpt-4o-mini",
-    "tokens": 218,
-    "cost": 0.000654,
-    "analyzed_at": "2026-05-16T06:28:43.718942Z"
+    "tokens": 216,
+    "cost": 0.000648,
+    "analyzed_at": "2026-05-16T06:50:25.840252Z"
   }
 }

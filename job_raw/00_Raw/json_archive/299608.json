@@ -34,22 +34,24 @@
   "analysis": {
     "explicit_skills": [],
     "skills_found": [
-      "법률 지식",
-      "행정 능력"
+      "분석",
+      "평가",
+      "검증"
     ],
-    "core_logic": "공무원 선발",
-    "domain_context": "사업관리",
+    "core_logic": "공무원 임용에 대한 심사 및 검증",
+    "domain_context": "사업관리, 교육, 자연, 사회과학",
     "latent_skills": [
-      "법률 지식",
-      "행정 능력"
+      "분석",
+      "평가",
+      "검증"
     ],
     "job_nature": "운영/관리",
     "complexity": "low",
     "skills_additional": [],
     "method": "regex+llm",
     "model": "gpt-4o-mini",
-    "tokens": 147,
-    "cost": 0.000441,
-    "analyzed_at": "2026-05-16T06:29:01.346661Z"
+    "tokens": 153,
+    "cost": 0.000459,
+    "analyzed_at": "2026-05-16T06:50:42.908876Z"
   }
 }

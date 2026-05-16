@@ -33,17 +33,32 @@
   },
   "analysis": {
     "explicit_skills": [],
-    "skills_found": [],
-    "core_logic": "",
-    "domain_context": "",
-    "latent_skills": [],
-    "job_nature": "",
-    "complexity": "",
-    "skills_additional": [],
+    "skills_found": [
+      "학위 취득",
+      "자격증 소지",
+      "경력 관리",
+      "분석",
+      "평가",
+      "관리"
+    ],
+    "core_logic": "연구사업직, 기능사업직, 위촉직 등 다양한 직무에 대한 자격요건 관리 및 심사",
+    "domain_context": "연구개발",
+    "latent_skills": [
+      "분석",
+      "평가",
+      "관리"
+    ],
+    "job_nature": "연구/개발",
+    "complexity": "medium",
+    "skills_additional": [
+      "학위 취득",
+      "자격증 소지",
+      "경력 관리"
+    ],
     "method": "regex+llm",
     "model": "gpt-4o-mini",
-    "tokens": 288,
-    "cost": 0.000864,
-    "analyzed_at": "2026-05-16T06:26:29.907131Z"
+    "tokens": 314,
+    "cost": 0.000942,
+    "analyzed_at": "2026-05-16T06:48:14.247902Z"
   }
 }

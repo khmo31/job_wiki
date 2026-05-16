@@ -35,14 +35,14 @@
     "explicit_skills": [],
     "skills_found": [
       "행정 관리",
-      "사무 지원",
+      "사무 처리",
       "조직 운영"
     ],
-    "core_logic": "행정 업무 / 사무 관리에 대한 지원 및 관리적 행위",
+    "core_logic": "행정 업무 / 사무 관리에 대한 운영적 행위",
     "domain_context": "사업관리, 경영, 회계, 사무",
     "latent_skills": [
       "행정 관리",
-      "사무 지원",
+      "사무 처리",
       "조직 운영"
     ],
     "job_nature": "운영/관리",
@@ -50,8 +50,8 @@
     "skills_additional": [],
     "method": "regex+llm",
     "model": "gpt-4o-mini",
-    "tokens": 200,
-    "cost": 0.0006000000000000001,
-    "analyzed_at": "2026-05-16T06:25:15.448178Z"
+    "tokens": 198,
+    "cost": 0.000594,
+    "analyzed_at": "2026-05-16T06:47:02.200417Z"
   }
 }

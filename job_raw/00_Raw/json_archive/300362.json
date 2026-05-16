@@ -34,24 +34,22 @@
   "analysis": {
     "explicit_skills": [],
     "skills_found": [
-      "조직 적응",
-      "커뮤니케이션",
-      "문제 해결"
+      "조직 관리",
+      "행정 지원"
     ],
-    "core_logic": "행정 / 지원에 대한 관리적 행위",
+    "core_logic": "행정 / 사무 운영에 대한 관리적 행위",
     "domain_context": "사업관리, 경영, 회계, 사무",
     "latent_skills": [
-      "조직 적응",
-      "커뮤니케이션",
-      "문제 해결"
+      "조직 관리",
+      "행정 지원"
     ],
     "job_nature": "운영/관리",
     "complexity": "low",
     "skills_additional": [],
     "method": "regex+llm",
     "model": "gpt-4o-mini",
-    "tokens": 196,
-    "cost": 0.000588,
-    "analyzed_at": "2026-05-16T06:23:46.182424Z"
+    "tokens": 194,
+    "cost": 0.000582,
+    "analyzed_at": "2026-05-16T06:45:40.664343Z"
   }
 }

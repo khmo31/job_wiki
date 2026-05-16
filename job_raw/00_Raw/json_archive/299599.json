@@ -35,24 +35,28 @@
     "explicit_skills": [],
     "skills_found": [
       "간호사 면허증",
-      "조직관리",
-      "건강관리"
+      "산업간호사 경력",
+      "의사소통",
+      "문제해결",
+      "적응성"
     ],
-    "core_logic": "산업간호 / 보건관리에 대한 운영적 행위",
+    "core_logic": "산업간호사 / 보건관리에 대한 운영적 행위",
     "domain_context": "보건.의료",
     "latent_skills": [
-      "조직관리",
-      "건강관리"
+      "의사소통",
+      "문제해결",
+      "적응성"
     ],
     "job_nature": "운영/관리",
     "complexity": "medium",
     "skills_additional": [
-      "간호사 면허증"
+      "간호사 면허증",
+      "산업간호사 경력"
     ],
     "method": "regex+llm",
     "model": "gpt-4o-mini",
-    "tokens": 170,
-    "cost": 0.00051,
-    "analyzed_at": "2026-05-16T06:29:17.374855Z"
+    "tokens": 174,
+    "cost": 0.000522,
+    "analyzed_at": "2026-05-16T06:51:00.360650Z"
   }
 }

@@ -33,17 +33,25 @@
   },
   "analysis": {
     "explicit_skills": [],
-    "skills_found": [],
-    "core_logic": "청년고용촉진 특별법 시행령에 따른 청년인턴 선발",
+    "skills_found": [
+      "인사관리",
+      "정책 집행",
+      "지원자 평가"
+    ],
+    "core_logic": "청년고용정책 / 인턴 지원자에 대한 심사 및 관리 행위",
     "domain_context": "경영.회계.사무",
-    "latent_skills": [],
+    "latent_skills": [
+      "인사관리",
+      "정책 집행",
+      "지원자 평가"
+    ],
     "job_nature": "운영/관리",
     "complexity": "low",
     "skills_additional": [],
     "method": "regex+llm",
     "model": "gpt-4o-mini",
-    "tokens": 159,
-    "cost": 0.000477,
-    "analyzed_at": "2026-05-16T06:23:51.836543Z"
+    "tokens": 166,
+    "cost": 0.0004980000000000001,
+    "analyzed_at": "2026-05-16T06:45:45.360856Z"
   }
 }

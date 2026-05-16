@@ -42,7 +42,7 @@
       "자재관리",
       "OA S/W 사용"
     ],
-    "core_logic": "건설/현장 업무에 대한 지원 및 관리적 행위",
+    "core_logic": "건설/현장 운영에 대한 지원적 행위",
     "domain_context": "정보통신",
     "latent_skills": [
       "현장관리",
@@ -59,8 +59,8 @@
     ],
     "method": "regex+llm",
     "model": "gpt-4o-mini",
-    "tokens": 171,
-    "cost": 0.000513,
-    "analyzed_at": "2026-05-16T06:29:51.426733Z"
+    "tokens": 170,
+    "cost": 0.00051,
+    "analyzed_at": "2026-05-16T06:51:28.799490Z"
   }
 }

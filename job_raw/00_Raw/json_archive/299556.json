@@ -35,28 +35,26 @@
     "explicit_skills": [],
     "skills_found": [
       "건설업 기초 안전보건교육",
-      "모뎀 설치 및 장애 처리",
+      "모뎀설치 및 장애처리",
       "문제해결",
-      "현장 대응",
-      "기본적인 기술 유지"
+      "현장 대응"
     ],
     "core_logic": "통신설비 / 현장 시공에 대한 보조적 행위",
     "domain_context": "정보통신",
     "latent_skills": [
       "문제해결",
-      "현장 대응",
-      "기본적인 기술 유지"
+      "현장 대응"
     ],
     "job_nature": "운영/관리",
     "complexity": "low",
     "skills_additional": [
       "건설업 기초 안전보건교육",
-      "모뎀 설치 및 장애 처리"
+      "모뎀설치 및 장애처리"
     ],
     "method": "regex+llm",
     "model": "gpt-4o-mini",
-    "tokens": 155,
-    "cost": 0.000465,
-    "analyzed_at": "2026-05-16T06:29:48.893560Z"
+    "tokens": 151,
+    "cost": 0.000453,
+    "analyzed_at": "2026-05-16T06:51:26.814805Z"
   }
 }

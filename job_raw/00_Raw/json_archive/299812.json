@@ -34,29 +34,29 @@
   "analysis": {
     "explicit_skills": [],
     "skills_found": [
-      "의사소통",
-      "기본적인 컴퓨터 활용",
+      "기본적인 컴퓨터 사용 능력",
+      "자료 관리",
       "조직 적응",
-      "업무 협력",
-      "시간 관리"
+      "업무 관리",
+      "의사소통"
     ],
     "core_logic": "행정 / 업무지원에 대한 관리적 행위",
     "domain_context": "경영.회계.사무",
     "latent_skills": [
       "조직 적응",
-      "업무 협력",
-      "시간 관리"
+      "업무 관리",
+      "의사소통"
     ],
     "job_nature": "운영/관리",
     "complexity": "low",
     "skills_additional": [
-      "의사소통",
-      "기본적인 컴퓨터 활용"
+      "기본적인 컴퓨터 사용 능력",
+      "자료 관리"
     ],
     "method": "regex+llm",
     "model": "gpt-4o-mini",
     "tokens": 236,
     "cost": 0.000708,
-    "analyzed_at": "2026-05-16T06:26:22.386718Z"
+    "analyzed_at": "2026-05-16T06:48:06.207702Z"
   }
 }

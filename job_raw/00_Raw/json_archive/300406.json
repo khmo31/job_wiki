@@ -34,9 +34,8 @@
   "analysis": {
     "explicit_skills": [],
     "skills_found": [
-      "전문의 자격증",
-      "전임의 경력",
-      "연구실적물",
+      "의료 지식",
+      "교육 기술",
       "리더십",
       "커뮤니케이션",
       "환자관리"
@@ -51,14 +50,13 @@
     "job_nature": "운영/관리",
     "complexity": "medium",
     "skills_additional": [
-      "전문의 자격증",
-      "전임의 경력",
-      "연구실적물"
+      "의료 지식",
+      "교육 기술"
     ],
     "method": "regex+llm",
     "model": "gpt-4o-mini",
-    "tokens": 170,
-    "cost": 0.00051,
-    "analyzed_at": "2026-05-16T06:23:43.759865Z"
+    "tokens": 168,
+    "cost": 0.000504,
+    "analyzed_at": "2026-05-16T06:45:38.565201Z"
   }
 }

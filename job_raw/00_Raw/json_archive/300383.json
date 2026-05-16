@@ -34,31 +34,24 @@
   "analysis": {
     "explicit_skills": [],
     "skills_found": [
-      "영어능력검정시험",
-      "장애인고용촉진 및 직업재활법",
-      "국가유공자 등 예우 및 지원에 관한 법률",
-      "조직관리",
-      "행정관리",
-      "경영지원"
+      "조직 관리",
+      "행정 업무 처리",
+      "지원 업무"
     ],
-    "core_logic": "행정 / 경영에 대한 관리적 행위",
+    "core_logic": "행정 / 업무 지원에 대한 관리적 행위",
     "domain_context": "사업관리, 경영, 회계, 사무",
     "latent_skills": [
-      "조직관리",
-      "행정관리",
-      "경영지원"
+      "조직 관리",
+      "행정 업무 처리",
+      "지원 업무"
     ],
     "job_nature": "운영/관리",
     "complexity": "low",
-    "skills_additional": [
-      "영어능력검정시험",
-      "장애인고용촉진 및 직업재활법",
-      "국가유공자 등 예우 및 지원에 관한 법률"
-    ],
+    "skills_additional": [],
     "method": "regex+llm",
     "model": "gpt-4o-mini",
-    "tokens": 373,
-    "cost": 0.001119,
-    "analyzed_at": "2026-05-16T06:23:44.778571Z"
+    "tokens": 366,
+    "cost": 0.001098,
+    "analyzed_at": "2026-05-16T06:45:39.419802Z"
   }
 }

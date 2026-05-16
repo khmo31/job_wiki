@@ -34,31 +34,24 @@
   "analysis": {
     "explicit_skills": [],
     "skills_found": [
-      "고객관리",
-      "코스관리",
-      "경비업법",
       "의사소통",
-      "문제해결",
-      "시간관리"
+      "문제 해결",
+      "시간 관리"
     ],
-    "core_logic": "시설관리 / 고객서비스에 대한 유지.지원적 행위",
-    "domain_context": "경비.청소, 이용.숙박.여행.오락.스포츠",
+    "core_logic": "시설 관리 및 고객 서비스 제공",
+    "domain_context": "경비, 청소, 이용, 숙박, 여행, 오락, 스포츠",
     "latent_skills": [
       "의사소통",
-      "문제해결",
-      "시간관리"
+      "문제 해결",
+      "시간 관리"
     ],
     "job_nature": "운영/관리",
     "complexity": "low",
-    "skills_additional": [
-      "고객관리",
-      "코스관리",
-      "경비업법"
-    ],
+    "skills_additional": [],
     "method": "regex+llm",
     "model": "gpt-4o-mini",
-    "tokens": 171,
-    "cost": 0.000513,
-    "analyzed_at": "2026-05-16T06:24:00.958066Z"
+    "tokens": 166,
+    "cost": 0.0004980000000000001,
+    "analyzed_at": "2026-05-16T06:45:53.490320Z"
   }
 }

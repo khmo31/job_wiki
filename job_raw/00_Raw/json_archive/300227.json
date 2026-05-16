@@ -35,7 +35,7 @@
     "explicit_skills": [],
     "skills_found": [],
     "core_logic": "주요 업무 로직이 공고에 명시되어있음",
-    "domain_context": "제조/공장/임베디드 관련",
+    "domain_context": "금융.보험,사회복지.종교",
     "latent_skills": [],
     "job_nature": "실무/혼합",
     "complexity": "low",
@@ -44,6 +44,6 @@
     "model": null,
     "tokens": 0,
     "cost": 0.0,
-    "analyzed_at": "2026-05-16T06:23:51.457394Z"
+    "analyzed_at": "2026-05-16T06:45:44.878553Z"
   }
 }

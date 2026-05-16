@@ -39,7 +39,7 @@
       "물류"
     ],
     "core_logic": "주요 업무 로직이 공고에 명시되어있음",
-    "domain_context": "일반 소프트웨어/IT",
+    "domain_context": "운전.운송",
     "latent_skills": [],
     "job_nature": "실무/혼합",
     "complexity": "low",
@@ -48,6 +48,6 @@
     "model": null,
     "tokens": 0,
     "cost": 0.0,
-    "analyzed_at": "2026-05-16T06:28:58.982566Z"
+    "analyzed_at": "2026-05-16T06:50:40.281077Z"
   }
 }

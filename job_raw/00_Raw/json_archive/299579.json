@@ -41,8 +41,8 @@
       "평가",
       "관리"
     ],
-    "core_logic": "해양조사 / 정보에 대한 관리적 행위",
-    "domain_context": "교육.자연.사회과학,건설",
+    "core_logic": "해양조사·정보에 대한 관리적 행위",
+    "domain_context": "해양수산",
     "latent_skills": [
       "분석",
       "평가",
@@ -57,8 +57,8 @@
     ],
     "method": "regex+llm",
     "model": "gpt-4o-mini",
-    "tokens": 276,
-    "cost": 0.0008280000000000001,
-    "analyzed_at": "2026-05-16T06:29:38.986199Z"
+    "tokens": 274,
+    "cost": 0.000822,
+    "analyzed_at": "2026-05-16T06:51:16.744551Z"
   }
 }

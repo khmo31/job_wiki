@@ -36,18 +36,18 @@
     "skills_found": [
       "운전면허",
       "차량 운전",
-      "현장 작업",
-      "안전 관리",
-      "교통 통제"
+      "신체 노동",
+      "팀워크",
+      "안전 관리"
     ],
-    "core_logic": "전기공사 / 현장 시공에 대한 보조적 행위",
-    "domain_context": "전기.전자",
+    "core_logic": "건설 현장 / 전기 공사 관련 보조 작업",
+    "domain_context": "전기.전자, 정보통신",
     "latent_skills": [
-      "현장 작업",
-      "안전 관리",
-      "교통 통제"
+      "신체 노동",
+      "팀워크",
+      "안전 관리"
     ],
-    "job_nature": "실무/혼합",
+    "job_nature": "운영/관리",
     "complexity": "low",
     "skills_additional": [
       "운전면허",
@@ -55,8 +55,8 @@
     ],
     "method": "regex+llm",
     "model": "gpt-4o-mini",
-    "tokens": 149,
-    "cost": 0.00044699999999999997,
-    "analyzed_at": "2026-05-16T06:29:11.892263Z"
+    "tokens": 150,
+    "cost": 0.00045,
+    "analyzed_at": "2026-05-16T06:50:51.910481Z"
   }
 }

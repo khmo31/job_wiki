@@ -36,29 +36,29 @@
     "skills_found": [
       "연구 실적 관리",
       "학위 논문 작성",
-      "연구 발표",
+      "논문 발표",
       "연구 설계",
       "임상 경험",
       "학술 논문 작성"
     ],
-    "core_logic": "보건의료 / 임상연구에 대한 평가 및 관리적 행위",
+    "core_logic": "보건의료 / 임상연구에 대한 관리적 행위",
     "domain_context": "보건의료",
     "latent_skills": [
       "연구 설계",
       "임상 경험",
       "학술 논문 작성"
     ],
-    "job_nature": "연구/개발",
+    "job_nature": "운영/관리",
     "complexity": "high",
     "skills_additional": [
       "연구 실적 관리",
       "학위 논문 작성",
-      "연구 발표"
+      "논문 발표"
     ],
     "method": "regex+llm",
     "model": "gpt-4o-mini",
-    "tokens": 241,
-    "cost": 0.000723,
-    "analyzed_at": "2026-05-16T06:26:44.505132Z"
+    "tokens": 239,
+    "cost": 0.000717,
+    "analyzed_at": "2026-05-16T06:48:29.582607Z"
   }
 }

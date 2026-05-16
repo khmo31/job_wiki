@@ -34,24 +34,33 @@
   "analysis": {
     "explicit_skills": [],
     "skills_found": [
+      "통계 분석",
+      "경제학",
+      "보건학",
+      "간호학",
       "데이터 분석",
       "연구 설계",
-      "통계적 지식"
+      "정책 연구"
     ],
     "core_logic": "의료인력 수급추계 / 데이터에 대한 분석적 행위",
-    "domain_context": "의료 인력",
+    "domain_context": "의료/보건",
     "latent_skills": [
       "데이터 분석",
       "연구 설계",
-      "통계적 지식"
+      "정책 연구"
     ],
     "job_nature": "연구/개발",
     "complexity": "medium",
-    "skills_additional": [],
+    "skills_additional": [
+      "통계 분석",
+      "경제학",
+      "보건학",
+      "간호학"
+    ],
     "method": "regex+llm",
     "model": "gpt-4o-mini",
-    "tokens": 154,
-    "cost": 0.000462,
-    "analyzed_at": "2026-05-16T06:27:52.102585Z"
+    "tokens": 160,
+    "cost": 0.00048,
+    "analyzed_at": "2026-05-16T06:49:34.582792Z"
   }
 }

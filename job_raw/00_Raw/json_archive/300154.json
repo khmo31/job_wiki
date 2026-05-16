@@ -34,24 +34,29 @@
   "analysis": {
     "explicit_skills": [],
     "skills_found": [
-      "심사",
-      "평가",
-      "검토"
+      "인사 규정 지식",
+      "채용 프로세스 관리",
+      "채용 관리",
+      "인사 규정 준수",
+      "지원자 평가"
     ],
-    "core_logic": "인턴 채용 자격심사",
-    "domain_context": "사업관리",
+    "core_logic": "인사/채용에 대한 관리적 행위",
+    "domain_context": "사업관리, 경영, 회계, 사무",
     "latent_skills": [
-      "심사",
-      "평가",
-      "검토"
+      "채용 관리",
+      "인사 규정 준수",
+      "지원자 평가"
     ],
     "job_nature": "운영/관리",
     "complexity": "low",
-    "skills_additional": [],
+    "skills_additional": [
+      "인사 규정 지식",
+      "채용 프로세스 관리"
+    ],
     "method": "regex+llm",
     "model": "gpt-4o-mini",
-    "tokens": 175,
-    "cost": 0.000525,
-    "analyzed_at": "2026-05-16T06:23:53.278329Z"
+    "tokens": 188,
+    "cost": 0.000564,
+    "analyzed_at": "2026-05-16T06:45:46.710277Z"
   }
 }

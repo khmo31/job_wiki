@@ -34,35 +34,26 @@
   "analysis": {
     "explicit_skills": [],
     "skills_found": [
-      "관련학과 박사 학위",
-      "공무원 경력",
-      "공공기관 경력",
-      "사회복지 관련 기관 경력",
-      "경영관리",
-      "정책분석",
-      "커뮤니케이션",
-      "조직관리"
+      "정책관리",
+      "사업기획",
+      "팀운영",
+      "커뮤니케이션"
     ],
     "core_logic": "사회복지 / 정책에 대한 관리적 행위",
-    "domain_context": "사업관리, 경영, 사회복지",
+    "domain_context": "사업관리, 사회복지",
     "latent_skills": [
-      "경영관리",
-      "정책분석",
-      "커뮤니케이션",
-      "조직관리"
+      "정책관리",
+      "사업기획",
+      "팀운영",
+      "커뮤니케이션"
     ],
     "job_nature": "운영/관리",
     "complexity": "medium",
-    "skills_additional": [
-      "관련학과 박사 학위",
-      "공무원 경력",
-      "공공기관 경력",
-      "사회복지 관련 기관 경력"
-    ],
+    "skills_additional": [],
     "method": "regex+llm",
     "model": "gpt-4o-mini",
-    "tokens": 617,
-    "cost": 0.001851,
-    "analyzed_at": "2026-05-16T06:27:46.764829Z"
+    "tokens": 598,
+    "cost": 0.001794,
+    "analyzed_at": "2026-05-16T06:49:29.624630Z"
   }
 }

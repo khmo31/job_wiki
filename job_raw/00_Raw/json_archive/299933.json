@@ -35,28 +35,28 @@
     "explicit_skills": [],
     "skills_found": [
       "워드프로세서",
-      "환경 관련 시설 운영",
-      "문제해결",
-      "의사소통",
-      "데이터 분석"
+      "환경 관련 시설 근무경험",
+      "운영관리",
+      "안전관리",
+      "환경관리"
     ],
     "core_logic": "환경/안전 관리에 대한 운영적 행위",
     "domain_context": "경영.회계.사무, 환경.에너지.안전",
     "latent_skills": [
-      "문제해결",
-      "의사소통",
-      "데이터 분석"
+      "운영관리",
+      "안전관리",
+      "환경관리"
     ],
     "job_nature": "운영/관리",
     "complexity": "medium",
     "skills_additional": [
       "워드프로세서",
-      "환경 관련 시설 운영"
+      "환경 관련 시설 근무경험"
     ],
     "method": "regex+llm",
     "model": "gpt-4o-mini",
-    "tokens": 328,
-    "cost": 0.000984,
-    "analyzed_at": "2026-05-16T06:25:07.386510Z"
+    "tokens": 321,
+    "cost": 0.000963,
+    "analyzed_at": "2026-05-16T06:46:54.952650Z"
   }
 }

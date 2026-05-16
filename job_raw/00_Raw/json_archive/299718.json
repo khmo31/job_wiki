@@ -37,24 +37,24 @@
       "기초 안전보건교육",
       "현장 작업",
       "안전 관리",
-      "기초 교육"
+      "팀워크"
     ],
     "core_logic": "통신설비 / 현장 시공에 대한 보조적 행위",
     "domain_context": "정보통신",
     "latent_skills": [
       "현장 작업",
       "안전 관리",
-      "기초 교육"
+      "팀워크"
     ],
-    "job_nature": "실무/혼합",
+    "job_nature": "운영/관리",
     "complexity": "low",
     "skills_additional": [
       "기초 안전보건교육"
     ],
     "method": "regex+llm",
     "model": "gpt-4o-mini",
-    "tokens": 158,
-    "cost": 0.00047400000000000003,
-    "analyzed_at": "2026-05-16T06:27:26.234265Z"
+    "tokens": 157,
+    "cost": 0.000471,
+    "analyzed_at": "2026-05-16T06:49:08.943984Z"
   }
 }

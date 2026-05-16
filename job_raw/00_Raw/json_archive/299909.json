@@ -35,30 +35,30 @@
     "explicit_skills": [],
     "skills_found": [
       "변호사 자격",
-      "공인회계사 자격",
+      "회계사 자격",
       "정보처리기사 자격증",
-      "분석력",
-      "문제해결능력",
-      "의사소통"
+      "분석",
+      "문제해결",
+      "소통"
     ],
-    "core_logic": "법무/내부감사, 결산, 정보시스템 구축에 대한 관리적 행위",
-    "domain_context": "경영.회계.사무, 법률",
+    "core_logic": "법률 / 계약에 대한 관리적 행위",
+    "domain_context": "경영, 법률",
     "latent_skills": [
-      "분석력",
-      "문제해결능력",
-      "의사소통"
+      "분석",
+      "문제해결",
+      "소통"
     ],
     "job_nature": "운영/관리",
     "complexity": "medium",
     "skills_additional": [
       "변호사 자격",
-      "공인회계사 자격",
+      "회계사 자격",
       "정보처리기사 자격증"
     ],
     "method": "regex+llm",
     "model": "gpt-4o-mini",
-    "tokens": 257,
-    "cost": 0.000771,
-    "analyzed_at": "2026-05-16T06:25:26.100178Z"
+    "tokens": 251,
+    "cost": 0.000753,
+    "analyzed_at": "2026-05-16T06:47:12.879093Z"
   }
 }

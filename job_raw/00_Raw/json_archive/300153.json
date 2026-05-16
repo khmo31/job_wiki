@@ -34,24 +34,22 @@
   "analysis": {
     "explicit_skills": [],
     "skills_found": [
-      "행정",
-      "조직관리",
-      "규정준수"
+      "인사관리",
+      "행정"
     ],
-    "core_logic": "인사/채용 관리",
-    "domain_context": "사업관리, 경영",
+    "core_logic": "인턴 선발에 대한 심사 및 관리",
+    "domain_context": "사업관리",
     "latent_skills": [
-      "행정",
-      "조직관리",
-      "규정준수"
+      "인사관리",
+      "행정"
     ],
     "job_nature": "운영/관리",
     "complexity": "low",
     "skills_additional": [],
     "method": "regex+llm",
     "model": "gpt-4o-mini",
-    "tokens": 177,
-    "cost": 0.000531,
-    "analyzed_at": "2026-05-16T06:23:53.579511Z"
+    "tokens": 176,
+    "cost": 0.0005279999999999999,
+    "analyzed_at": "2026-05-16T06:45:47.038090Z"
   }
 }

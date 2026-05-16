@@ -36,35 +36,37 @@
     "skills_found": [
       "SPSS",
       "STATA",
-      "문서편집",
       "통계능력",
-      "데이터 클리닝",
+      "데이터클리닝",
+      "진술분석",
+      "CBCA",
       "통계분석",
-      "데이터 관리",
-      "행정업무",
-      "연구 지원"
+      "데이터관리",
+      "문서편집",
+      "연구지원"
     ],
     "core_logic": "사회과학 / 연구데이터에 대한 분석적 행위",
-    "domain_context": "경영, 회계, 사무, 연구",
+    "domain_context": "경영.회계.사무, 연구",
     "latent_skills": [
       "통계분석",
-      "데이터 관리",
-      "행정업무",
-      "연구 지원"
+      "데이터관리",
+      "문서편집",
+      "연구지원"
     ],
     "job_nature": "연구/개발",
     "complexity": "medium",
     "skills_additional": [
       "SPSS",
       "STATA",
-      "문서편집",
       "통계능력",
-      "데이터 클리닝"
+      "데이터클리닝",
+      "진술분석",
+      "CBCA"
     ],
     "method": "regex+llm",
     "model": "gpt-4o-mini",
-    "tokens": 314,
-    "cost": 0.000942,
-    "analyzed_at": "2026-05-16T06:29:14.526586Z"
+    "tokens": 315,
+    "cost": 0.000945,
+    "analyzed_at": "2026-05-16T06:50:54.376658Z"
   }
 }

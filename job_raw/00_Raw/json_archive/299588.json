@@ -38,30 +38,30 @@
     "skills_found": [
       "Python",
       "의료 데이터 처리",
-      "머신러닝 라이브러리 사용",
+      "머신러닝",
       "DB 관리",
       "데이터 분석",
       "연구 설계",
-      "임상 지식"
+      "임상 경력"
     ],
-    "core_logic": "보건의료 데이터 / 분석 및 연구에 대한 수행적 행위",
+    "core_logic": "보건의료 데이터 / 분석 및 연구에 대한 개발적 행위",
     "domain_context": "보건의료",
     "latent_skills": [
       "데이터 분석",
       "연구 설계",
-      "임상 지식"
+      "임상 경력"
     ],
     "job_nature": "연구/개발",
     "complexity": "medium",
     "skills_additional": [
       "의료 데이터 처리",
-      "머신러닝 라이브러리 사용",
+      "머신러닝",
       "DB 관리"
     ],
     "method": "regex+llm",
     "model": "gpt-4o-mini",
-    "tokens": 422,
-    "cost": 0.001266,
-    "analyzed_at": "2026-05-16T06:29:31.393643Z"
+    "tokens": 420,
+    "cost": 0.00126,
+    "analyzed_at": "2026-05-16T06:51:10.200951Z"
   }
 }

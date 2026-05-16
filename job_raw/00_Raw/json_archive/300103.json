@@ -38,14 +38,14 @@
       "전문의 자격",
       "진료",
       "치료",
-      "환자 관리"
+      "환자관리"
     ],
     "core_logic": "환자 진료 및 치료에 대한 전문적 행위",
     "domain_context": "보건.의료",
     "latent_skills": [
       "진료",
       "치료",
-      "환자 관리"
+      "환자관리"
     ],
     "job_nature": "실무/혼합",
     "complexity": "high",
@@ -55,8 +55,8 @@
     ],
     "method": "regex+llm",
     "model": "gpt-4o-mini",
-    "tokens": 154,
-    "cost": 0.000462,
-    "analyzed_at": "2026-05-16T06:23:54.830571Z"
+    "tokens": 153,
+    "cost": 0.000459,
+    "analyzed_at": "2026-05-16T06:45:48.238141Z"
   }
 }

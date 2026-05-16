@@ -33,17 +33,25 @@
   },
   "analysis": {
     "explicit_skills": [],
-    "skills_found": [],
-    "core_logic": "인사 검증",
+    "skills_found": [
+      "분석",
+      "평가",
+      "검증"
+    ],
+    "core_logic": "공무원 채용에 대한 심사 및 검증 행위",
     "domain_context": "경영.회계.사무",
-    "latent_skills": [],
+    "latent_skills": [
+      "분석",
+      "평가",
+      "검증"
+    ],
     "job_nature": "운영/관리",
     "complexity": "low",
     "skills_additional": [],
     "method": "regex+llm",
     "model": "gpt-4o-mini",
-    "tokens": 138,
-    "cost": 0.00041400000000000003,
-    "analyzed_at": "2026-05-16T06:24:46.414720Z"
+    "tokens": 146,
+    "cost": 0.00043799999999999997,
+    "analyzed_at": "2026-05-16T06:46:35.241089Z"
   }
 }

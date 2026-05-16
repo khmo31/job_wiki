@@ -34,27 +34,29 @@
   "analysis": {
     "explicit_skills": [],
     "skills_found": [
-      "의사소통",
-      "행정 관리",
-      "조직 적응",
-      "업무 수행"
+      "자격증 관리",
+      "지원자 평가",
+      "인사관리",
+      "채용절차",
+      "자격검증"
     ],
-    "core_logic": "보건의료 지원조직 / 인력에 대한 관리적 행위",
-    "domain_context": "보건.의료",
+    "core_logic": "보건의료 인력 채용 관리",
+    "domain_context": "보건의료",
     "latent_skills": [
-      "조직 적응",
-      "업무 수행"
+      "인사관리",
+      "채용절차",
+      "자격검증"
     ],
     "job_nature": "운영/관리",
     "complexity": "low",
     "skills_additional": [
-      "의사소통",
-      "행정 관리"
+      "자격증 관리",
+      "지원자 평가"
     ],
     "method": "regex+llm",
     "model": "gpt-4o-mini",
-    "tokens": 170,
-    "cost": 0.00051,
-    "analyzed_at": "2026-05-16T06:28:14.037634Z"
+    "tokens": 169,
+    "cost": 0.0005070000000000001,
+    "analyzed_at": "2026-05-16T06:49:54.084165Z"
   }
 }

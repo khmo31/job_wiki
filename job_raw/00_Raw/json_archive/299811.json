@@ -34,27 +34,29 @@
   "analysis": {
     "explicit_skills": [],
     "skills_found": [
-      "에너지관리기능사",
-      "조직관리",
-      "인사관리",
-      "커뮤니케이션"
+      "인사 규정 이해",
+      "자격 요건 검증",
+      "분석력",
+      "세부사항 확인",
+      "규정 준수"
     ],
-    "core_logic": "행정 / 인력관리에 대한 관리적 행위",
-    "domain_context": "경영.회계.사무",
+    "core_logic": "채용 분야별 자격 요건 확인 및 지원자 자격 검증",
+    "domain_context": "경영.회계.사무, 문화.예술.디자인.방송, 기계, 연구",
     "latent_skills": [
-      "조직관리",
-      "인사관리",
-      "커뮤니케이션"
+      "분석력",
+      "세부사항 확인",
+      "규정 준수"
     ],
     "job_nature": "운영/관리",
     "complexity": "low",
     "skills_additional": [
-      "에너지관리기능사"
+      "인사 규정 이해",
+      "자격 요건 검증"
     ],
     "method": "regex+llm",
     "model": "gpt-4o-mini",
-    "tokens": 231,
-    "cost": 0.000693,
-    "analyzed_at": "2026-05-16T06:26:25.749033Z"
+    "tokens": 241,
+    "cost": 0.000723,
+    "analyzed_at": "2026-05-16T06:48:08.533453Z"
   }
 }

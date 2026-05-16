@@ -34,22 +34,24 @@
   "analysis": {
     "explicit_skills": [],
     "skills_found": [
-      "규정 분석",
-      "적격성 평가"
+      "심사",
+      "평가",
+      "검증"
     ],
-    "core_logic": "인사 규정 관리",
-    "domain_context": "경영.회계.사무",
+    "core_logic": "채용 자격요건 평가",
+    "domain_context": "인사.채용",
     "latent_skills": [
-      "규정 분석",
-      "적격성 평가"
+      "심사",
+      "평가",
+      "검증"
     ],
     "job_nature": "운영/관리",
     "complexity": "low",
     "skills_additional": [],
     "method": "regex+llm",
     "model": "gpt-4o-mini",
-    "tokens": 196,
-    "cost": 0.000588,
-    "analyzed_at": "2026-05-16T06:25:12.691015Z"
+    "tokens": 195,
+    "cost": 0.000585,
+    "analyzed_at": "2026-05-16T06:46:59.380842Z"
   }
 }

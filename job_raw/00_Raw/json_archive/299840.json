@@ -34,29 +34,31 @@
   "analysis": {
     "explicit_skills": [],
     "skills_found": [
-      "시스템 관리",
+      "파생상품 평가모형",
+      "트레이딩 시스템 관리",
       "데이터 분석",
       "관리",
-      "개발",
-      "검증"
+      "평가",
+      "개발"
     ],
     "core_logic": "금융 파생상품 / 평가모형에 대한 관리적 행위",
     "domain_context": "금융",
     "latent_skills": [
       "관리",
-      "개발",
-      "검증"
+      "평가",
+      "개발"
     ],
     "job_nature": "운영/관리",
     "complexity": "high",
     "skills_additional": [
-      "시스템 관리",
+      "파생상품 평가모형",
+      "트레이딩 시스템 관리",
       "데이터 분석"
     ],
     "method": "regex+llm",
     "model": "gpt-4o-mini",
-    "tokens": 194,
-    "cost": 0.000582,
-    "analyzed_at": "2026-05-16T06:26:01.222159Z"
+    "tokens": 198,
+    "cost": 0.000594,
+    "analyzed_at": "2026-05-16T06:47:47.249161Z"
   }
 }

@@ -34,29 +34,29 @@
   "analysis": {
     "explicit_skills": [],
     "skills_found": [
-      "물리치료",
-      "사회복지",
-      "치과위생",
-      "조직 적응",
-      "커뮤니케이션"
+      "면허증 관리",
+      "자격증 검증",
+      "의사소통",
+      "행정",
+      "조직관리"
     ],
-    "core_logic": "보건의료 인력 / 채용에 대한 관리적 행위",
+    "core_logic": "보건의료 인력 / 지원자에 대한 심사 및 선발적 행위",
     "domain_context": "보건의료",
     "latent_skills": [
-      "조직 적응",
-      "커뮤니케이션"
+      "의사소통",
+      "행정",
+      "조직관리"
     ],
     "job_nature": "운영/관리",
     "complexity": "low",
     "skills_additional": [
-      "물리치료",
-      "사회복지",
-      "치과위생"
+      "면허증 관리",
+      "자격증 검증"
     ],
     "method": "regex+llm",
     "model": "gpt-4o-mini",
-    "tokens": 164,
-    "cost": 0.000492,
-    "analyzed_at": "2026-05-16T06:28:09.247819Z"
+    "tokens": 165,
+    "cost": 0.000495,
+    "analyzed_at": "2026-05-16T06:49:48.999398Z"
   }
 }
