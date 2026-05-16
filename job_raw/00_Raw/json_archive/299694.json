@@ -34,27 +34,29 @@
   "analysis": {
     "explicit_skills": [],
     "skills_found": [
-      "행정",
-      "규정 관리",
+      "인사 규정 해석",
+      "채용 공고 관리",
       "채용 관리",
-      "인사 규정 해석"
+      "인사 규정 관리",
+      "지원자 평가"
     ],
-    "core_logic": "인사규정 관리",
+    "core_logic": "인사/채용에 대한 관리적 행위",
     "domain_context": "사업관리, 경영",
     "latent_skills": [
       "채용 관리",
-      "인사 규정 해석"
+      "인사 규정 관리",
+      "지원자 평가"
     ],
     "job_nature": "운영/관리",
     "complexity": "low",
     "skills_additional": [
-      "행정",
-      "규정 관리"
+      "인사 규정 해석",
+      "채용 공고 관리"
     ],
     "method": "regex+llm",
     "model": "gpt-4o-mini",
-    "tokens": 237,
-    "cost": 0.0007109999999999999,
-    "analyzed_at": "2026-05-16T05:21:34.229573Z"
+    "tokens": 245,
+    "cost": 0.000735,
+    "analyzed_at": "2026-05-16T06:27:39.103146Z"
   }
 }

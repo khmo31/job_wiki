@@ -42,8 +42,8 @@
     "skills_additional": [],
     "method": "regex+llm",
     "model": "gpt-4o-mini",
-    "tokens": 168,
-    "cost": 0.000504,
-    "analyzed_at": "2026-05-16T05:23:21.755812Z"
+    "tokens": 169,
+    "cost": 0.0005070000000000001,
+    "analyzed_at": "2026-05-16T06:29:25.962904Z"
   }
 }

@@ -34,29 +34,29 @@
   "analysis": {
     "explicit_skills": [],
     "skills_found": [
-      "행정업무",
-      "사무관리",
-      "조직 적응",
-      "커뮤니케이션",
-      "문제 해결"
+      "행정관리",
+      "인사행정",
+      "조직관리",
+      "인사관리",
+      "커뮤니케이션"
     ],
-    "core_logic": "행정 / 사무관리에 대한 운영적 행위",
-    "domain_context": "사업관리, 경영, 사무",
+    "core_logic": "인사관리 / 인력운영에 대한 관리적 행위",
+    "domain_context": "사업관리, 경영",
     "latent_skills": [
-      "조직 적응",
-      "커뮤니케이션",
-      "문제 해결"
+      "조직관리",
+      "인사관리",
+      "커뮤니케이션"
     ],
     "job_nature": "운영/관리",
     "complexity": "low",
     "skills_additional": [
-      "행정업무",
-      "사무관리"
+      "행정관리",
+      "인사행정"
     ],
     "method": "regex+llm",
     "model": "gpt-4o-mini",
-    "tokens": 268,
-    "cost": 0.000804,
-    "analyzed_at": "2026-05-16T05:20:15.674894Z"
+    "tokens": 275,
+    "cost": 0.0008250000000000001,
+    "analyzed_at": "2026-05-16T06:26:27.859609Z"
   }
 }

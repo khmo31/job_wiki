@@ -34,27 +34,29 @@
   "analysis": {
     "explicit_skills": [],
     "skills_found": [
-      "기본적인 사무 능력",
+      "기본적인 행정 지식",
+      "조직 내 협력",
       "조직 적응",
-      "커뮤니케이션",
-      "기초 행정 지식"
+      "행정 관리",
+      "커뮤니케이션"
     ],
-    "core_logic": "행정 업무 지원",
+    "core_logic": "행정 지원에 대한 운영적 행위",
     "domain_context": "사업관리, 경영, 회계, 사무",
     "latent_skills": [
       "조직 적응",
-      "커뮤니케이션",
-      "기초 행정 지식"
+      "행정 관리",
+      "커뮤니케이션"
     ],
     "job_nature": "운영/관리",
     "complexity": "low",
     "skills_additional": [
-      "기본적인 사무 능력"
+      "기본적인 행정 지식",
+      "조직 내 협력"
     ],
     "method": "regex+llm",
     "model": "gpt-4o-mini",
-    "tokens": 160,
-    "cost": 0.00048,
-    "analyzed_at": "2026-05-16T05:15:23.792031Z"
+    "tokens": 165,
+    "cost": 0.000495,
+    "analyzed_at": "2026-05-16T06:23:48.262841Z"
   }
 }

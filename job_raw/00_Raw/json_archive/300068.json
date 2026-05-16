@@ -34,29 +34,29 @@
   "analysis": {
     "explicit_skills": [],
     "skills_found": [
-      "인사규정 관리",
-      "지원자 자격 관리",
+      "인사 규정 관리",
+      "지원자 자격 평가",
       "분석",
       "평가",
-      "검증"
+      "관리"
     ],
-    "core_logic": "지원 자격 검증",
+    "core_logic": "지원 자격 / 심사 대상자 선정에 대한 평가적 행위",
     "domain_context": "경영.회계.사무",
     "latent_skills": [
       "분석",
       "평가",
-      "검증"
+      "관리"
     ],
     "job_nature": "운영/관리",
     "complexity": "low",
     "skills_additional": [
-      "인사규정 관리",
-      "지원자 자격 관리"
+      "인사 규정 관리",
+      "지원자 자격 평가"
     ],
     "method": "regex+llm",
     "model": "gpt-4o-mini",
-    "tokens": 184,
-    "cost": 0.000552,
-    "analyzed_at": "2026-05-16T05:17:52.713837Z"
+    "tokens": 189,
+    "cost": 0.000567,
+    "analyzed_at": "2026-05-16T06:24:07.051252Z"
   }
 }

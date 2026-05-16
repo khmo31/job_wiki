@@ -33,30 +33,17 @@
   },
   "analysis": {
     "explicit_skills": [],
-    "skills_found": [
-      "의사 면허",
-      "내과/신경과/응급의학과/산부인과/소아청소년과 전문의 자격",
-      "환자 관리",
-      "의료 팀 협력",
-      "긴급 상황 대처"
-    ],
-    "core_logic": "환자 치료 / 관리에 대한 진료적 행위",
-    "domain_context": "보건.의료",
-    "latent_skills": [
-      "환자 관리",
-      "의료 팀 협력",
-      "긴급 상황 대처"
-    ],
+    "skills_found": [],
+    "core_logic": "주요 업무 로직이 공고에 명시되어있음",
+    "domain_context": "일반 소프트웨어/IT",
+    "latent_skills": [],
     "job_nature": "실무/혼합",
-    "complexity": "high",
-    "skills_additional": [
-      "의사 면허",
-      "내과/신경과/응급의학과/산부인과/소아청소년과 전문의 자격"
-    ],
-    "method": "regex+llm",
-    "model": "gpt-4o-mini",
-    "tokens": 197,
-    "cost": 0.000591,
-    "analyzed_at": "2026-05-16T05:17:41.736355Z"
+    "complexity": "low",
+    "skills_additional": [],
+    "method": "regex+heuristic",
+    "model": null,
+    "tokens": 0,
+    "cost": 0.0,
+    "analyzed_at": "2026-05-16T06:23:58.059952Z"
   }
 }

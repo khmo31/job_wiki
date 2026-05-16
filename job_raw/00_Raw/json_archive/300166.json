@@ -34,14 +34,14 @@
   "analysis": {
     "explicit_skills": [],
     "skills_found": [
-      "임상경험",
-      "의료전문성",
+      "정형외과",
+      "신경외과",
       "리더십",
       "커뮤니케이션",
       "환자관리"
     ],
-    "core_logic": "의료 / 환자에 대한 진단 및 치료적 행위",
-    "domain_context": "보건의료",
+    "core_logic": "의료 / 환자에 대한 진료적 행위",
+    "domain_context": "보건.의료",
     "latent_skills": [
       "리더십",
       "커뮤니케이션",
@@ -50,13 +50,13 @@
     "job_nature": "운영/관리",
     "complexity": "high",
     "skills_additional": [
-      "임상경험",
-      "의료전문성"
+      "정형외과",
+      "신경외과"
     ],
     "method": "regex+llm",
     "model": "gpt-4o-mini",
-    "tokens": 156,
-    "cost": 0.000468,
-    "analyzed_at": "2026-05-16T05:16:46.051285Z"
+    "tokens": 155,
+    "cost": 0.000465,
+    "analyzed_at": "2026-05-16T06:23:52.526775Z"
   }
 }

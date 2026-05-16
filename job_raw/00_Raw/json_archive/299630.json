@@ -34,29 +34,27 @@
   "analysis": {
     "explicit_skills": [],
     "skills_found": [
-      "서류 작성",
-      "자격 검증",
-      "행정",
-      "인사",
-      "서류 관리"
+      "행정 지원",
+      "기록 관리",
+      "인사관리",
+      "규정 준수"
     ],
     "core_logic": "채용 공고 관리 및 지원자 자격 검증",
     "domain_context": "경영.회계.사무",
     "latent_skills": [
-      "행정",
-      "인사",
-      "서류 관리"
+      "인사관리",
+      "규정 준수"
     ],
     "job_nature": "운영/관리",
     "complexity": "low",
     "skills_additional": [
-      "서류 작성",
-      "자격 검증"
+      "행정 지원",
+      "기록 관리"
     ],
     "method": "regex+llm",
     "model": "gpt-4o-mini",
-    "tokens": 190,
-    "cost": 0.00057,
-    "analyzed_at": "2026-05-16T05:22:45.235969Z"
+    "tokens": 189,
+    "cost": 0.000567,
+    "analyzed_at": "2026-05-16T06:28:48.544813Z"
   }
 }

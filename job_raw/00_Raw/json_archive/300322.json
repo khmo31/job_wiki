@@ -34,33 +34,29 @@
   "analysis": {
     "explicit_skills": [],
     "skills_found": [
-      "TOEIC",
-      "TEPS",
-      "정보처리산업기사",
-      "정보처리기사",
-      "조직관리",
-      "인사관리",
-      "행정"
+      "TOEIC 700점 이상 또는 TEPS 555점 이상",
+      "정보처리산업기사 또는 정보처리기사 자격증",
+      "행정 관리",
+      "사무 지원",
+      "커뮤니케이션"
     ],
-    "core_logic": "인사/관리에 대한 운영적 행위",
-    "domain_context": "사업관리, 경영",
+    "core_logic": "일반사무 / 행정 업무에 대한 관리적 행위",
+    "domain_context": "사업관리, 경영, 회계, 사무",
     "latent_skills": [
-      "조직관리",
-      "인사관리",
-      "행정"
+      "행정 관리",
+      "사무 지원",
+      "커뮤니케이션"
     ],
     "job_nature": "운영/관리",
     "complexity": "low",
     "skills_additional": [
-      "TOEIC",
-      "TEPS",
-      "정보처리산업기사",
-      "정보처리기사"
+      "TOEIC 700점 이상 또는 TEPS 555점 이상",
+      "정보처리산업기사 또는 정보처리기사 자격증"
     ],
     "method": "regex+llm",
     "model": "gpt-4o-mini",
-    "tokens": 214,
-    "cost": 0.000642,
-    "analyzed_at": "2026-05-16T05:15:09.603196Z"
+    "tokens": 225,
+    "cost": 0.000675,
+    "analyzed_at": "2026-05-16T06:23:47.498864Z"
   }
 }

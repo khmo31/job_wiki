@@ -35,28 +35,26 @@
     "explicit_skills": [],
     "skills_found": [
       "운전면허(2종 보통 이상)",
-      "산업기사 자격증",
-      "관련 전공",
-      "조직 적응",
-      "현장 대응"
+      "산업기사 이상 자격증",
+      "조직 관리",
+      "현장 운영"
     ],
-    "core_logic": "현장 사무 및 공사 보조 업무",
+    "core_logic": "건설 현장 사무 및 공사 보조",
     "domain_context": "건설",
     "latent_skills": [
-      "조직 적응",
-      "현장 대응"
+      "조직 관리",
+      "현장 운영"
     ],
     "job_nature": "운영/관리",
     "complexity": "low",
     "skills_additional": [
       "운전면허(2종 보통 이상)",
-      "산업기사 자격증",
-      "관련 전공"
+      "산업기사 이상 자격증"
     ],
     "method": "regex+llm",
     "model": "gpt-4o-mini",
-    "tokens": 172,
-    "cost": 0.000516,
-    "analyzed_at": "2026-05-16T05:22:36.247965Z"
+    "tokens": 170,
+    "cost": 0.00051,
+    "analyzed_at": "2026-05-16T06:28:38.470825Z"
   }
 }

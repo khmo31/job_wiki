@@ -34,29 +34,27 @@
   "analysis": {
     "explicit_skills": [],
     "skills_found": [
-      "커뮤니케이션",
-      "조직 적응력",
-      "인사관리",
-      "조직운영",
-      "채용 프로세스"
+      "행정",
+      "조직관리",
+      "인사관리"
     ],
-    "core_logic": "채용 분야 관리 / 인력 선발에 대한 심사 및 평가적 행위",
+    "core_logic": "인사관리 / 인력관리에 대한 운영적 행위",
     "domain_context": "사업관리, 경영",
     "latent_skills": [
+      "조직관리",
       "인사관리",
-      "조직운영",
-      "채용 프로세스"
+      "행정"
     ],
     "job_nature": "운영/관리",
     "complexity": "low",
     "skills_additional": [
-      "커뮤니케이션",
-      "조직 적응력"
+      "행정",
+      "조직관리"
     ],
     "method": "regex+llm",
     "model": "gpt-4o-mini",
-    "tokens": 260,
-    "cost": 0.0007800000000000001,
-    "analyzed_at": "2026-05-16T05:19:18.903300Z"
+    "tokens": 255,
+    "cost": 0.0007650000000000001,
+    "analyzed_at": "2026-05-16T06:25:29.352302Z"
   }
 }

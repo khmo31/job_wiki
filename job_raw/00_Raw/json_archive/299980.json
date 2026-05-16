@@ -33,25 +33,17 @@
   },
   "analysis": {
     "explicit_skills": [],
-    "skills_found": [
-      "의사소통",
-      "조직관리",
-      "문제해결"
-    ],
-    "core_logic": "채용 공고에 대한 심사 및 관리",
-    "domain_context": "경영.회계.사무",
-    "latent_skills": [
-      "의사소통",
-      "조직관리",
-      "문제해결"
-    ],
-    "job_nature": "운영/관리",
-    "complexity": "low",
+    "skills_found": [],
+    "core_logic": "",
+    "domain_context": "",
+    "latent_skills": [],
+    "job_nature": "",
+    "complexity": "",
     "skills_additional": [],
     "method": "regex+llm",
     "model": "gpt-4o-mini",
-    "tokens": 181,
-    "cost": 0.000543,
-    "analyzed_at": "2026-05-16T05:18:32.320526Z"
+    "tokens": 169,
+    "cost": 0.0005070000000000001,
+    "analyzed_at": "2026-05-16T06:24:43.721493Z"
   }
 }

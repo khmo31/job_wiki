@@ -34,31 +34,33 @@
   "analysis": {
     "explicit_skills": [],
     "skills_found": [
-      "경영",
-      "행정",
-      "인사",
+      "인사관리",
+      "자격평가",
+      "경력관리",
       "분석",
       "평가",
-      "검증"
+      "검증",
+      "관리"
     ],
     "core_logic": "경력 검증 및 자격 평가",
-    "domain_context": "사업관리, 경영, 회계, 사무",
+    "domain_context": "사업관리, 경영, 회계, 사무, 문화, 예술, 디자인, 방송",
     "latent_skills": [
       "분석",
       "평가",
-      "검증"
+      "검증",
+      "관리"
     ],
     "job_nature": "운영/관리",
     "complexity": "medium",
     "skills_additional": [
-      "경영",
-      "행정",
-      "인사"
+      "인사관리",
+      "자격평가",
+      "경력관리"
     ],
     "method": "regex+llm",
     "model": "gpt-4o-mini",
-    "tokens": 219,
-    "cost": 0.000657,
-    "analyzed_at": "2026-05-16T05:12:31.460041Z"
+    "tokens": 226,
+    "cost": 0.000678,
+    "analyzed_at": "2026-05-16T06:23:11.889026Z"
   }
 }

@@ -34,29 +34,29 @@
   "analysis": {
     "explicit_skills": [],
     "skills_found": [
-      "행정",
-      "인사관리",
-      "분석",
-      "평가",
-      "검토"
+      "법률 지식",
+      "인사 규정 이해",
+      "분석력",
+      "세부사항 확인",
+      "규정 준수"
     ],
     "core_logic": "지원 자격 요건 확인",
-    "domain_context": "경영.회계.사무",
+    "domain_context": "경영.회계.사무, 교육.자연.사회과학",
     "latent_skills": [
-      "분석",
-      "평가",
-      "검토"
+      "분석력",
+      "세부사항 확인",
+      "규정 준수"
     ],
     "job_nature": "운영/관리",
     "complexity": "low",
     "skills_additional": [
-      "행정",
-      "인사관리"
+      "법률 지식",
+      "인사 규정 이해"
     ],
     "method": "regex+llm",
     "model": "gpt-4o-mini",
-    "tokens": 236,
-    "cost": 0.000708,
-    "analyzed_at": "2026-05-16T05:19:55.150624Z"
+    "tokens": 244,
+    "cost": 0.000732,
+    "analyzed_at": "2026-05-16T06:26:06.804263Z"
   }
 }

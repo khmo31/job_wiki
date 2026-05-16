@@ -34,22 +34,29 @@
   "analysis": {
     "explicit_skills": [],
     "skills_found": [
+      "의사 소통",
+      "조직 관리",
       "환자 관리",
-      "진료 서비스 제공"
+      "의료 서비스 제공",
+      "임상 경험"
     ],
-    "core_logic": "임상 / 환자에 대한 진료적 행위",
+    "core_logic": "임상 / 환자에 대한 의료적 행위",
     "domain_context": "보건.의료",
     "latent_skills": [
       "환자 관리",
-      "진료 서비스 제공"
+      "의료 서비스 제공",
+      "임상 경험"
     ],
     "job_nature": "운영/관리",
     "complexity": "high",
-    "skills_additional": [],
+    "skills_additional": [
+      "의사 소통",
+      "조직 관리"
+    ],
     "method": "regex+llm",
     "model": "gpt-4o-mini",
-    "tokens": 153,
-    "cost": 0.000459,
-    "analyzed_at": "2026-05-16T05:16:48.098926Z"
+    "tokens": 163,
+    "cost": 0.0004890000000000001,
+    "analyzed_at": "2026-05-16T06:23:52.907672Z"
   }
 }

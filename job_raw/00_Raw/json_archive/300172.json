@@ -33,25 +33,17 @@
   },
   "analysis": {
     "explicit_skills": [],
-    "skills_found": [
-      "인사관리",
-      "정책집행",
-      "대상자선정"
-    ],
-    "core_logic": "청년고용정책 / 대상자 선발에 대한 관리적 행위",
+    "skills_found": [],
+    "core_logic": "청년고용촉진 특별법 시행령에 따른 청년인턴 선발",
     "domain_context": "경영.회계.사무",
-    "latent_skills": [
-      "인사관리",
-      "정책집행",
-      "대상자선정"
-    ],
+    "latent_skills": [],
     "job_nature": "운영/관리",
     "complexity": "low",
     "skills_additional": [],
     "method": "regex+llm",
     "model": "gpt-4o-mini",
-    "tokens": 165,
-    "cost": 0.000495,
-    "analyzed_at": "2026-05-16T05:16:41.135174Z"
+    "tokens": 159,
+    "cost": 0.000477,
+    "analyzed_at": "2026-05-16T06:23:51.836543Z"
   }
 }

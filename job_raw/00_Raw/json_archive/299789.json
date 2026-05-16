@@ -34,22 +34,22 @@
   "analysis": {
     "explicit_skills": [],
     "skills_found": [
-      "인사관리",
-      "운영지원"
+      "조직관리",
+      "인사관리"
     ],
     "core_logic": "인사/관리에 대한 운영적 행위",
     "domain_context": "체육",
     "latent_skills": [
-      "인사관리",
-      "운영지원"
+      "조직관리",
+      "인사관리"
     ],
     "job_nature": "운영/관리",
     "complexity": "low",
     "skills_additional": [],
     "method": "regex+llm",
     "model": "gpt-4o-mini",
-    "tokens": 144,
-    "cost": 0.000432,
-    "analyzed_at": "2026-05-16T05:20:23.177144Z"
+    "tokens": 143,
+    "cost": 0.00042899999999999997,
+    "analyzed_at": "2026-05-16T06:26:35.302058Z"
   }
 }

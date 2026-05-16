@@ -34,31 +34,31 @@
   "analysis": {
     "explicit_skills": [],
     "skills_found": [
-      "커뮤니케이션",
-      "조직관리",
-      "데이터분석",
+      "IT 관련 지식",
+      "관리 능력",
+      "프로젝트 관리 경험",
       "프로젝트 관리",
       "IT 지식",
-      "리더십"
+      "사업관리"
     ],
     "core_logic": "IT / 프로젝트에 대한 관리적 행위",
-    "domain_context": "사업관리, 정보통신",
+    "domain_context": "IT, 사업관리",
     "latent_skills": [
       "프로젝트 관리",
       "IT 지식",
-      "리더십"
+      "사업관리"
     ],
     "job_nature": "운영/관리",
     "complexity": "medium",
     "skills_additional": [
-      "커뮤니케이션",
-      "조직관리",
-      "데이터분석"
+      "IT 관련 지식",
+      "관리 능력",
+      "프로젝트 관리 경험"
     ],
     "method": "regex+llm",
     "model": "gpt-4o-mini",
-    "tokens": 233,
-    "cost": 0.0006990000000000001,
-    "analyzed_at": "2026-05-16T05:23:04.575308Z"
+    "tokens": 234,
+    "cost": 0.000702,
+    "analyzed_at": "2026-05-16T06:29:06.488212Z"
   }
 }

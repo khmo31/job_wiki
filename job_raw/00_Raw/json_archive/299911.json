@@ -35,28 +35,28 @@
     "explicit_skills": [],
     "skills_found": [
       "기계설비 유지관리",
-      "보훈 대상자 지원",
+      "시설 관리",
       "문제해결",
-      "위험관리",
-      "시설관리"
+      "분석적 사고",
+      "커뮤니케이션"
     ],
     "core_logic": "시설 관리 / 기계설비에 대한 유지관리적 행위",
-    "domain_context": "기계, 환경, 에너지, 안전",
+    "domain_context": "기계",
     "latent_skills": [
       "문제해결",
-      "위험관리",
-      "시설관리"
+      "분석적 사고",
+      "커뮤니케이션"
     ],
     "job_nature": "운영/관리",
     "complexity": "medium",
     "skills_additional": [
       "기계설비 유지관리",
-      "보훈 대상자 지원"
+      "시설 관리"
     ],
     "method": "regex+llm",
     "model": "gpt-4o-mini",
-    "tokens": 188,
-    "cost": 0.000564,
-    "analyzed_at": "2026-05-16T05:19:12.739225Z"
+    "tokens": 185,
+    "cost": 0.000555,
+    "analyzed_at": "2026-05-16T06:25:23.233547Z"
   }
 }

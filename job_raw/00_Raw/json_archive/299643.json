@@ -34,13 +34,13 @@
   "analysis": {
     "explicit_skills": [],
     "skills_found": [
-      "관련 분야 자격증 소지자",
+      "관련 분야 자격증 소지",
       "어학 능력",
       "운영관리",
       "유지보수",
       "안전관리"
     ],
-    "core_logic": "발전설비 운영 및 관리",
+    "core_logic": "발전설비 / 운영에 대한 관리적 행위",
     "domain_context": "발전설비운영",
     "latent_skills": [
       "운영관리",
@@ -50,13 +50,13 @@
     "job_nature": "운영/관리",
     "complexity": "medium",
     "skills_additional": [
-      "관련 분야 자격증 소지자",
+      "관련 분야 자격증 소지",
       "어학 능력"
     ],
     "method": "regex+llm",
     "model": "gpt-4o-mini",
-    "tokens": 219,
-    "cost": 0.000657,
-    "analyzed_at": "2026-05-16T05:22:33.986351Z"
+    "tokens": 221,
+    "cost": 0.0006630000000000001,
+    "analyzed_at": "2026-05-16T06:28:36.427343Z"
   }
 }

@@ -34,27 +34,27 @@
   "analysis": {
     "explicit_skills": [],
     "skills_found": [
-      "어학",
-      "의사소통",
-      "행정",
-      "평가"
+      "토익",
+      "인사관리",
+      "채용 프로세스",
+      "커뮤니케이션"
     ],
-    "core_logic": "보훈 고용 지원 / 인력 선발에 대한 평가 및 관리적 행위",
+    "core_logic": "보훈 고용 추천에 따른 인사 채용 프로세스 관리",
     "domain_context": "경영.회계.사무, 기계, 전기.전자",
     "latent_skills": [
-      "의사소통",
-      "행정",
-      "평가"
+      "인사관리",
+      "채용 프로세스",
+      "커뮤니케이션"
     ],
     "job_nature": "운영/관리",
     "complexity": "low",
     "skills_additional": [
-      "어학"
+      "토익"
     ],
     "method": "regex+llm",
     "model": "gpt-4o-mini",
-    "tokens": 156,
-    "cost": 0.000468,
-    "analyzed_at": "2026-05-16T05:22:28.206244Z"
+    "tokens": 158,
+    "cost": 0.00047400000000000003,
+    "analyzed_at": "2026-05-16T06:28:31.563755Z"
   }
 }

@@ -35,12 +35,11 @@
     "explicit_skills": [],
     "skills_found": [
       "외국어 능력 (영어)",
-      "인사규정 이해",
       "조직관리",
       "인사관리",
       "커뮤니케이션"
     ],
-    "core_logic": "인사/조직에 대한 관리적 행위",
+    "core_logic": "인사관리 / 인력운영에 대한 관리적 행위",
     "domain_context": "경영.회계.사무",
     "latent_skills": [
       "조직관리",
@@ -50,13 +49,12 @@
     "job_nature": "운영/관리",
     "complexity": "medium",
     "skills_additional": [
-      "외국어 능력 (영어)",
-      "인사규정 이해"
+      "외국어 능력 (영어)"
     ],
     "method": "regex+llm",
     "model": "gpt-4o-mini",
-    "tokens": 201,
-    "cost": 0.000603,
-    "analyzed_at": "2026-05-16T05:21:31.622204Z"
+    "tokens": 207,
+    "cost": 0.000621,
+    "analyzed_at": "2026-05-16T06:27:36.450851Z"
   }
 }

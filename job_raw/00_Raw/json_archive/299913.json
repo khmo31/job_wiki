@@ -47,15 +47,15 @@
       "직업훈련교사",
       "공인노무사",
       "상담",
-      "교육계획 수립",
-      "대상자 지원"
+      "교육계획",
+      "학생관리"
     ],
-    "core_logic": "교육 / 대상자에 대한 지원 및 지도",
-    "domain_context": "교육 및 사회복지",
+    "core_logic": "교육 / 학생에 대한 지원적 행위",
+    "domain_context": "교육.사회복지",
     "latent_skills": [
       "상담",
-      "교육계획 수립",
-      "대상자 지원"
+      "교육계획",
+      "학생관리"
     ],
     "job_nature": "운영/관리",
     "complexity": "medium",
@@ -75,8 +75,8 @@
     ],
     "method": "regex+llm",
     "model": "gpt-4o-mini",
-    "tokens": 248,
-    "cost": 0.000744,
-    "analyzed_at": "2026-05-16T05:19:09.662009Z"
+    "tokens": 247,
+    "cost": 0.000741,
+    "analyzed_at": "2026-05-16T06:25:20.245459Z"
   }
 }

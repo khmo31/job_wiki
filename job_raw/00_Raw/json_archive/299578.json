@@ -33,30 +33,17 @@
   },
   "analysis": {
     "explicit_skills": [],
-    "skills_found": [
-      "운전면허",
-      "가스기능사",
-      "문제해결",
-      "의사소통",
-      "현장관리"
-    ],
-    "core_logic": "가스 안전관리 / 현장 안전점검에 대한 운영적 행위",
-    "domain_context": "사업관리, 경영, 안전",
-    "latent_skills": [
-      "문제해결",
-      "의사소통",
-      "현장관리"
-    ],
-    "job_nature": "운영/관리",
-    "complexity": "medium",
-    "skills_additional": [
-      "운전면허",
-      "가스기능사"
-    ],
+    "skills_found": [],
+    "core_logic": "",
+    "domain_context": "",
+    "latent_skills": [],
+    "job_nature": "",
+    "complexity": "",
+    "skills_additional": [],
     "method": "regex+llm",
     "model": "gpt-4o-mini",
-    "tokens": 303,
-    "cost": 0.000909,
-    "analyzed_at": "2026-05-16T05:23:43.391526Z"
+    "tokens": 274,
+    "cost": 0.000822,
+    "analyzed_at": "2026-05-16T06:29:41.856440Z"
   }
 }

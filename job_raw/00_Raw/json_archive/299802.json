@@ -33,29 +33,17 @@
   },
   "analysis": {
     "explicit_skills": [],
-    "skills_found": [
-      "인사 관리",
-      "채용 프로세스 관리",
-      "채용 관리",
-      "자격 요건 분석"
-    ],
-    "core_logic": "연구사업직, 기능사업직, 위촉직 등의 채용 요건 관리",
-    "domain_context": "사업관리, 경영, 회계, 사무",
-    "latent_skills": [
-      "채용 관리",
-      "자격 요건 분석",
-      "인사 관리"
-    ],
-    "job_nature": "운영/관리",
-    "complexity": "medium",
-    "skills_additional": [
-      "인사 관리",
-      "채용 프로세스 관리"
-    ],
+    "skills_found": [],
+    "core_logic": "",
+    "domain_context": "",
+    "latent_skills": [],
+    "job_nature": "",
+    "complexity": "",
+    "skills_additional": [],
     "method": "regex+llm",
     "model": "gpt-4o-mini",
-    "tokens": 315,
-    "cost": 0.000945,
-    "analyzed_at": "2026-05-16T05:20:18.165604Z"
+    "tokens": 288,
+    "cost": 0.000864,
+    "analyzed_at": "2026-05-16T06:26:29.907131Z"
   }
 }

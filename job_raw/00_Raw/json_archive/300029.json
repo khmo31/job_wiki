@@ -34,27 +34,27 @@
   "analysis": {
     "explicit_skills": [],
     "skills_found": [
-      "기본적인 사무 및 조직관리 능력",
-      "조직관리",
+      "행정",
       "인사관리",
-      "커뮤니케이션"
+      "채용관리"
     ],
-    "core_logic": "인사/조직에 대한 관리적 행위",
+    "core_logic": "인사관리 / 채용에 대한 관리적 행위",
     "domain_context": "사업관리, 경영",
     "latent_skills": [
-      "조직관리",
       "인사관리",
-      "커뮤니케이션"
+      "채용관리",
+      "행정"
     ],
     "job_nature": "운영/관리",
     "complexity": "low",
     "skills_additional": [
-      "기본적인 사무 및 조직관리 능력"
+      "행정",
+      "인사관리"
     ],
     "method": "regex+llm",
     "model": "gpt-4o-mini",
-    "tokens": 378,
-    "cost": 0.001134,
-    "analyzed_at": "2026-05-16T05:18:10.483267Z"
+    "tokens": 376,
+    "cost": 0.001128,
+    "analyzed_at": "2026-05-16T06:24:19.900583Z"
   }
 }

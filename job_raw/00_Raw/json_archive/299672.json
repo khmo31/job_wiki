@@ -34,16 +34,16 @@
   "analysis": {
     "explicit_skills": [],
     "skills_found": [
-      "문제 해결",
-      "분석",
-      "판단"
+      "심사",
+      "평가",
+      "검증"
     ],
-    "core_logic": "채용 자격 요건 확인",
+    "core_logic": "채용 자격 요건에 대한 검증",
     "domain_context": "사업관리, 경영, 회계, 사무",
     "latent_skills": [
-      "문제 해결",
-      "분석",
-      "판단"
+      "심사",
+      "평가",
+      "검증"
     ],
     "job_nature": "운영/관리",
     "complexity": "low",
@@ -52,6 +52,6 @@
     "model": "gpt-4o-mini",
     "tokens": 159,
     "cost": 0.000477,
-    "analyzed_at": "2026-05-16T05:21:52.134592Z"
+    "analyzed_at": "2026-05-16T06:27:54.921142Z"
   }
 }

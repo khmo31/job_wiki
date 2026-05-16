@@ -34,24 +34,24 @@
   "analysis": {
     "explicit_skills": [],
     "skills_found": [
-      "행정",
-      "지원",
-      "관리"
+      "조직 관리",
+      "인사 관리",
+      "커뮤니케이션"
     ],
-    "core_logic": "인사/행정 업무 지원",
+    "core_logic": "행정 / 청년인턴 운영에 대한 관리적 행위",
     "domain_context": "경영.회계.사무",
     "latent_skills": [
-      "행정",
-      "지원",
-      "관리"
+      "조직 관리",
+      "인사 관리",
+      "커뮤니케이션"
     ],
     "job_nature": "운영/관리",
     "complexity": "low",
     "skills_additional": [],
     "method": "regex+llm",
     "model": "gpt-4o-mini",
-    "tokens": 180,
-    "cost": 0.00054,
-    "analyzed_at": "2026-05-16T05:20:58.825636Z"
+    "tokens": 186,
+    "cost": 0.000558,
+    "analyzed_at": "2026-05-16T06:27:08.209488Z"
   }
 }

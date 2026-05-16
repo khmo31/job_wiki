@@ -37,15 +37,15 @@
       "변호사 자격",
       "법률사무 실무경험",
       "분석",
-      "판단",
-      "소통"
+      "평가",
+      "관리"
     ],
-    "core_logic": "법률사무 / 실무에 대한 관리적 행위",
+    "core_logic": "법률사무 / 대상에 대한 관리적 행위",
     "domain_context": "법률",
     "latent_skills": [
       "분석",
-      "판단",
-      "소통"
+      "평가",
+      "관리"
     ],
     "job_nature": "운영/관리",
     "complexity": "medium",
@@ -55,8 +55,8 @@
     ],
     "method": "regex+llm",
     "model": "gpt-4o-mini",
-    "tokens": 195,
-    "cost": 0.000585,
-    "analyzed_at": "2026-05-16T05:17:58.182226Z"
+    "tokens": 188,
+    "cost": 0.000564,
+    "analyzed_at": "2026-05-16T06:24:11.576122Z"
   }
 }

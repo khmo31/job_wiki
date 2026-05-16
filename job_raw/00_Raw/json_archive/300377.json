@@ -34,24 +34,29 @@
   "analysis": {
     "explicit_skills": [],
     "skills_found": [
+      "법률 지식",
+      "행정 지식",
       "분석",
       "평가",
-      "검토"
+      "검증"
     ],
-    "core_logic": "채용 자격 요건 확인",
-    "domain_context": "사업관리, 교육",
+    "core_logic": "채용 자격 요건 검증",
+    "domain_context": "사업관리, 인사",
     "latent_skills": [
       "분석",
       "평가",
-      "검토"
+      "검증"
     ],
     "job_nature": "운영/관리",
     "complexity": "low",
-    "skills_additional": [],
+    "skills_additional": [
+      "법률 지식",
+      "행정 지식"
+    ],
     "method": "regex+llm",
     "model": "gpt-4o-mini",
-    "tokens": 199,
-    "cost": 0.0005970000000000001,
-    "analyzed_at": "2026-05-16T05:14:38.335430Z"
+    "tokens": 202,
+    "cost": 0.0006060000000000001,
+    "analyzed_at": "2026-05-16T06:23:45.236251Z"
   }
 }

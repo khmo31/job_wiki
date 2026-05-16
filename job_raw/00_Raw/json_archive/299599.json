@@ -36,13 +36,13 @@
     "skills_found": [
       "간호사 면허증",
       "조직관리",
-      "산업안전"
+      "건강관리"
     ],
-    "core_logic": "산업간호사 / 보건관리에 대한 운영적 행위",
+    "core_logic": "산업간호 / 보건관리에 대한 운영적 행위",
     "domain_context": "보건.의료",
     "latent_skills": [
       "조직관리",
-      "산업안전"
+      "건강관리"
     ],
     "job_nature": "운영/관리",
     "complexity": "medium",
@@ -51,8 +51,8 @@
     ],
     "method": "regex+llm",
     "model": "gpt-4o-mini",
-    "tokens": 169,
-    "cost": 0.0005070000000000001,
-    "analyzed_at": "2026-05-16T05:23:14.508826Z"
+    "tokens": 170,
+    "cost": 0.00051,
+    "analyzed_at": "2026-05-16T06:29:17.374855Z"
   }
 }

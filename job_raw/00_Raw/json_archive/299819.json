@@ -34,22 +34,24 @@
   "analysis": {
     "explicit_skills": [],
     "skills_found": [
-      "조직 관리",
-      "인사 관리"
+      "인사관리",
+      "자격 검증",
+      "공고 관리"
     ],
-    "core_logic": "채용공고 관리",
+    "core_logic": "채용 공고 관리 및 지원자 자격 검증",
     "domain_context": "경영.회계.사무",
     "latent_skills": [
-      "조직 관리",
-      "인사 관리"
+      "인사관리",
+      "자격 검증",
+      "공고 관리"
     ],
     "job_nature": "운영/관리",
     "complexity": "low",
     "skills_additional": [],
     "method": "regex+llm",
     "model": "gpt-4o-mini",
-    "tokens": 160,
-    "cost": 0.00048,
-    "analyzed_at": "2026-05-16T05:20:00.303009Z"
+    "tokens": 164,
+    "cost": 0.000492,
+    "analyzed_at": "2026-05-16T06:26:12.487932Z"
   }
 }

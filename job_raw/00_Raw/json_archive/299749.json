@@ -34,14 +34,13 @@
   "analysis": {
     "explicit_skills": [],
     "skills_found": [
-      "기사자격증",
-      "산업기사 자격",
-      "관련 분야 경력",
+      "관련 자격증 소지",
+      "관련 경력 보유",
       "문제해결",
       "분석",
       "관리"
     ],
-    "core_logic": "환경 분야에 대한 관리적 행위",
+    "core_logic": "환경 / 환경관리에 대한 운영적 행위",
     "domain_context": "환경",
     "latent_skills": [
       "문제해결",
@@ -51,14 +50,13 @@
     "job_nature": "운영/관리",
     "complexity": "medium",
     "skills_additional": [
-      "기사자격증",
-      "산업기사 자격",
-      "관련 분야 경력"
+      "관련 자격증 소지",
+      "관련 경력 보유"
     ],
     "method": "regex+llm",
     "model": "gpt-4o-mini",
-    "tokens": 177,
-    "cost": 0.000531,
-    "analyzed_at": "2026-05-16T05:21:04.674411Z"
+    "tokens": 176,
+    "cost": 0.0005279999999999999,
+    "analyzed_at": "2026-05-16T06:27:13.385899Z"
   }
 }

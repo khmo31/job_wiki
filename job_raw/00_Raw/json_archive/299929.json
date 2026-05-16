@@ -34,33 +34,31 @@
   "analysis": {
     "explicit_skills": [],
     "skills_found": [
-      "특수 교육",
-      "물리치료",
-      "언어재활",
+      "장애인 지원",
       "복지행정",
+      "팀원 관리",
       "계획 수립",
       "경험 관리",
-      "실무 수행"
+      "서비스 제공"
     ],
-    "core_logic": "복지 서비스 / 대상자 지원에 대한 계획적, 관리적 행위",
-    "domain_context": "사회복지",
+    "core_logic": "복지 서비스 / 대상자 지원에 대한 관리적 행위",
+    "domain_context": "사업관리, 사회복지",
     "latent_skills": [
       "계획 수립",
       "경험 관리",
-      "실무 수행"
+      "서비스 제공"
     ],
     "job_nature": "운영/관리",
     "complexity": "medium",
     "skills_additional": [
-      "특수 교육",
-      "물리치료",
-      "언어재활",
-      "복지행정"
+      "장애인 지원",
+      "복지행정",
+      "팀원 관리"
     ],
     "method": "regex+llm",
     "model": "gpt-4o-mini",
-    "tokens": 196,
-    "cost": 0.000588,
-    "analyzed_at": "2026-05-16T05:18:59.682271Z"
+    "tokens": 195,
+    "cost": 0.000585,
+    "analyzed_at": "2026-05-16T06:25:10.100873Z"
   }
 }

@@ -34,31 +34,27 @@
   "analysis": {
     "explicit_skills": [],
     "skills_found": [
-      "영어 회화",
-      "데이터 분석",
-      "보고서 작성",
-      "외국어 구사",
-      "업무 교류",
-      "모니터링"
+      "공인영어성적 관리",
+      "행정 지원",
+      "영어 커뮤니케이션",
+      "행정 관리"
     ],
     "core_logic": "글로벌연수사업 / 연수과정 모니터링에 대한 관리적 행위",
     "domain_context": "경영.회계.사무",
     "latent_skills": [
-      "외국어 구사",
-      "업무 교류",
-      "모니터링"
+      "영어 커뮤니케이션",
+      "행정 관리"
     ],
     "job_nature": "운영/관리",
     "complexity": "medium",
     "skills_additional": [
-      "영어 회화",
-      "데이터 분석",
-      "보고서 작성"
+      "공인영어성적 관리",
+      "행정 지원"
     ],
     "method": "regex+llm",
     "model": "gpt-4o-mini",
-    "tokens": 265,
-    "cost": 0.000795,
-    "analyzed_at": "2026-05-16T05:21:23.597379Z"
+    "tokens": 262,
+    "cost": 0.000786,
+    "analyzed_at": "2026-05-16T06:27:28.951358Z"
   }
 }

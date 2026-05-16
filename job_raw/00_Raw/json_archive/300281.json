@@ -34,16 +34,15 @@
   "analysis": {
     "explicit_skills": [],
     "skills_found": [
-      "사업관리",
       "신약개발",
-      "방사성의약품 관련 전문 지식",
-      "의사 면허증 또는 박사학위",
+      "방사성의약품",
+      "사업관리",
       "리더십",
       "전략적 사고",
       "의사소통"
     ],
-    "core_logic": "신약개발 / 방사성의약품에 대한 총괄적 관리 행위",
-    "domain_context": "보건, 의료, 사업관리",
+    "core_logic": "신약개발 / 방사성의약품에 대한 관리적 행위",
+    "domain_context": "사업관리, 보건.의료, 연구",
     "latent_skills": [
       "리더십",
       "전략적 사고",
@@ -52,15 +51,14 @@
     "job_nature": "운영/관리",
     "complexity": "high",
     "skills_additional": [
-      "사업관리",
       "신약개발",
-      "방사성의약품 관련 전문 지식",
-      "의사 면허증 또는 박사학위"
+      "방사성의약품",
+      "사업관리"
     ],
     "method": "regex+llm",
     "model": "gpt-4o-mini",
-    "tokens": 354,
-    "cost": 0.001062,
-    "analyzed_at": "2026-05-16T05:15:47.027326Z"
+    "tokens": 347,
+    "cost": 0.001041,
+    "analyzed_at": "2026-05-16T06:23:49.921857Z"
   }
 }

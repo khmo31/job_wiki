@@ -39,15 +39,13 @@
       "자동차 운전면허 1종 대형",
       "기중기운전기능사",
       "문제해결",
-      "운영관리",
-      "안전관리"
+      "현장관리"
     ],
-    "core_logic": "전기 배전 운영/관리",
-    "domain_context": "경영.회계.사무, 전기.전자",
+    "core_logic": "배전 / 전기시설에 대한 유지관리적 행위",
+    "domain_context": "전기.전자",
     "latent_skills": [
       "문제해결",
-      "운영관리",
-      "안전관리"
+      "현장관리"
     ],
     "job_nature": "운영/관리",
     "complexity": "medium",
@@ -59,8 +57,8 @@
     ],
     "method": "regex+llm",
     "model": "gpt-4o-mini",
-    "tokens": 192,
-    "cost": 0.000576,
-    "analyzed_at": "2026-05-16T05:21:29.071564Z"
+    "tokens": 191,
+    "cost": 0.000573,
+    "analyzed_at": "2026-05-16T06:27:34.080577Z"
   }
 }

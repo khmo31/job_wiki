@@ -36,29 +36,27 @@
     "skills_found": [
       "해양조사",
       "정보관리",
-      "자격증 소지",
       "분석",
-      "평가",
-      "관리"
+      "조사",
+      "정보처리"
     ],
-    "core_logic": "해양조사 / 정보에 대한 지원적 행위",
+    "core_logic": "해양조사 / 정보에 대한 분석적 행위",
     "domain_context": "해양수산",
     "latent_skills": [
       "분석",
-      "평가",
-      "관리"
+      "조사",
+      "정보처리"
     ],
     "job_nature": "운영/관리",
     "complexity": "medium",
     "skills_additional": [
       "해양조사",
-      "정보관리",
-      "자격증 소지"
+      "정보관리"
     ],
     "method": "regex+llm",
     "model": "gpt-4o-mini",
-    "tokens": 244,
-    "cost": 0.000732,
-    "analyzed_at": "2026-05-16T05:23:35.796120Z"
+    "tokens": 242,
+    "cost": 0.000726,
+    "analyzed_at": "2026-05-16T06:29:34.390665Z"
   }
 }

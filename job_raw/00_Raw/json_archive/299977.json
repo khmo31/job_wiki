@@ -34,24 +34,24 @@
   "analysis": {
     "explicit_skills": [],
     "skills_found": [
-      "경영",
-      "행정",
-      "관리"
+      "경영 관리",
+      "행정 업무",
+      "사무 관리"
     ],
     "core_logic": "행정 / 경영에 대한 관리적 행위",
     "domain_context": "보건.의료",
     "latent_skills": [
-      "경영",
-      "행정",
-      "관리"
+      "경영 관리",
+      "행정 업무",
+      "사무 관리"
     ],
     "job_nature": "운영/관리",
     "complexity": "low",
     "skills_additional": [],
     "method": "regex+llm",
     "model": "gpt-4o-mini",
-    "tokens": 386,
-    "cost": 0.001158,
-    "analyzed_at": "2026-05-16T05:18:39.685577Z"
+    "tokens": 392,
+    "cost": 0.001176,
+    "analyzed_at": "2026-05-16T06:24:51.645045Z"
   }
 }

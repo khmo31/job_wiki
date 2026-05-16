@@ -35,32 +35,32 @@
     "explicit_skills": [],
     "skills_found": [
       "도시계획",
-      "토목",
       "건축",
+      "토목",
       "지역개발",
       "계획",
       "개발",
-      "경영"
+      "관리"
     ],
     "core_logic": "건설 / 도시개발에 대한 계획적 행위",
     "domain_context": "건설",
     "latent_skills": [
       "계획",
       "개발",
-      "경영"
+      "관리"
     ],
     "job_nature": "연구/개발",
     "complexity": "high",
     "skills_additional": [
       "도시계획",
-      "토목",
       "건축",
+      "토목",
       "지역개발"
     ],
     "method": "regex+llm",
     "model": "gpt-4o-mini",
-    "tokens": 161,
-    "cost": 0.00048300000000000003,
-    "analyzed_at": "2026-05-16T05:21:01.757125Z"
+    "tokens": 170,
+    "cost": 0.00051,
+    "analyzed_at": "2026-05-16T06:27:10.504151Z"
   }
 }

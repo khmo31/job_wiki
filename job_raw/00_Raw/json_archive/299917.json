@@ -34,27 +34,27 @@
   "analysis": {
     "explicit_skills": [],
     "skills_found": [
-      "영어 능력",
-      "행정 관리",
-      "운영 지원",
-      "일반 행정"
+      "영어능력검정시험",
+      "커뮤니케이션",
+      "조직관리",
+      "문제해결"
     ],
-    "core_logic": "행정 / 운영에 대한 관리적 행위",
+    "core_logic": "행정 / 관리에 대한 지원 및 운영적 행위",
     "domain_context": "사업관리, 경영, 회계, 사무, 금융, 보험",
     "latent_skills": [
-      "행정 관리",
-      "운영 지원",
-      "일반 행정"
+      "커뮤니케이션",
+      "조직관리",
+      "문제해결"
     ],
     "job_nature": "운영/관리",
     "complexity": "low",
     "skills_additional": [
-      "영어 능력"
+      "영어능력검정시험"
     ],
     "method": "regex+llm",
     "model": "gpt-4o-mini",
-    "tokens": 241,
-    "cost": 0.000723,
-    "analyzed_at": "2026-05-16T05:19:07.095392Z"
+    "tokens": 243,
+    "cost": 0.000729,
+    "analyzed_at": "2026-05-16T06:25:18.231066Z"
   }
 }

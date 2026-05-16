@@ -34,16 +34,16 @@
   "analysis": {
     "explicit_skills": [],
     "skills_found": [],
-    "core_logic": "인사규정 관리",
-    "domain_context": "사업관리, 경영, 회계, 사무",
+    "core_logic": "",
+    "domain_context": "",
     "latent_skills": [],
-    "job_nature": "운영/관리",
-    "complexity": "low",
+    "job_nature": "",
+    "complexity": "",
     "skills_additional": [],
     "method": "regex+llm",
     "model": "gpt-4o-mini",
-    "tokens": 142,
-    "cost": 0.00042599999999999995,
-    "analyzed_at": "2026-05-16T05:22:43.252230Z"
+    "tokens": 135,
+    "cost": 0.00040500000000000003,
+    "analyzed_at": "2026-05-16T06:28:45.973801Z"
   }
 }

@@ -34,29 +34,31 @@
   "analysis": {
     "explicit_skills": [],
     "skills_found": [
-      "해양수산 관련 자격증",
-      "관련 분야 학위",
-      "데이터 분석",
-      "정보 관리",
-      "기술 평가"
+      "해양조사",
+      "정보관리",
+      "자격증 소지",
+      "분석",
+      "평가",
+      "관리"
     ],
-    "core_logic": "해양조사 정보에 대한 관리적 행위",
-    "domain_context": "해양수산",
+    "core_logic": "해양조사 / 정보에 대한 관리적 행위",
+    "domain_context": "교육.자연.사회과학,건설",
     "latent_skills": [
-      "데이터 분석",
-      "정보 관리",
-      "기술 평가"
+      "분석",
+      "평가",
+      "관리"
     ],
     "job_nature": "운영/관리",
     "complexity": "medium",
     "skills_additional": [
-      "해양수산 관련 자격증",
-      "관련 분야 학위"
+      "해양조사",
+      "정보관리",
+      "자격증 소지"
     ],
     "method": "regex+llm",
     "model": "gpt-4o-mini",
     "tokens": 276,
     "cost": 0.0008280000000000001,
-    "analyzed_at": "2026-05-16T05:23:40.961130Z"
+    "analyzed_at": "2026-05-16T06:29:38.986199Z"
   }
 }

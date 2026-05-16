@@ -34,29 +34,27 @@
   "analysis": {
     "explicit_skills": [],
     "skills_found": [
-      "병역 관련 법령 지식",
-      "채용 관련 규정 지식",
-      "평가",
-      "관리",
-      "분석"
+      "리더십",
+      "커뮤니케이션",
+      "팀 관리",
+      "연구 계획 수립"
     ],
-    "core_logic": "인력 채용에 대한 평가 및 관리적 행위",
+    "core_logic": "연구개발 인력 채용",
     "domain_context": "사업관리, 경영, 회계, 사무",
     "latent_skills": [
-      "평가",
-      "관리",
-      "분석"
+      "팀 관리",
+      "연구 계획 수립"
     ],
-    "job_nature": "운영/관리",
-    "complexity": "medium",
+    "job_nature": "연구/개발",
+    "complexity": "high",
     "skills_additional": [
-      "병역 관련 법령 지식",
-      "채용 관련 규정 지식"
+      "리더십",
+      "커뮤니케이션"
     ],
     "method": "regex+llm",
     "model": "gpt-4o-mini",
-    "tokens": 180,
-    "cost": 0.00054,
-    "analyzed_at": "2026-05-16T05:18:07.944994Z"
+    "tokens": 174,
+    "cost": 0.000522,
+    "analyzed_at": "2026-05-16T06:24:16.717044Z"
   }
 }

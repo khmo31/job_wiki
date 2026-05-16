@@ -34,9 +34,9 @@
   "analysis": {
     "explicit_skills": [],
     "skills_found": [
-      "의사결정",
-      "팀 관리",
-      "기술개발 경험",
+      "기술개발",
+      "사업화",
+      "연구수행",
       "리더십",
       "전략적 사고",
       "문제 해결"
@@ -51,14 +51,14 @@
     "job_nature": "운영/관리",
     "complexity": "high",
     "skills_additional": [
-      "의사결정",
-      "팀 관리",
-      "기술개발 경험"
+      "기술개발",
+      "사업화",
+      "연구수행"
     ],
     "method": "regex+llm",
     "model": "gpt-4o-mini",
-    "tokens": 159,
-    "cost": 0.000477,
-    "analyzed_at": "2026-05-16T05:18:12.836355Z"
+    "tokens": 158,
+    "cost": 0.00047400000000000003,
+    "analyzed_at": "2026-05-16T06:24:22.697288Z"
   }
 }

@@ -35,23 +35,23 @@
     "explicit_skills": [],
     "skills_found": [
       "리더십",
-      "경험 관리",
-      "연구 설계"
+      "관리능력",
+      "커뮤니케이션"
     ],
-    "core_logic": "연구 / 인력에 대한 평가 및 선정적 행위",
-    "domain_context": "연구",
+    "core_logic": "정부 / 인력관리에 대한 평가/관리적 행위",
+    "domain_context": "연구/정책",
     "latent_skills": [
       "리더십",
-      "경험 관리",
-      "연구 설계"
+      "관리능력",
+      "커뮤니케이션"
     ],
     "job_nature": "운영/관리",
     "complexity": "high",
     "skills_additional": [],
     "method": "regex+llm",
     "model": "gpt-4o-mini",
-    "tokens": 191,
-    "cost": 0.000573,
-    "analyzed_at": "2026-05-16T05:19:27.564969Z"
+    "tokens": 192,
+    "cost": 0.000576,
+    "analyzed_at": "2026-05-16T06:25:37.262567Z"
   }
 }

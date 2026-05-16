@@ -34,31 +34,27 @@
   "analysis": {
     "explicit_skills": [],
     "skills_found": [
-      "물리치료",
-      "작업치료",
-      "임상병리",
-      "의사소통",
-      "문제해결",
-      "팀워크"
+      "면허증 관리",
+      "지원자 심사",
+      "인사관리",
+      "채용절차"
     ],
-    "core_logic": "보건의료 / 환자에 대한 치료적 행위",
-    "domain_context": "보건의료",
+    "core_logic": "보건의료 인력 / 채용에 대한 관리적 행위",
+    "domain_context": "보건.의료",
     "latent_skills": [
-      "의사소통",
-      "문제해결",
-      "팀워크"
+      "인사관리",
+      "채용절차"
     ],
-    "job_nature": "실무/혼합",
-    "complexity": "medium",
+    "job_nature": "운영/관리",
+    "complexity": "low",
     "skills_additional": [
-      "물리치료",
-      "작업치료",
-      "임상병리"
+      "면허증 관리",
+      "지원자 심사"
     ],
     "method": "regex+llm",
     "model": "gpt-4o-mini",
-    "tokens": 164,
-    "cost": 0.000492,
-    "analyzed_at": "2026-05-16T05:22:07.673410Z"
+    "tokens": 161,
+    "cost": 0.00048300000000000003,
+    "analyzed_at": "2026-05-16T06:28:11.558739Z"
   }
 }

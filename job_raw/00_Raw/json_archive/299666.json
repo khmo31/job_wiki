@@ -34,22 +34,29 @@
   "analysis": {
     "explicit_skills": [],
     "skills_found": [
-      "행정",
-      "인사관리"
+      "장애인 지원",
+      "인턴십 관리",
+      "의사소통",
+      "적응성",
+      "문제해결"
     ],
-    "core_logic": "인사 규정 관리",
-    "domain_context": "경영",
+    "core_logic": "KOICA / 장애인 인턴 프로그램에 대한 운영적 행위",
+    "domain_context": "경영.회계.사무",
     "latent_skills": [
-      "행정",
-      "인사관리"
+      "의사소통",
+      "적응성",
+      "문제해결"
     ],
     "job_nature": "운영/관리",
     "complexity": "low",
-    "skills_additional": [],
+    "skills_additional": [
+      "장애인 지원",
+      "인턴십 관리"
+    ],
     "method": "regex+llm",
     "model": "gpt-4o-mini",
-    "tokens": 169,
-    "cost": 0.0005070000000000001,
-    "analyzed_at": "2026-05-16T05:21:59.428652Z"
+    "tokens": 181,
+    "cost": 0.000543,
+    "analyzed_at": "2026-05-16T06:28:03.892379Z"
   }
 }

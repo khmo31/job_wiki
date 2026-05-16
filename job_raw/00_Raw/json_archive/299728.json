@@ -34,29 +34,29 @@
   "analysis": {
     "explicit_skills": [],
     "skills_found": [
+      "기계설비유지관리",
       "에너지관리",
-      "기계설비 유지관리",
       "문제해결",
       "분석적 사고",
-      "운영 관리"
+      "실무 경험"
     ],
-    "core_logic": "병원 기계설비 / 유지관리에 대한 관리적 행위",
+    "core_logic": "병원의 기계 설비 유지관리",
     "domain_context": "보건.의료",
     "latent_skills": [
       "문제해결",
       "분석적 사고",
-      "운영 관리"
+      "실무 경험"
     ],
     "job_nature": "운영/관리",
     "complexity": "medium",
     "skills_additional": [
-      "에너지관리",
-      "기계설비 유지관리"
+      "기계설비유지관리",
+      "에너지관리"
     ],
     "method": "regex+llm",
     "model": "gpt-4o-mini",
-    "tokens": 175,
-    "cost": 0.000525,
-    "analyzed_at": "2026-05-16T05:21:18.567349Z"
+    "tokens": 172,
+    "cost": 0.000516,
+    "analyzed_at": "2026-05-16T06:27:23.704111Z"
   }
 }

@@ -34,29 +34,31 @@
   "analysis": {
     "explicit_skills": [],
     "skills_found": [
-      "인사규정",
-      "채용절차",
-      "분석력",
-      "판단력",
-      "세부사항관리"
+      "변호사",
+      "공인회계사",
+      "기록물관리 전문요원",
+      "채용관리",
+      "인사관리",
+      "규정관리"
     ],
-    "core_logic": "채용자격에 대한 심사 및 관리",
+    "core_logic": "인사/채용에 대한 관리적 행위",
     "domain_context": "사업관리, 경영",
     "latent_skills": [
-      "분석력",
-      "판단력",
-      "세부사항관리"
+      "채용관리",
+      "인사관리",
+      "규정관리"
     ],
     "job_nature": "운영/관리",
     "complexity": "medium",
     "skills_additional": [
-      "인사규정",
-      "채용절차"
+      "변호사",
+      "공인회계사",
+      "기록물관리 전문요원"
     ],
     "method": "regex+llm",
     "model": "gpt-4o-mini",
-    "tokens": 206,
-    "cost": 0.000618,
-    "analyzed_at": "2026-05-16T05:23:16.763430Z"
+    "tokens": 210,
+    "cost": 0.00063,
+    "analyzed_at": "2026-05-16T06:29:19.875433Z"
   }
 }

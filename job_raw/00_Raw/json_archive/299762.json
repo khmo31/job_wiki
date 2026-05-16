@@ -34,27 +34,29 @@
   "analysis": {
     "explicit_skills": [],
     "skills_found": [
-      "기본적인 컴퓨터 사용 능력",
-      "조직관리",
+      "규정해석",
+      "지원자평가",
       "인사관리",
-      "커뮤니케이션"
+      "직원선발",
+      "규정관리"
     ],
-    "core_logic": "인사관리 / 직원 선발에 대한 심사 및 관리적 행위",
+    "core_logic": "인사관리 / 직원선발에 대한 심사 및 관리적 행위",
     "domain_context": "사업관리, 경영, 회계, 사무",
     "latent_skills": [
-      "조직관리",
       "인사관리",
-      "커뮤니케이션"
+      "직원선발",
+      "규정관리"
     ],
     "job_nature": "운영/관리",
     "complexity": "low",
     "skills_additional": [
-      "기본적인 컴퓨터 사용 능력"
+      "규정해석",
+      "지원자평가"
     ],
     "method": "regex+llm",
     "model": "gpt-4o-mini",
     "tokens": 235,
     "cost": 0.000705,
-    "analyzed_at": "2026-05-16T05:20:50.980510Z"
+    "analyzed_at": "2026-05-16T06:27:00.732025Z"
   }
 }

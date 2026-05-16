@@ -34,27 +34,29 @@
   "analysis": {
     "explicit_skills": [],
     "skills_found": [
-      "면허증 관리",
-      "자격증 검증",
-      "인사관리",
-      "채용절차"
+      "의료 관련 면허증 소지",
+      "행정 지원",
+      "의사소통",
+      "조직 적응",
+      "문제 해결"
     ],
-    "core_logic": "보건의료 인력 / 채용에 대한 관리적 행위",
+    "core_logic": "보건의료 / 인력관리에 대한 지원적 행위",
     "domain_context": "보건의료",
     "latent_skills": [
-      "인사관리",
-      "채용절차"
+      "의사소통",
+      "조직 적응",
+      "문제 해결"
     ],
     "job_nature": "운영/관리",
     "complexity": "low",
     "skills_additional": [
-      "면허증 관리",
-      "자격증 검증"
+      "의료 관련 면허증 소지",
+      "행정 지원"
     ],
     "method": "regex+llm",
     "model": "gpt-4o-mini",
-    "tokens": 232,
-    "cost": 0.000696,
-    "analyzed_at": "2026-05-16T05:22:19.976297Z"
+    "tokens": 235,
+    "cost": 0.000705,
+    "analyzed_at": "2026-05-16T06:28:22.879952Z"
   }
 }

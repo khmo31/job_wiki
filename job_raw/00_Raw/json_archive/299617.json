@@ -40,14 +40,14 @@
       "학위",
       "영어 커뮤니케이션",
       "자격증 관리",
-      "운영 관리"
+      "팀 운영"
     ],
-    "core_logic": "보건/의료 기관 운영 지원",
-    "domain_context": "보건.의료",
+    "core_logic": "보건, 의료 조직 운영 / 관리에 대한 행정, 기술, 연구 지원 행위",
+    "domain_context": "보건, 의료",
     "latent_skills": [
       "영어 커뮤니케이션",
       "자격증 관리",
-      "운영 관리"
+      "팀 운영"
     ],
     "job_nature": "운영/관리",
     "complexity": "medium",
@@ -59,8 +59,8 @@
     ],
     "method": "regex+llm",
     "model": "gpt-4o-mini",
-    "tokens": 203,
-    "cost": 0.0006090000000000001,
-    "analyzed_at": "2026-05-16T05:22:55.882681Z"
+    "tokens": 210,
+    "cost": 0.00063,
+    "analyzed_at": "2026-05-16T06:28:58.990917Z"
   }
 }

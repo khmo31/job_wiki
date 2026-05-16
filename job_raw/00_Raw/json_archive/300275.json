@@ -35,28 +35,30 @@
     "explicit_skills": [],
     "skills_found": [
       "의사면허 관리",
-      "인턴, 레지던트 선발",
+      "수련기간 관리",
+      "지원자 자격 평가",
       "평가",
-      "관리",
-      "의사 선발"
+      "분석",
+      "관리"
     ],
-    "core_logic": "의사 / 인턴, 레지던트 선발에 대한 평가 및 관리적 행위",
+    "core_logic": "전공의 모집 / 지원자 자격에 대한 평가적 행위",
     "domain_context": "보건.의료",
     "latent_skills": [
       "평가",
-      "관리",
-      "의사 선발"
+      "분석",
+      "관리"
     ],
     "job_nature": "운영/관리",
     "complexity": "medium",
     "skills_additional": [
       "의사면허 관리",
-      "인턴, 레지던트 선발"
+      "수련기간 관리",
+      "지원자 자격 평가"
     ],
     "method": "regex+llm",
     "model": "gpt-4o-mini",
-    "tokens": 167,
-    "cost": 0.000501,
-    "analyzed_at": "2026-05-16T05:15:52.559456Z"
+    "tokens": 166,
+    "cost": 0.0004980000000000001,
+    "analyzed_at": "2026-05-16T06:23:50.575850Z"
   }
 }

@@ -35,13 +35,13 @@
     "explicit_skills": [],
     "skills_found": [
       "인사관리",
-      "채용절차"
+      "채용관리"
     ],
     "core_logic": "인사/채용에 대한 관리적 행위",
     "domain_context": "사업관리",
     "latent_skills": [
       "인사관리",
-      "채용절차"
+      "채용관리"
     ],
     "job_nature": "운영/관리",
     "complexity": "low",
@@ -50,6 +50,6 @@
     "model": "gpt-4o-mini",
     "tokens": 217,
     "cost": 0.000651,
-    "analyzed_at": "2026-05-16T05:23:07.185396Z"
+    "analyzed_at": "2026-05-16T06:29:08.991491Z"
   }
 }

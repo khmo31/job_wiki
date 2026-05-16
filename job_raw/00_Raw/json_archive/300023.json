@@ -35,28 +35,30 @@
     "explicit_skills": [],
     "skills_found": [
       "에너지관리",
-      "가스관리",
-      "안전관리",
-      "시설관리",
-      "운영관리"
+      "가스안전관리",
+      "보일러관리",
+      "문제해결",
+      "위험관리",
+      "시설운영"
     ],
     "core_logic": "시설 / 안전관리에 대한 운영적 행위",
     "domain_context": "보건.의료, 기계",
     "latent_skills": [
-      "안전관리",
-      "시설관리",
-      "운영관리"
+      "문제해결",
+      "위험관리",
+      "시설운영"
     ],
     "job_nature": "운영/관리",
     "complexity": "medium",
     "skills_additional": [
       "에너지관리",
-      "가스관리"
+      "가스안전관리",
+      "보일러관리"
     ],
     "method": "regex+llm",
     "model": "gpt-4o-mini",
-    "tokens": 155,
-    "cost": 0.000465,
-    "analyzed_at": "2026-05-16T05:18:15.236260Z"
+    "tokens": 158,
+    "cost": 0.00047400000000000003,
+    "analyzed_at": "2026-05-16T06:24:25.410603Z"
   }
 }

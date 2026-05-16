@@ -34,16 +34,16 @@
   "analysis": {
     "explicit_skills": [],
     "skills_found": [
-      "분석력",
-      "판단력",
-      "의사소통"
+      "인사관리",
+      "규정관리",
+      "심사평가"
     ],
-    "core_logic": "채용공고 관리 및 지원자 자격 검증",
+    "core_logic": "채용 / 지원자 선발에 대한 심사 및 관리",
     "domain_context": "경영.회계.사무",
     "latent_skills": [
-      "분석력",
-      "판단력",
-      "의사소통"
+      "인사관리",
+      "규정관리",
+      "심사평가"
     ],
     "job_nature": "운영/관리",
     "complexity": "low",
@@ -52,6 +52,6 @@
     "model": "gpt-4o-mini",
     "tokens": 226,
     "cost": 0.000678,
-    "analyzed_at": "2026-05-16T05:20:20.657160Z"
+    "analyzed_at": "2026-05-16T06:26:32.747711Z"
   }
 }

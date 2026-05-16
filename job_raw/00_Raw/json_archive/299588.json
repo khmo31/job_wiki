@@ -37,32 +37,31 @@
     ],
     "skills_found": [
       "Python",
-      "엑셀",
-      "엑세스",
-      "PyTorch",
+      "의료 데이터 처리",
+      "머신러닝 라이브러리 사용",
+      "DB 관리",
       "데이터 분석",
       "연구 설계",
-      "의료 데이터 관리"
+      "임상 지식"
     ],
     "core_logic": "보건의료 데이터 / 분석 및 연구에 대한 수행적 행위",
     "domain_context": "보건의료",
     "latent_skills": [
       "데이터 분석",
       "연구 설계",
-      "의료 데이터 관리"
+      "임상 지식"
     ],
     "job_nature": "연구/개발",
     "complexity": "medium",
     "skills_additional": [
-      "엑셀",
-      "엑세스",
-      "Python",
-      "PyTorch"
+      "의료 데이터 처리",
+      "머신러닝 라이브러리 사용",
+      "DB 관리"
     ],
     "method": "regex+llm",
     "model": "gpt-4o-mini",
     "tokens": 422,
     "cost": 0.001266,
-    "analyzed_at": "2026-05-16T05:23:27.525763Z"
+    "analyzed_at": "2026-05-16T06:29:31.393643Z"
   }
 }

@@ -35,28 +35,32 @@
     "explicit_skills": [],
     "skills_found": [
       "보건관리",
-      "산업안전보건법",
+      "산업위생관리",
+      "대기환경산업기사",
+      "인간공학기사",
       "산업보건",
       "산업위생",
-      "인간공학"
+      "안전관리"
     ],
     "core_logic": "산업안전보건 / 관리에 대한 운영적 행위",
     "domain_context": "환경.에너지.안전",
     "latent_skills": [
       "산업보건",
       "산업위생",
-      "인간공학"
+      "안전관리"
     ],
     "job_nature": "운영/관리",
     "complexity": "medium",
     "skills_additional": [
       "보건관리",
-      "산업안전보건법"
+      "산업위생관리",
+      "대기환경산업기사",
+      "인간공학기사"
     ],
     "method": "regex+llm",
     "model": "gpt-4o-mini",
-    "tokens": 176,
-    "cost": 0.0005279999999999999,
-    "analyzed_at": "2026-05-16T05:13:04.829428Z"
+    "tokens": 181,
+    "cost": 0.000543,
+    "analyzed_at": "2026-05-16T06:23:42.842905Z"
   }
 }

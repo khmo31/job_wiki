@@ -36,29 +36,25 @@
     "skills_found": [
       "한글",
       "MS-오피스",
-      "사회복지사 (2급 이상)",
-      "행정",
-      "보조",
-      "관리"
+      "행정관리",
+      "의료지원"
     ],
-    "core_logic": "행정/사회복지 업무 또는 병원보조 / 지원에 대한 관리적 행위",
+    "core_logic": "행정업무 / 병원운영에 대한 지원적 행위",
     "domain_context": "보건.의료",
     "latent_skills": [
-      "행정",
-      "보조",
-      "관리"
+      "행정관리",
+      "의료지원"
     ],
     "job_nature": "운영/관리",
     "complexity": "low",
     "skills_additional": [
       "한글",
-      "MS-오피스",
-      "사회복지사 (2급 이상)"
+      "MS-오피스"
     ],
     "method": "regex+llm",
     "model": "gpt-4o-mini",
-    "tokens": 171,
-    "cost": 0.000513,
-    "analyzed_at": "2026-05-16T05:19:32.246940Z"
+    "tokens": 164,
+    "cost": 0.000492,
+    "analyzed_at": "2026-05-16T06:25:43.309315Z"
   }
 }

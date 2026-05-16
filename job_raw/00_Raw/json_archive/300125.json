@@ -34,29 +34,31 @@
   "analysis": {
     "explicit_skills": [],
     "skills_found": [
-      "출근 가능",
-      "지역 근무 가능",
+      "출입 관리",
+      "시설물 관리",
+      "환경 관리",
       "의사소통",
-      "문제해결",
-      "시간관리"
+      "문제 해결",
+      "시간 관리"
     ],
-    "core_logic": "경비 / 시설에 대한 관리적 행위",
-    "domain_context": "경비.청소",
+    "core_logic": "경비/청소 업무 수행",
+    "domain_context": "경비, 청소",
     "latent_skills": [
       "의사소통",
-      "문제해결",
-      "시간관리"
+      "문제 해결",
+      "시간 관리"
     ],
     "job_nature": "운영/관리",
     "complexity": "low",
     "skills_additional": [
-      "출근 가능",
-      "지역 근무 가능"
+      "출입 관리",
+      "시설물 관리",
+      "환경 관리"
     ],
     "method": "regex+llm",
     "model": "gpt-4o-mini",
-    "tokens": 436,
-    "cost": 0.001308,
-    "analyzed_at": "2026-05-16T05:17:30.145737Z"
+    "tokens": 430,
+    "cost": 0.00129,
+    "analyzed_at": "2026-05-16T06:23:54.365892Z"
   }
 }

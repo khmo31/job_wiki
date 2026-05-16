@@ -40,7 +40,7 @@
       "행정 지원"
     ],
     "core_logic": "보건의료 정보 관리",
-    "domain_context": "보건.의료",
+    "domain_context": "보건의료",
     "latent_skills": [
       "데이터 관리",
       "행정 지원"
@@ -55,6 +55,6 @@
     "model": "gpt-4o-mini",
     "tokens": 153,
     "cost": 0.000459,
-    "analyzed_at": "2026-05-16T05:21:54.210043Z"
+    "analyzed_at": "2026-05-16T06:28:00.534240Z"
   }
 }

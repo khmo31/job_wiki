@@ -34,7 +34,6 @@
   "analysis": {
     "explicit_skills": [],
     "skills_found": [
-      "체육학",
       "운동생리학",
       "스포츠의학",
       "운동역학",
@@ -45,8 +44,8 @@
       "연구 설계",
       "학술적 글쓰기"
     ],
-    "core_logic": "체육학 / 분석에 대한 연구적 행위",
-    "domain_context": "연구",
+    "core_logic": "스포츠 분석 / 데이터에 대한 연구적 행위",
+    "domain_context": "체육학",
     "latent_skills": [
       "데이터 분석",
       "연구 설계",
@@ -55,7 +54,6 @@
     "job_nature": "연구/개발",
     "complexity": "high",
     "skills_additional": [
-      "체육학",
       "운동생리학",
       "스포츠의학",
       "운동역학",
@@ -65,8 +63,8 @@
     ],
     "method": "regex+llm",
     "model": "gpt-4o-mini",
-    "tokens": 300,
-    "cost": 0.0009,
-    "analyzed_at": "2026-05-16T05:19:34.762046Z"
+    "tokens": 298,
+    "cost": 0.0008939999999999999,
+    "analyzed_at": "2026-05-16T06:25:45.987487Z"
   }
 }

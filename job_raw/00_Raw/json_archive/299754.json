@@ -36,7 +36,7 @@
     "skills_found": [
       "OA 자격증",
       "운전면허증",
-      "ICT 실무경력",
+      "ICT 분야 실무경험",
       "현장 관리",
       "자재 관리",
       "실적 관리",
@@ -55,12 +55,12 @@
     "skills_additional": [
       "OA 자격증",
       "운전면허증",
-      "ICT 실무경력"
+      "ICT 분야 실무경험"
     ],
     "method": "regex+llm",
     "model": "gpt-4o-mini",
-    "tokens": 171,
-    "cost": 0.000513,
-    "analyzed_at": "2026-05-16T05:20:56.341596Z"
+    "tokens": 172,
+    "cost": 0.000516,
+    "analyzed_at": "2026-05-16T06:27:05.920586Z"
   }
 }

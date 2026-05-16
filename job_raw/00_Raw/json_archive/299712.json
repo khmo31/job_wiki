@@ -34,24 +34,29 @@
   "analysis": {
     "explicit_skills": [],
     "skills_found": [
-      "경영",
+      "기술사 자격",
+      "환경/생태학 관련 지식",
       "관리",
-      "환경생태 지식"
+      "분석",
+      "평가"
     ],
-    "core_logic": "환경/생태 관리에 대한 운영/관리적 행위",
+    "core_logic": "환경/생태 분야에 대한 관리적 행위",
     "domain_context": "환경.에너지.안전",
     "latent_skills": [
-      "경영",
       "관리",
-      "환경생태 지식"
+      "분석",
+      "평가"
     ],
     "job_nature": "운영/관리",
     "complexity": "medium",
-    "skills_additional": [],
+    "skills_additional": [
+      "기술사 자격",
+      "환경/생태학 관련 지식"
+    ],
     "method": "regex+llm",
     "model": "gpt-4o-mini",
-    "tokens": 173,
-    "cost": 0.0005189999999999999,
-    "analyzed_at": "2026-05-16T05:21:26.182629Z"
+    "tokens": 177,
+    "cost": 0.000531,
+    "analyzed_at": "2026-05-16T06:27:31.185275Z"
   }
 }

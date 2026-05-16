@@ -35,23 +35,21 @@
     "explicit_skills": [],
     "skills_found": [
       "인사관리",
-      "규정해석",
-      "지원자 평가"
+      "규정준수"
     ],
-    "core_logic": "연구/사업 관리 지원 자격 심사",
+    "core_logic": "사업관리 / 연구지원에 대한 관리적 행위",
     "domain_context": "사업관리, 연구",
     "latent_skills": [
       "인사관리",
-      "규정해석",
-      "지원자 평가"
+      "규정준수"
     ],
     "job_nature": "운영/관리",
     "complexity": "low",
     "skills_additional": [],
     "method": "regex+llm",
     "model": "gpt-4o-mini",
-    "tokens": 150,
-    "cost": 0.00045,
-    "analyzed_at": "2026-05-16T05:18:22.227541Z"
+    "tokens": 149,
+    "cost": 0.00044699999999999997,
+    "analyzed_at": "2026-05-16T06:24:33.002022Z"
   }
 }

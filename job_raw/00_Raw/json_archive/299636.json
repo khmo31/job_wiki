@@ -34,31 +34,24 @@
   "analysis": {
     "explicit_skills": [],
     "skills_found": [
-      "해외사무소 파견",
-      "인사규정 이해",
-      "채용신체검사",
+      "조직관리",
       "인사관리",
-      "행정업무",
-      "조직운영"
+      "행정지원"
     ],
-    "core_logic": "행정 / 인력에 대한 관리적 행위",
+    "core_logic": "조직 운영 / 인력관리에 대한 지원적 행위",
     "domain_context": "사업관리, 경영, 회계, 사무",
     "latent_skills": [
+      "조직관리",
       "인사관리",
-      "행정업무",
-      "조직운영"
+      "행정지원"
     ],
     "job_nature": "운영/관리",
-    "complexity": "medium",
-    "skills_additional": [
-      "해외사무소 파견",
-      "인사규정 이해",
-      "채용신체검사"
-    ],
+    "complexity": "low",
+    "skills_additional": [],
     "method": "regex+llm",
     "model": "gpt-4o-mini",
-    "tokens": 221,
-    "cost": 0.0006630000000000001,
-    "analyzed_at": "2026-05-16T05:22:41.213458Z"
+    "tokens": 218,
+    "cost": 0.000654,
+    "analyzed_at": "2026-05-16T06:28:43.718942Z"
   }
 }

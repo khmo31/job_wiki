@@ -36,25 +36,29 @@
     "skills_found": [
       "인사규정 해석",
       "자격 요건 평가",
+      "행정 업무",
       "인사관리",
-      "채용관리"
+      "자격 평가",
+      "행정"
     ],
-    "core_logic": "재단 인사규정에 따른 직원 채용",
+    "core_logic": "재단 인력 채용을 위한 자격 요건 평가",
     "domain_context": "사업관리, 경영",
     "latent_skills": [
       "인사관리",
-      "채용관리"
+      "자격 평가",
+      "행정"
     ],
     "job_nature": "운영/관리",
-    "complexity": "low",
+    "complexity": "medium",
     "skills_additional": [
       "인사규정 해석",
-      "자격 요건 평가"
+      "자격 요건 평가",
+      "행정 업무"
     ],
     "method": "regex+llm",
     "model": "gpt-4o-mini",
-    "tokens": 332,
-    "cost": 0.0009960000000000001,
-    "analyzed_at": "2026-05-16T05:22:50.292560Z"
+    "tokens": 331,
+    "cost": 0.0009930000000000002,
+    "analyzed_at": "2026-05-16T06:28:53.401387Z"
   }
 }

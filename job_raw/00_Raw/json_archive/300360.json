@@ -34,31 +34,31 @@
   "analysis": {
     "explicit_skills": [],
     "skills_found": [
-      "채용공고 작성",
-      "지원서 검토",
-      "자격증 검증",
+      "채용관리",
+      "자격증관리",
+      "지원서관리",
       "인사관리",
-      "채용절차",
-      "자격증관리"
+      "행정",
+      "기준관리"
     ],
     "core_logic": "건설 / 인력채용에 대한 관리적 행위",
     "domain_context": "건설",
     "latent_skills": [
       "인사관리",
-      "채용절차",
-      "자격증관리"
+      "행정",
+      "기준관리"
     ],
     "job_nature": "운영/관리",
     "complexity": "low",
     "skills_additional": [
-      "채용공고 작성",
-      "지원서 검토",
-      "자격증 검증"
+      "채용관리",
+      "자격증관리",
+      "지원서관리"
     ],
     "method": "regex+llm",
     "model": "gpt-4o-mini",
-    "tokens": 247,
-    "cost": 0.000741,
-    "analyzed_at": "2026-05-16T05:14:55.756943Z"
+    "tokens": 253,
+    "cost": 0.000759,
+    "analyzed_at": "2026-05-16T06:23:46.556011Z"
   }
 }

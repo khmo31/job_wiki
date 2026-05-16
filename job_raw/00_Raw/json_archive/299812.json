@@ -34,29 +34,29 @@
   "analysis": {
     "explicit_skills": [],
     "skills_found": [
-      "행정 지식",
-      "장애인 지원 관련 지식",
       "의사소통",
+      "기본적인 컴퓨터 활용",
       "조직 적응",
-      "업무 관리"
+      "업무 협력",
+      "시간 관리"
     ],
-    "core_logic": "행정 업무에 대한 지원적 행위",
+    "core_logic": "행정 / 업무지원에 대한 관리적 행위",
     "domain_context": "경영.회계.사무",
     "latent_skills": [
-      "의사소통",
       "조직 적응",
-      "업무 관리"
+      "업무 협력",
+      "시간 관리"
     ],
     "job_nature": "운영/관리",
     "complexity": "low",
     "skills_additional": [
-      "행정 지식",
-      "장애인 지원 관련 지식"
+      "의사소통",
+      "기본적인 컴퓨터 활용"
     ],
     "method": "regex+llm",
     "model": "gpt-4o-mini",
-    "tokens": 235,
-    "cost": 0.000705,
-    "analyzed_at": "2026-05-16T05:20:10.867726Z"
+    "tokens": 236,
+    "cost": 0.000708,
+    "analyzed_at": "2026-05-16T06:26:22.386718Z"
   }
 }

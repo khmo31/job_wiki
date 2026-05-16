@@ -34,29 +34,31 @@
   "analysis": {
     "explicit_skills": [],
     "skills_found": [
-      "법령 이해",
+      "법령",
+      "정책",
       "위원회 운영",
       "분석",
-      "연구",
-      "정책 이해"
+      "운영",
+      "연구"
     ],
-    "core_logic": "정책 / 연구에 대한 분석적 행위",
-    "domain_context": "연구",
+    "core_logic": "연구 / 정책에 대한 분석적 행위",
+    "domain_context": "인문사회·체육",
     "latent_skills": [
       "분석",
-      "연구",
-      "정책 이해"
+      "운영",
+      "연구"
     ],
     "job_nature": "연구/개발",
     "complexity": "medium",
     "skills_additional": [
-      "법령 이해",
+      "법령",
+      "정책",
       "위원회 운영"
     ],
     "method": "regex+llm",
     "model": "gpt-4o-mini",
-    "tokens": 215,
-    "cost": 0.000645,
-    "analyzed_at": "2026-05-16T05:20:43.511610Z"
+    "tokens": 217,
+    "cost": 0.000651,
+    "analyzed_at": "2026-05-16T06:26:56.178130Z"
   }
 }

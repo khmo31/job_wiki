@@ -35,21 +35,21 @@
     "explicit_skills": [],
     "skills_found": [
       "인사관리",
-      "규정해석"
+      "채용관리"
     ],
-    "core_logic": "인사규정 관리",
+    "core_logic": "인사관리 / 직원채용에 대한 관리적 행위",
     "domain_context": "이용.숙박.여행.오락.스포츠",
     "latent_skills": [
       "인사관리",
-      "규정해석"
+      "채용관리"
     ],
     "job_nature": "운영/관리",
     "complexity": "low",
     "skills_additional": [],
     "method": "regex+llm",
     "model": "gpt-4o-mini",
-    "tokens": 162,
-    "cost": 0.00048600000000000005,
-    "analyzed_at": "2026-05-16T05:20:05.573445Z"
+    "tokens": 167,
+    "cost": 0.000501,
+    "analyzed_at": "2026-05-16T06:26:17.605101Z"
   }
 }

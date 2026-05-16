@@ -34,31 +34,31 @@
   "analysis": {
     "explicit_skills": [],
     "skills_found": [
-      "행정관리",
-      "IT시스템운영",
-      "교육기획",
-      "운영관리",
+      "ERP",
+      "정보보호시스템",
       "사례관리",
-      "사업기획"
+      "사업관리",
+      "교육기획",
+      "운영관리"
     ],
     "core_logic": "사회복지 / 자활사업에 대한 관리적 행위",
     "domain_context": "사업관리, 사회복지",
     "latent_skills": [
-      "운영관리",
       "사례관리",
-      "사업기획"
+      "사업관리",
+      "교육기획",
+      "운영관리"
     ],
     "job_nature": "운영/관리",
     "complexity": "medium",
     "skills_additional": [
-      "행정관리",
-      "IT시스템운영",
-      "교육기획"
+      "ERP",
+      "정보보호시스템"
     ],
     "method": "regex+llm",
     "model": "gpt-4o-mini",
-    "tokens": 279,
-    "cost": 0.0008370000000000001,
-    "analyzed_at": "2026-05-16T05:16:43.922333Z"
+    "tokens": 278,
+    "cost": 0.0008340000000000001,
+    "analyzed_at": "2026-05-16T06:23:52.145931Z"
   }
 }

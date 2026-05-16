@@ -33,23 +33,17 @@
   },
   "analysis": {
     "explicit_skills": [],
-    "skills_found": [
-      "기본적인 시설관리",
-      "환경 유지"
-    ],
-    "core_logic": "시설 관리 / 환경 유지에 대한 관리적 행위",
-    "domain_context": "경비.청소",
-    "latent_skills": [
-      "기본적인 시설관리",
-      "환경 유지"
-    ],
-    "job_nature": "운영/관리",
-    "complexity": "low",
+    "skills_found": [],
+    "core_logic": "",
+    "domain_context": "",
+    "latent_skills": [],
+    "job_nature": "",
+    "complexity": "",
     "skills_additional": [],
     "method": "regex+llm",
     "model": "gpt-4o-mini",
-    "tokens": 190,
-    "cost": 0.00057,
-    "analyzed_at": "2026-05-16T05:16:19.763552Z"
+    "tokens": 177,
+    "cost": 0.000531,
+    "analyzed_at": "2026-05-16T06:23:51.476566Z"
   }
 }

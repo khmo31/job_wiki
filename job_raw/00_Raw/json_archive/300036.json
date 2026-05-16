@@ -39,16 +39,16 @@
       "치과위생사 면허증",
       "의사소통",
       "시간관리",
-      "스트레스 관리"
+      "스트레스관리"
     ],
-    "core_logic": "의료 지원 / 환자 건강에 대한 관리적 행위",
+    "core_logic": "의료 지원 / 환자 관리에 대한 보조적 행위",
     "domain_context": "보건.의료",
     "latent_skills": [
       "의사소통",
       "시간관리",
-      "스트레스 관리"
+      "스트레스관리"
     ],
-    "job_nature": "운영/관리",
+    "job_nature": "실무/혼합",
     "complexity": "medium",
     "skills_additional": [
       "간호사 면허증",
@@ -57,8 +57,8 @@
     ],
     "method": "regex+llm",
     "model": "gpt-4o-mini",
-    "tokens": 162,
-    "cost": 0.00048600000000000005,
-    "analyzed_at": "2026-05-16T05:18:05.105431Z"
+    "tokens": 163,
+    "cost": 0.0004890000000000001,
+    "analyzed_at": "2026-05-16T06:24:13.909946Z"
   }
 }

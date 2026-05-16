@@ -35,28 +35,26 @@
     "explicit_skills": [],
     "skills_found": [
       "약사 면허",
-      "업무 관리",
-      "조직 적응",
       "의사소통",
-      "문제 해결"
+      "문제해결",
+      "적극성"
     ],
-    "core_logic": "보건의료 / 약제 업무에 대한 관리적 행위",
+    "core_logic": "보건의료 / 약제 관리에 대한 운영적 행위",
     "domain_context": "보건의료",
     "latent_skills": [
-      "조직 적응",
       "의사소통",
-      "문제 해결"
+      "문제해결",
+      "적극성"
     ],
     "job_nature": "운영/관리",
     "complexity": "medium",
     "skills_additional": [
-      "약사 면허",
-      "업무 관리"
+      "약사 면허"
     ],
     "method": "regex+llm",
     "model": "gpt-4o-mini",
-    "tokens": 369,
-    "cost": 0.001107,
-    "analyzed_at": "2026-05-16T05:19:44.580068Z"
+    "tokens": 366,
+    "cost": 0.001098,
+    "analyzed_at": "2026-05-16T06:25:56.120751Z"
   }
 }

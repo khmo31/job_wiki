@@ -34,29 +34,29 @@
   "analysis": {
     "explicit_skills": [],
     "skills_found": [
-      "인사규정",
-      "노동법규",
+      "인사규정 이해",
+      "채용 프로세스 관리",
       "인사관리",
-      "직무상담",
-      "법률준수"
+      "조직운영",
+      "커뮤니케이션"
     ],
-    "core_logic": "공단 업무 / 인력 관리에 대한 운영적 행위",
+    "core_logic": "공단 인사 관리 및 운영 지원",
     "domain_context": "경영.회계.사무, 보건.의료",
     "latent_skills": [
       "인사관리",
-      "직무상담",
-      "법률준수"
+      "조직운영",
+      "커뮤니케이션"
     ],
     "job_nature": "운영/관리",
     "complexity": "medium",
     "skills_additional": [
-      "인사규정",
-      "노동법규"
+      "인사규정 이해",
+      "채용 프로세스 관리"
     ],
     "method": "regex+llm",
     "model": "gpt-4o-mini",
     "tokens": 230,
     "cost": 0.0006900000000000001,
-    "analyzed_at": "2026-05-16T05:13:06.958527Z"
+    "analyzed_at": "2026-05-16T06:23:43.248191Z"
   }
 }
