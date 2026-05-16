@@ -54,7 +54,7 @@ jobs:
         run: |
           cd job_raw
           DAYS="${{ github.event_name == 'schedule' && '7' || inputs.days || '7' }}"
-          MOCK="${{ github.event_name == 'schedule' && '--no-mock' || (inputs.mock == 'false' && '--no-mock' || '--mock') }}"
+          MOCK="${{ (github.event_name == 'schedule' || !inputs.mock) && '--no-mock' || '' }}"
           python scripts/main.py $MOCK --days $DAYS 2>&1
 
       # ── Step 2: Wiki 변환 ──
