@@ -54,6 +54,8 @@ jobs:
           ALIO_API_KEY: ${{ secrets.ALIO_API_KEY }}
           ALIO_ENDPOINT: ${{ secrets.ALIO_ENDPOINT || 'https://opendata.alio.go.kr/new/v1/recruit/list.do' }}
           NVIDIA_API_KEY: ${{ secrets.NVIDIA_API_KEY }}
+          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+          LLM_PROVIDER: groq
           FORCE_LLM_OVERRIDE: ${{ secrets.NVIDIA_API_KEY && '1' || '0' }}
         run: |
           cd job_raw
