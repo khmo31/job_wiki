@@ -18,6 +18,9 @@ _GROQ_FALLBACK_MODELS = [
     os.getenv("LLM_EXTRACT_MODEL", "llama-3.3-70b-versatile"),
     "meta-llama/llama-4-scout-17b-16e-instruct",
     "llama-3.1-8b-instant",
+    "qwen/qwen3-32b",
+    "openai/gpt-oss-20b",
+    "openai/gpt-oss-120b",
 ]
 
 

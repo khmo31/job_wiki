@@ -330,6 +330,9 @@ def _call_llm_for_dna(text: str, explicit_skills: List[str], domain_hint: Option
             primary_model,
             "meta-llama/llama-4-scout-17b-16e-instruct",
             "llama-3.1-8b-instant",
+            "qwen/qwen3-32b",
+            "openai/gpt-oss-20b",
+            "openai/gpt-oss-120b",
         ]
         _last_groq_call: float = 0.0
         _groq_min_interval: float = 2.0
