@@ -1,0 +1,57 @@
+{
+  "raw": {
+    "pbadmsStdInstCd": "B552417",
+    "ongoingYn": "N",
+    "ncsCdLst": "R600004",
+    "recrutPblntSn": 300053,
+    "aplyQlfcCn": " ? 고등교육법 시행령 제7조에 따른 다음 각 항목의 요건을 모두 충족하는 사람\r\n    - 고등교육법 제16조 및 「대학교원 자격기준 등에 관한 규정」 제2조에 따른 조교수 이상의 자격기준을 갖춘 사람으로서 관련 분야에 전문지식이 있는 사람\r\n  - 담당하게 될 교수 및 연구내용이 원소속기관에서 담당하는 직무내용과 유사한 사람\r\n   - 원소속기관에서 상시적으로 근무하고 있는 사람(「기간제 및 단시간근로자 보호 등에 관한 법률」 제2조 제1호 및 제2호에 따른 기간제근로자 및 단시간근자는 제외한다)으로서 근무경력(원소속기관에 소속되기 전에 유사한 분야에서 근무한 경력을 포함한다)이 3년 이상인 사람. 다만, 전일(全日) 근무 형태의 겸임교원을 임용하는 경우에는 원소속기관에서 휴직 중인 사람을 포함한다.\r\n  ? 임용예정일 기준 만 65세 미만인 자\r\n  ? 사립학교 교원임용에 결격 사유가 없는 자\r\n  ? 「아동·청소년의 성보호에 관한 법률」에 따른 취업제한 사유에 해당하지 않는 자\r\n* 자세한 사항은 첨부파일. 2026학년도 상반기_추가 일학습병행대학 겸임교수 초빙공고 참조",
+    "pblntInstCd": "C0175",
+    "instNm": "한국기술교육대학교",
+    "srcUrl": "https://www.koreatech.ac.kr/notice/view.es?mid=a10604040000&board_id=150&post_seq=800&prefix_id=",
+    "pbancBgngYmd": "20260430",
+    "recrutPbancTtl": "한국기술교육대학교 일학습병행대학 겸임교수 초빙공고",
+    "replmprYn": "N",
+    "prefCondCn": "최종학력 석사 이상 및 지원가능 전공분야자, 토요일 강의 필수",
+    "pbancEndYmd": "20260514",
+    "acbgCondLst": "R7060,R7070",
+    "nonatchRsn": null,
+    "workRgnNmLst": "충남",
+    "disqlfcRsn": "제출 서류 및 경력 증빙 미일치 시",
+    "hireTypeLst": "R1040",
+    "acbgCondNmLst": "석사,박사",
+    "recrutNope": 1,
+    "recrutSeNm": "신입+경력",
+    "steps": [],
+    "decimalDay": -2,
+    "workRgnLst": "R3019",
+    "files": [],
+    "scrnprcdrMthdExpln": "지원서접수, 서류심사",
+    "prefCn": "최종학력 석사 이상 및 지원가능 전공분야자, 토요일 강의 필수",
+    "recrutSe": "R2030",
+    "hireTypeNmLst": "비정규직",
+    "ncsCdNmLst": "교육.자연.사회과학"
+  },
+  "analysis": {
+    "explicit_skills": [],
+    "skills_found": [
+      "교수",
+      "연구",
+      "교육행정"
+    ],
+    "core_logic": "교육 / 대학에 대한 교수적 행위",
+    "domain_context": "고등 교육",
+    "latent_skills": [
+      "교수",
+      "연구",
+      "교육행정"
+    ],
+    "job_nature": "운영/관리",
+    "complexity": "medium",
+    "skills_additional": [],
+    "method": "regex+llm",
+    "model": "gpt-4o-mini",
+    "tokens": 206,
+    "cost": 0.000618,
+    "analyzed_at": "2026-05-16T05:17:55.260997Z"
+  }
+}

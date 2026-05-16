@@ -1,0 +1,64 @@
+{
+  "raw": {
+    "pbadmsStdInstCd": "B551013",
+    "ongoingYn": "N",
+    "ncsCdLst": "R600001,R600002,R600012",
+    "recrutPblntSn": 300323,
+    "aplyQlfcCn": "ㆍ아래 조건을 모두 충족하는 자\r\n   - 「대한체육회 인사규정」 제19조(임용 결격사유)에 해당하지 않는 자\r\n   - 「국가공무원법」 제33조에 의한 채용결격사유에 해당하지 않는 자\r\n   - 학력 및 연령 제한 없음\r\n    * 단, 「대한체육회 인사규정」에 의거, 공고일 현재 기준 정년(만60세) 이상자는 제외\r\n   - 남성의 경우 병역필 또는 면제자로서 해외여행에 결격사유가 없는 자\r\n    * 단, 임용 예정일 전까지 전역 예정자는 응시 가능\r\n   - 채용 즉시 근무가 가능한 자(단, 비자발급 현황·일정에 따라 달라질 수 있음.)\r\n   - 채용 분야별 근무지 근무가 가능한 자(근무지 현황: P.1)\r\n   - 한국어 및 영어에 모두 능통하고 아래 2가지 기준을 충족하는 자 ※ 세부내용 채용공고문 참고\r\n    ① 대한민국 외 외국국적 소유자(대한민국과 외국 이중국적 가능)\r\n    ② 취업에 제한이 없는 비자를 소지하였거나, 특정활동(E7) 비자 취득을 위한 *자격요건 충족자",
+    "pblntInstCd": "C0063",
+    "instNm": "대한체육회",
+    "srcUrl": "www.sports.or.kr",
+    "pbancBgngYmd": "20260324",
+    "recrutPbancTtl": "[대한체육회] 외국인행정가 공개채용(2026년 대한체육회 제2차 계약직 직원 공개채용)",
+    "replmprYn": "Y",
+    "prefCondCn": "취업지원대상자 및 장애인 등(채용공고문 참고)",
+    "pbancEndYmd": "20260407",
+    "acbgCondLst": "R7010",
+    "nonatchRsn": "입사지원서: 온라인 접수(https://dware.intojob.co.kr/main/sports.jsp)",
+    "workRgnNmLst": "서울",
+    "disqlfcRsn": "대한체육회 인사규정 제19조(임용 결격사유)에 해당하는 자\r\n국가공무원법 제33조(결격사유)에 해당하는 자",
+    "hireTypeLst": "R1040",
+    "acbgCondNmLst": "학력무관",
+    "recrutNope": 1,
+    "recrutSeNm": "외국인 전형",
+    "steps": [],
+    "decimalDay": -39,
+    "workRgnLst": "R3010",
+    "files": [],
+    "scrnprcdrMthdExpln": "서류전형(5배수) - 면접전형 - 최종선발",
+    "prefCn": "「국가유공자 등 예우 및 지원에 관한 법률」 및 이를 준용하는 법률에 의한 취업지원대상자 등\r\n※ 취업지원대상자는 정부지침을 준수하여 진행",
+    "recrutSe": "R2040",
+    "hireTypeNmLst": "비정규직",
+    "ncsCdNmLst": "사업관리,경영.회계.사무,이용.숙박.여행.오락.스포츠"
+  },
+  "analysis": {
+    "explicit_skills": [],
+    "skills_found": [
+      "어학(한국어, 영어)",
+      "인사규정",
+      "국적 및 비자 관리",
+      "인사관리",
+      "국제업무",
+      "의사소통"
+    ],
+    "core_logic": "국제 스포츠 교류 / 인력 선발에 대한 관리적 행위",
+    "domain_context": "사업관리, 경영, 회계, 사무, 이용, 숙박, 여행, 오락, 스포츠",
+    "latent_skills": [
+      "인사관리",
+      "국제업무",
+      "의사소통"
+    ],
+    "job_nature": "운영/관리",
+    "complexity": "medium",
+    "skills_additional": [
+      "어학(한국어, 영어)",
+      "인사규정",
+      "국적 및 비자 관리"
+    ],
+    "method": "regex+llm",
+    "model": "gpt-4o-mini",
+    "tokens": 219,
+    "cost": 0.000657,
+    "analyzed_at": "2026-05-16T05:15:06.993127Z"
+  }
+}
