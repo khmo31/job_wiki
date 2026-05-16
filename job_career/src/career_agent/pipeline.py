@@ -289,5 +289,33 @@ def build_fallback_report(user_profile: str) -> dict[str, Any]:
 
 
 def generate_report(user_profile: str) -> dict[str, Any]:
-    """사용자 프로필 기반 추천 기관 보고서 생성 (로컬 매칭 전용)"""
+    """사용자 프로필 기반 추천 기관 보고서 생성.
+    
+    1순위: LLM 키워드 추출 → Ontology 검증 → Wiki 스코어링
+    2순위: 순수 로컬 (regex + Ontology + Wiki 스코어링)
+    """
+    # Try LLM-powered keyword extraction first
+    try:
+        from .llm_client import extract_keywords as llm_extract
+        llm_keywords = llm_extract(user_profile)
+        if llm_keywords and len(llm_keywords) >= 2:
+            _log(f"LLM extracted keywords: {llm_keywords}")
+            validated = _extract_validated_keywords(llm_keywords)
+            if validated:
+                _log(f"LLM path validated keywords: {validated}")
+                wiki_tool = WikiReadOnlyTool()
+                search_query = ", ".join(_strip_brackets(k) for k in validated)
+                search_output = wiki_tool._run(search_query)
+                candidate_files = _extract_candidate_files(search_output)
+                wiki_index, _ = _load_wiki_index()
+                recommendations = _attach_related_files(
+                    _score_index_entries(wiki_index, validated, candidate_files)
+                )
+                if recommendations:
+                    return {"recommended_institutions": recommendations}
+    except Exception as exc:
+        _log(f"LLM keyword path failed: {exc}")
+
+    # Fallback to pure local matching
+    _log("falling back to local matching")
     return build_fallback_report(user_profile)

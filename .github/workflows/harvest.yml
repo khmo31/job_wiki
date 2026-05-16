@@ -9,14 +9,17 @@ on:
       mock:
         description: '모의 데이터 사용'
         type: boolean
-        default: true
+        default: false
       days:
         description: '수집 기간(일)'
         type: number
         default: 7
 
+env:
+  PYTHONIOENCODING: utf-8
+
 jobs:
-  harvest:
+  pipeline:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repo
@@ -34,18 +37,32 @@ jobs:
           pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Run harvester
+      # ── Step 1: 수집 ──
+      - name: Step 1 — 채용공고 수집 (Harvester)
+        id: harvest
         env:
           ALIO_API_KEY: ${{ secrets.ALIO_API_KEY }}
           NVIDIA_API_KEY: ${{ secrets.NVIDIA_API_KEY }}
           FORCE_LLM_OVERRIDE: ${{ secrets.NVIDIA_API_KEY && '1' || '0' }}
         run: |
           cd job_raw
-          MOCK_FLAG="${{ github.event_name == 'schedule' && '--no-mock' || inputs.mock == 'false' && '--no-mock' || '--mock' }}"
-          DAYS_FLAG="${{ github.event_name == 'schedule' && '--days 7' || format('--days {0}', inputs.days || '7') }}"
-          python scripts/main.py $MOCK_FLAG $DAYS_FLAG 2>&1
+          DAYS="${{ github.event_name == 'schedule' && '7' || inputs.days || '7' }}"
+          MOCK="${{ github.event_name == 'schedule' && '--no-mock' || (inputs.mock == 'false' && '--no-mock' || '--mock') }}"
+          python scripts/main.py $MOCK --days $DAYS 2>&1
 
-      - name: Commit & push changes
+      # ── Step 2: Wiki 변환 ──
+      - name: Step 2 — Wiki 변환 (Raw → Analysis + Index)
+        id: wiki
+        env:
+          NVIDIA_API_KEY: ${{ secrets.NVIDIA_API_KEY }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+        run: |
+          cd job_raw
+          python scripts/wiki_generator.py 2>&1
+
+      # ── Step 3: Commit & Push ──
+      - name: Step 3 — 변경사항 커밋 및 푸시
         run: |
           git config user.name "job-wiki-bot"
           git config user.email "bot@job-wiki.gh"
