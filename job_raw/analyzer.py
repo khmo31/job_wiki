@@ -251,6 +251,57 @@ def _call_llm_for_dna(text: str, explicit_skills: List[str], domain_hint: Option
         except Exception:
             return None, 0, 0.0
 
+    elif provider == "groq":
+        api_key = os.getenv("GROQ_API_KEY")
+        if not api_key:
+            return None, 0, 0.0
+        base_url = os.getenv("GROQ_BASE_URL", "https://api.groq.com/openai/v1").rstrip("/")
+        model = os.getenv("LLM_EXTRACT_MODEL", "llama-3.1-8b-instant")
+        payload = {
+            "model": model,
+            "messages": [
+                {"role": "system", "content": system},
+                {"role": "user", "content": user_msg},
+            ],
+            "max_tokens": 256,
+            "temperature": 0.0,
+        }
+        max_attempts = int(getattr(config, "RETRY_ATTEMPTS", 3) or 3)
+        backoff_factor = float(getattr(config, "RETRY_BACKOFF_FACTOR", 1.5) or 1.5)
+        last_exc = None
+        for attempt in range(1, max_attempts + 1):
+            try:
+                resp = requests.post(
+                    f"{base_url}/chat/completions",
+                    headers={"Authorization": f"Bearer {api_key}", "Content-Type": "application/json"},
+                    json=payload,
+                    timeout=30,
+                )
+                resp.raise_for_status()
+                j = resp.json()
+                content = j.get("choices", [{}])[0].get("message", {}).get("content", "")
+                try:
+                    parsed = json.loads(content)
+                except Exception:
+                    m = re.search(r"\{[\s\S]*\}", content)
+                    if m:
+                        try:
+                            parsed = json.loads(m.group(0))
+                        except Exception:
+                            parsed = None
+                approx_tokens = int((len(user_msg) + len(content)) / 4)
+                cost = (approx_tokens / 1000.0) * float(getattr(config, "ANALYSIS_COST_PER_1K_TOKENS", 0.003))
+                return parsed, approx_tokens, cost
+            except requests.RequestException as e:
+                last_exc = e
+                if attempt >= max_attempts:
+                    break
+                sleep_for = backoff_factor * (2 ** (attempt - 1)) + random.uniform(0, 1)
+                time.sleep(sleep_for)
+            except Exception:
+                break
+        return None, 0, 0.0
+
     # unsupported provider
     return None, 0, 0.0
 
@@ -439,6 +490,8 @@ def analyze_objective_dna(job: dict, trimmed_text: str, alio_id: Optional[str] =
             if provider == "nvidia" and (os.getenv("NVIDIA_API_KEY") or getattr(config, "NVIDIA_API_KEY", None)):
                 call_llm = True
             elif provider == "openai" and (os.getenv("OPENAI_API_KEY") or os.getenv("OPENAI_API_TOKEN")):
+                call_llm = True
+            elif provider == "groq" and os.getenv("GROQ_API_KEY"):
                 call_llm = True
 
     # Apply NCS filter mode (configurable). Default is 'off' (no short-circuit).
