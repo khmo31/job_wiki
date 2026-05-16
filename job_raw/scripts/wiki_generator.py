@@ -146,17 +146,23 @@ def _parse_frontmatter(text: str) -> dict[str, Any]:
     return result
 
 
-def _format_wiki_filename(alio_id: str, company: str, title: str) -> str:
-    """Generate wiki analysis filename matching existing convention."""
-    # Extract date from ALIO ID (first 8 chars after prefix)
+def _format_wiki_filename(alio_id: str, company: str, title: str, date_str: str | None = None) -> str:
+    """Generate wiki analysis filename matching existing convention.
+
+    Uses pbancBgngYmd (date_str) if available, otherwise falls back to ALIO ID prefix.
+    """
+    # Extract date from pbancBgngYmd or ALIO ID
     date_part = "unknown"
-    if alio_id.startswith("ALIO-"):
+    if date_str:
+        date_part = date_str.strip().replace("-", "")[:8]
+    elif alio_id.startswith("ALIO-"):
         parts = alio_id.split("-")
         if len(parts) >= 2:
             date_part = parts[1][:8]
 
     clean_company = re.sub(r"[^가-힣A-Za-z0-9]", "", company)[:20] if company else "unknown"
-    return f"{date_part}_{clean_company}_{alio_id.replace('-', '_')}.md"
+    clean_alio = alio_id.replace("-", "_")
+    return f"{date_part}_{clean_company}_{clean_alio}.md"
 
 
 def _render_wiki_analysis(
@@ -282,8 +288,8 @@ def generate_wiki_entry(alio_id: str, raw_index: dict) -> bool:
             "skills_found": front.get("skills", "").split(", "),
         }
 
-    company = raw_data.get("company", "") or analysis.get("company", "")
-    title = raw_data.get("title", "") or analysis.get("title", "")
+    company = raw_data.get("company") or raw_data.get("instNm") or analysis.get("company") or ""
+    title = raw_data.get("title") or raw_data.get("recrutPbancTtl") or analysis.get("title") or ""
     captured_at = raw_data.get("captured_at", "") or analysis.get("captured_at", datetime.now(timezone.utc).strftime("%Y-%m-%d"))
 
     # Determine domain
@@ -316,7 +322,8 @@ def generate_wiki_entry(alio_id: str, raw_index: dict) -> bool:
 
     # Wiki index entry
     wiki_index = _load_wiki_index()
-    wiki_filename = _format_wiki_filename(alio_id, company, title)
+    date_str = raw_data.get("pbancBgngYmd") or ""
+    wiki_filename = _format_wiki_filename(alio_id, company, title, date_str=date_str)
     existing = wiki_index.get(wiki_filename)
 
     if existing:
