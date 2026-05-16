@@ -48,14 +48,15 @@ def _normalize_item(item: Dict) -> Dict:
                 return item[k]
         return ""
 
-    title = pick("title", "post_title", "jobTitle", "recruitmentPostTitle", "recrutSeNm", "recrutSj", "recruitTitle")
-    company = pick("company", "insttNm", "corpNm", "agency", "insttNmKor", "orgNm")
-    posted = pick("posted_date", "postDate", "regDate", "recruitDate", "startDate", "postDt")
-    description = pick("description", "jobCont", "recruitmentContent", "jobContents", "mainDuty", "recruitCont", "cont")
-    requirements = pick("requirements", "qualification", "req", "privilege", "preferentialTreatment", "requirements")
-    ncs_nm = pick("ncs_nm", "ncsNm", "ncs_name", "ncs")
+    title = pick("title", "post_title", "jobTitle", "recruitmentPostTitle", "recrutPbancTtl", "recrutSeNm", "recrutSj", "recruitTitle")
+    company = pick("company", "insttNm", "corpNm", "agency", "insttNmKor", "orgNm", "instNm")
+    posted = pick("posted_date", "postDate", "regDate", "recruitDate", "startDate", "postDt", "pbancBgngYmd")
+    # ALIO API: aplyQlfcCn=응시자격, prefCondCn=우대사항, scrnprcdrMthdExpln=전형방법
+    description = pick("description", "jobCont", "recruitmentContent", "jobContents", "mainDuty", "recruitCont", "cont", "aplyQlfcCn", "scrnprcdrMthdExpln")
+    requirements = pick("requirements", "qualification", "req", "privilege", "preferentialTreatment", "requirements", "prefCondCn", "prefCn")
+    ncs_nm = pick("ncs_nm", "ncsNm", "ncs_name", "ncs", "ncsCdNmLst", "ncsCdLst")
     # use provided id or attempt common fields (v1 uses 'idx')
-    alio_id = pick("id", "idx", "recruitmentNo", "postNo", "jobId", "num", "noticeNo")
+    alio_id = pick("id", "idx", "recruitmentNo", "postNo", "jobId", "num", "noticeNo", "recrutPblntSn")
 
     return {
         "id": str(alio_id) if alio_id is not None else "",
