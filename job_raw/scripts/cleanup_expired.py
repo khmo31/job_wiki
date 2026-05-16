@@ -203,7 +203,7 @@ def cleanup_single(alio_id: str, index_entry: dict[str, Any]) -> dict[str, Any]:
         "alio_id": alio_id,
         "removed_raw": False,
         "removed_archive": False,
-        "removed_from_index": False,
+        "marked_expired_in_index": False,
         "removed_wiki": False,
         "removed_from_wiki_index": False,
         "removed_from_company": False,
@@ -233,13 +233,17 @@ def cleanup_single(alio_id: str, index_entry: dict[str, Any]) -> dict[str, Any]:
     except Exception as e:
         result["errors"].append(f"archive: {e}")
 
-    # 3. Remove from index.json
+    # 3. Mark as expired in index (keep entry to prevent re-import)
     try:
         index = _load_json(RAW_INDEX_PATH)
         if index and isinstance(index, dict) and alio_id in index:
-            del index[alio_id]
+            entry = index[alio_id]
+            if isinstance(entry, dict):
+                entry["expired"] = True
+            else:
+                index[alio_id] = {"filename": entry if isinstance(entry, str) else "", "expired": True}
             _save_json(RAW_INDEX_PATH, index)
-            result["removed_from_index"] = True
+            result["marked_expired_in_index"] = True
     except Exception as e:
         result["errors"].append(f"index: {e}")
 
