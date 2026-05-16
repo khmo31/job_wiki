@@ -63,9 +63,14 @@ def _regex_extract_skills(text: str) -> List[str]:
     return found
 
 
-def _heuristic_analysis(text: str, explicit_skills: List[str]) -> Dict:
-    """Fallback deterministic analysis when LLM is unavailable or unnecessary."""
+def _heuristic_analysis(text: str, explicit_skills: List[str], ncs_text: str = "") -> Dict:
+    """Fallback deterministic analysis when LLM is unavailable or unnecessary.
+
+    Uses ncsCdNmLst (NCS category from ALIO API) as the primary source for
+    domain_context. Falls back to regex heuristics when NCS is unavailable.
+    """
     text = preprocess_text(text)
+
     # job_nature guess
     if re.search(r"연구|연구원|R&D|개발", text, flags=re.I):
         job_nature = "연구/개발"
@@ -94,9 +99,14 @@ def _heuristic_analysis(text: str, explicit_skills: List[str]) -> Dict:
     if re.search(r"PLC|플라스틱로직컨트롤러|PLC", text, flags=re.I) and "PLC" not in explicit_skills:
         latent.append("PLC")
 
-    # core logic and domain context simple extraction
+    # core logic
     core_logic = "; ".join(re.findall(r"(모니터링|스케줄링|스케줄|제어|최적화|시뮬레이션|검증|테스트)", text, flags=re.I)[:3]) or "주요 업무 로직이 공고에 명시되어있음"
-    domain_context = "제조/공장/임베디드 관련" if re.search(r"제조|생산|공장|임베디드|로봇", text, flags=re.I) else "일반 소프트웨어/IT"
+
+    # domain_context: prioritize ALIO NCS category over regex heuristic
+    if ncs_text:
+        domain_context = ncs_text
+    else:
+        domain_context = "제조/공장/임베디드 관련" if re.search(r"제조|생산|공장|임베디드|로봇", text, flags=re.I) else "일반 소프트웨어/IT"
 
     return {
         "core_logic": core_logic,
@@ -548,11 +558,11 @@ def analyze_objective_dna(job: dict, trimmed_text: str, alio_id: Optional[str] =
             analysis["cost"] = cost
         else:
             # fallback heuristic
-            h = _heuristic_analysis(trimmed, explicit)
+            h = _heuristic_analysis(trimmed, explicit, ncs_text=ncs_text)
             analysis.update(h)
             analysis["method"] = "regex+heuristic"
     else:
-        h = _heuristic_analysis(trimmed, explicit)
+        h = _heuristic_analysis(trimmed, explicit, ncs_text=ncs_text)
         analysis.update(h)
         analysis["method"] = "regex+heuristic"
 
