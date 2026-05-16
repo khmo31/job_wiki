@@ -33,30 +33,17 @@
   },
   "analysis": {
     "explicit_skills": [],
-    "skills_found": [
-      "장애인 지원",
-      "휴직 대체",
-      "조직 관리",
-      "행정 지원",
-      "장애 인식"
-    ],
-    "core_logic": "행정 / 사무 운영에 대한 관리적 행위",
-    "domain_context": "사업관리, 경영, 회계, 사무",
-    "latent_skills": [
-      "조직 관리",
-      "행정 지원",
-      "장애 인식"
-    ],
-    "job_nature": "운영/관리",
+    "skills_found": [],
+    "core_logic": "주요 업무 로직이 공고에 명시되어있음",
+    "domain_context": "사업관리,경영.회계.사무",
+    "latent_skills": [],
+    "job_nature": "실무/혼합",
     "complexity": "low",
-    "skills_additional": [
-      "장애인 지원",
-      "휴직 대체"
-    ],
-    "method": "regex+llm",
-    "model": "gpt-4o-mini",
-    "tokens": 201,
-    "cost": 0.000603,
-    "analyzed_at": "2026-05-16T07:08:30.544372Z"
+    "skills_additional": [],
+    "method": "regex+heuristic",
+    "model": null,
+    "tokens": 0,
+    "cost": 0.0,
+    "analyzed_at": "2026-05-16T08:06:43.411938Z"
   }
 }

@@ -32,35 +32,22 @@
     "ncsCdNmLst": "보건.의료"
   },
   "analysis": {
-    "explicit_skills": [],
+    "explicit_skills": [
+      "교수/강의"
+    ],
     "skills_found": [
-      "의료 교육",
-      "진료 관리",
-      "전문의 자격 관리",
-      "리더십",
-      "커뮤니케이션",
-      "교육",
-      "임상"
+      "교수/강의"
     ],
-    "core_logic": "의료 / 교육 및 진료에 대한 교수적, 지도적 행위",
+    "core_logic": "주요 업무 로직이 공고에 명시되어있음",
     "domain_context": "보건.의료",
-    "latent_skills": [
-      "리더십",
-      "커뮤니케이션",
-      "교육",
-      "임상"
-    ],
-    "job_nature": "운영/관리",
-    "complexity": "high",
-    "skills_additional": [
-      "의료 교육",
-      "진료 관리",
-      "전문의 자격 관리"
-    ],
-    "method": "regex+llm",
-    "model": "gpt-4o-mini",
-    "tokens": 172,
-    "cost": 0.000516,
-    "analyzed_at": "2026-05-16T07:07:53.279947Z"
+    "latent_skills": [],
+    "job_nature": "연구/개발",
+    "complexity": "low",
+    "skills_additional": [],
+    "method": "regex+heuristic",
+    "model": null,
+    "tokens": 0,
+    "cost": 0.0,
+    "analyzed_at": "2026-05-16T08:06:12.537153Z"
   }
 }

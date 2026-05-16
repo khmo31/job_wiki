@@ -33,23 +33,17 @@
   },
   "analysis": {
     "explicit_skills": [],
-    "skills_found": [
-      "규정 준수",
-      "자격 검증"
-    ],
-    "core_logic": "지원 자격 검증",
-    "domain_context": "사업관리, 교육",
-    "latent_skills": [
-      "규정 준수",
-      "자격 검증"
-    ],
+    "skills_found": [],
+    "core_logic": "주요 업무 로직이 공고에 명시되어있음",
+    "domain_context": "사업관리,교육.자연.사회과학",
+    "latent_skills": [],
     "job_nature": "운영/관리",
     "complexity": "low",
     "skills_additional": [],
-    "method": "regex+llm",
-    "model": "gpt-4o-mini",
-    "tokens": 200,
-    "cost": 0.0006000000000000001,
-    "analyzed_at": "2026-05-16T07:08:14.259450Z"
+    "method": "regex+heuristic",
+    "model": null,
+    "tokens": 0,
+    "cost": 0.0,
+    "analyzed_at": "2026-05-16T08:06:30.455060Z"
   }
 }

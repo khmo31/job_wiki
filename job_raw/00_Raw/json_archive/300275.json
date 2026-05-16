@@ -33,30 +33,17 @@
   },
   "analysis": {
     "explicit_skills": [],
-    "skills_found": [
-      "의사면허 관리",
-      "수련 프로그램 관리",
-      "의사 소통",
-      "행정 관리",
-      "지원 프로세스"
-    ],
-    "core_logic": "의사 인력 / 수련 프로그램에 대한 지원 및 관리 행위",
+    "skills_found": [],
+    "core_logic": "주요 업무 로직이 공고에 명시되어있음",
     "domain_context": "보건.의료",
-    "latent_skills": [
-      "의사 소통",
-      "행정 관리",
-      "지원 프로세스"
-    ],
-    "job_nature": "운영/관리",
-    "complexity": "medium",
-    "skills_additional": [
-      "의사면허 관리",
-      "수련 프로그램 관리"
-    ],
-    "method": "regex+llm",
-    "model": "gpt-4o-mini",
-    "tokens": 168,
-    "cost": 0.000504,
-    "analyzed_at": "2026-05-16T07:09:24.854156Z"
+    "latent_skills": [],
+    "job_nature": "실무/혼합",
+    "complexity": "low",
+    "skills_additional": [],
+    "method": "regex+heuristic",
+    "model": null,
+    "tokens": 0,
+    "cost": 0.0,
+    "analyzed_at": "2026-05-16T08:07:41.969396Z"
   }
 }

@@ -34,22 +34,28 @@
   "analysis": {
     "explicit_skills": [
       "센서",
-      "시뮬레이션"
+      "시뮬레이션",
+      "의료기기 운영",
+      "물품 배송",
+      "기계 정비"
     ],
     "skills_found": [
       "센서",
-      "시뮬레이션"
+      "시뮬레이션",
+      "의료기기 운영",
+      "물품 배송",
+      "기계 정비"
     ],
     "core_logic": "시뮬레이션; 검증",
     "domain_context": "연구",
     "latent_skills": [],
     "job_nature": "연구/개발",
-    "complexity": "low",
+    "complexity": "medium",
     "skills_additional": [],
     "method": "regex+heuristic",
     "model": null,
     "tokens": 0,
     "cost": 0.0,
-    "analyzed_at": "2026-05-16T07:11:48.633902Z"
+    "analyzed_at": "2026-05-16T08:08:31.737003Z"
   }
 }

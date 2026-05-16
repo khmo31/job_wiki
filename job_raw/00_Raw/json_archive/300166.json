@@ -33,17 +33,23 @@
   },
   "analysis": {
     "explicit_skills": [],
-    "skills_found": [],
-    "core_logic": "주요 업무 로직이 공고에 명시되어있음",
+    "skills_found": [
+      "환자 관리",
+      "의료 서비스 제공"
+    ],
+    "core_logic": "임상 / 환자에 대한 의료적 행위",
     "domain_context": "보건.의료",
-    "latent_skills": [],
-    "job_nature": "실무/혼합",
-    "complexity": "low",
+    "latent_skills": [
+      "환자 관리",
+      "의료 서비스 제공"
+    ],
+    "job_nature": "운영/관리",
+    "complexity": "medium",
     "skills_additional": [],
-    "method": "regex+heuristic",
-    "model": null,
-    "tokens": 0,
-    "cost": 0.0,
-    "analyzed_at": "2026-05-16T07:10:26.635409Z"
+    "method": "regex+llm",
+    "model": "gpt-4o-mini",
+    "tokens": 151,
+    "cost": 0.000453,
+    "analyzed_at": "2026-05-16T08:08:12.868509Z"
   }
 }

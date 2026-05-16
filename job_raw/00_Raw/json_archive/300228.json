@@ -32,33 +32,24 @@
     "ncsCdNmLst": "사업관리,경영.회계.사무,정보통신"
   },
   "analysis": {
-    "explicit_skills": [],
+    "explicit_skills": [
+      "회계",
+      "정보보안"
+    ],
     "skills_found": [
-      "정보보호",
       "회계",
-      "세무",
-      "문제해결",
-      "분석",
-      "운영"
+      "정보보안"
     ],
-    "core_logic": "조직의 정보보호 강화 / 정보보호 체계 관리에 대한 운영적 행위",
-    "domain_context": "사업관리, 경영, 회계, 사무, 정보통신",
-    "latent_skills": [
-      "문제해결",
-      "분석",
-      "운영"
-    ],
-    "job_nature": "운영/관리",
-    "complexity": "medium",
-    "skills_additional": [
-      "정보보호",
-      "회계",
-      "세무"
-    ],
-    "method": "regex+llm",
-    "model": "gpt-4o-mini",
-    "tokens": 171,
-    "cost": 0.000513,
-    "analyzed_at": "2026-05-16T07:09:52.141969Z"
+    "core_logic": "주요 업무 로직이 공고에 명시되어있음",
+    "domain_context": "사업관리,경영.회계.사무,정보통신",
+    "latent_skills": [],
+    "job_nature": "실무/혼합",
+    "complexity": "low",
+    "skills_additional": [],
+    "method": "regex+heuristic",
+    "model": null,
+    "tokens": 0,
+    "cost": 0.0,
+    "analyzed_at": "2026-05-16T08:07:49.213781Z"
   }
 }

@@ -32,31 +32,26 @@
     "ncsCdNmLst": "사업관리,경영.회계.사무,법률.경찰.소방.교도.국방,경비.청소,건설,기계,전기.전자,정보통신"
   },
   "analysis": {
-    "explicit_skills": [],
+    "explicit_skills": [
+      "민원 응대",
+      "취업 지원",
+      "물품 배송"
+    ],
     "skills_found": [
-      "채용관리",
-      "근무관리",
-      "조직관리",
-      "인사관리",
-      "행정지원"
+      "민원 응대",
+      "취업 지원",
+      "물품 배송"
     ],
-    "core_logic": "공단 운영 / 인력관리에 대한 지원적 행위",
-    "domain_context": "사업관리, 경영",
-    "latent_skills": [
-      "조직관리",
-      "인사관리",
-      "행정지원"
-    ],
-    "job_nature": "운영/관리",
+    "core_logic": "주요 업무 로직이 공고에 명시되어있음",
+    "domain_context": "사업관리,경영.회계.사무,법률.경찰.소방.교도.국방,경비.청소,건설,기계,전기.전자,정보통신",
+    "latent_skills": [],
+    "job_nature": "실무/혼합",
     "complexity": "medium",
-    "skills_additional": [
-      "채용관리",
-      "근무관리"
-    ],
-    "method": "regex+llm",
-    "model": "gpt-4o-mini",
-    "tokens": 455,
-    "cost": 0.0013650000000000001,
-    "analyzed_at": "2026-05-16T07:09:02.378114Z"
+    "skills_additional": [],
+    "method": "regex+heuristic",
+    "model": null,
+    "tokens": 0,
+    "cost": 0.0,
+    "analyzed_at": "2026-05-16T08:07:18.451125Z"
   }
 }

@@ -33,25 +33,17 @@
   },
   "analysis": {
     "explicit_skills": [],
-    "skills_found": [
-      "인사관리",
-      "행정",
-      "조직관리"
-    ],
-    "core_logic": "건설 / 인력관리에 대한 관리적 행위",
+    "skills_found": [],
+    "core_logic": "주요 업무 로직이 공고에 명시되어있음",
     "domain_context": "건설",
-    "latent_skills": [
-      "인사관리",
-      "행정",
-      "조직관리"
-    ],
-    "job_nature": "운영/관리",
+    "latent_skills": [],
+    "job_nature": "실무/혼합",
     "complexity": "low",
     "skills_additional": [],
-    "method": "regex+llm",
-    "model": "gpt-4o-mini",
-    "tokens": 244,
-    "cost": 0.000732,
-    "analyzed_at": "2026-05-16T07:08:32.814312Z"
+    "method": "regex+heuristic",
+    "model": null,
+    "tokens": 0,
+    "cost": 0.0,
+    "analyzed_at": "2026-05-16T08:06:49.021162Z"
   }
 }

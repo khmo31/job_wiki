@@ -33,36 +33,17 @@
   },
   "analysis": {
     "explicit_skills": [],
-    "skills_found": [
-      "의사 면허증",
-      "박사학위",
-      "신약개발 경력",
-      "방사성의약품 관련 전문 지식",
-      "리더십",
-      "전략적 사고",
-      "팀 관리",
-      "전문 지식"
-    ],
-    "core_logic": "신약개발 / 방사성의약품에 대한 관리적 행위",
-    "domain_context": "사업관리, 보건, 의료, 연구",
-    "latent_skills": [
-      "리더십",
-      "전략적 사고",
-      "팀 관리",
-      "전문 지식"
-    ],
-    "job_nature": "운영/관리",
-    "complexity": "high",
-    "skills_additional": [
-      "의사 면허증",
-      "박사학위",
-      "신약개발 경력",
-      "방사성의약품 관련 전문 지식"
-    ],
-    "method": "regex+llm",
-    "model": "gpt-4o-mini",
-    "tokens": 357,
-    "cost": 0.001071,
-    "analyzed_at": "2026-05-16T07:09:22.049713Z"
+    "skills_found": [],
+    "core_logic": "주요 업무 로직이 공고에 명시되어있음",
+    "domain_context": "사업관리,보건.의료,연구",
+    "latent_skills": [],
+    "job_nature": "연구/개발",
+    "complexity": "low",
+    "skills_additional": [],
+    "method": "regex+heuristic",
+    "model": null,
+    "tokens": 0,
+    "cost": 0.0,
+    "analyzed_at": "2026-05-16T08:07:36.676743Z"
   }
 }

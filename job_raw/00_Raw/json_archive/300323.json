@@ -33,34 +33,17 @@
   },
   "analysis": {
     "explicit_skills": [],
-    "skills_found": [
-      "영어",
-      "한국어",
-      "인사규정",
-      "국제업무 능력",
-      "인사관리",
-      "국제업무",
-      "의사소통"
-    ],
-    "core_logic": "국제 스포츠 교류 / 인력 선발에 대한 관리적 행위",
-    "domain_context": "사업관리, 경영",
-    "latent_skills": [
-      "인사관리",
-      "국제업무",
-      "의사소통"
-    ],
-    "job_nature": "운영/관리",
-    "complexity": "medium",
-    "skills_additional": [
-      "영어",
-      "한국어",
-      "인사규정",
-      "국제업무 능력"
-    ],
-    "method": "regex+llm",
-    "model": "gpt-4o-mini",
-    "tokens": 211,
-    "cost": 0.000633,
-    "analyzed_at": "2026-05-16T07:08:42.665373Z"
+    "skills_found": [],
+    "core_logic": "주요 업무 로직이 공고에 명시되어있음",
+    "domain_context": "사업관리,경영.회계.사무,이용.숙박.여행.오락.스포츠",
+    "latent_skills": [],
+    "job_nature": "실무/혼합",
+    "complexity": "low",
+    "skills_additional": [],
+    "method": "regex+heuristic",
+    "model": null,
+    "tokens": 0,
+    "cost": 0.0,
+    "analyzed_at": "2026-05-16T08:06:56.532747Z"
   }
 }

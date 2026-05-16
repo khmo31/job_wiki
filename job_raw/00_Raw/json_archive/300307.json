@@ -33,30 +33,17 @@
   },
   "analysis": {
     "explicit_skills": [],
-    "skills_found": [
-      "기본적인 행정 지식",
-      "조직 내 협업",
-      "조직 적응",
-      "행정 관리",
-      "커뮤니케이션"
-    ],
-    "core_logic": "행정 지원에 대한 운영적 행위",
-    "domain_context": "사업관리, 경영, 회계, 사무",
-    "latent_skills": [
-      "조직 적응",
-      "행정 관리",
-      "커뮤니케이션"
-    ],
-    "job_nature": "운영/관리",
+    "skills_found": [],
+    "core_logic": "주요 업무 로직이 공고에 명시되어있음",
+    "domain_context": "사업관리,경영.회계.사무",
+    "latent_skills": [],
+    "job_nature": "연구/개발",
     "complexity": "low",
-    "skills_additional": [
-      "기본적인 행정 지식",
-      "조직 내 협업"
-    ],
-    "method": "regex+llm",
-    "model": "gpt-4o-mini",
-    "tokens": 164,
-    "cost": 0.000492,
-    "analyzed_at": "2026-05-16T07:09:00.123366Z"
+    "skills_additional": [],
+    "method": "regex+heuristic",
+    "model": null,
+    "tokens": 0,
+    "cost": 0.0,
+    "analyzed_at": "2026-05-16T08:07:12.508168Z"
   }
 }

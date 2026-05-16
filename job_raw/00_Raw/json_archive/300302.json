@@ -32,37 +32,22 @@
     "ncsCdNmLst": "사업관리,운전.운송,건설,정보통신"
   },
   "analysis": {
-    "explicit_skills": [],
+    "explicit_skills": [
+      "데이터 분석"
+    ],
     "skills_found": [
-      "산업공학",
-      "컴퓨터공학",
-      "통계",
-      "토목",
-      "데이터 분석",
-      "연구",
-      "개발",
-      "관리"
+      "데이터 분석"
     ],
-    "core_logic": "R&D 데이터 분석 및 토목 업무 수행",
-    "domain_context": "사업관리, 운전, 운송, 건설, 정보통신",
-    "latent_skills": [
-      "데이터 분석",
-      "연구",
-      "개발",
-      "관리"
-    ],
+    "core_logic": "주요 업무 로직이 공고에 명시되어있음",
+    "domain_context": "사업관리,운전.운송,건설,정보통신",
+    "latent_skills": [],
     "job_nature": "연구/개발",
-    "complexity": "medium",
-    "skills_additional": [
-      "산업공학",
-      "컴퓨터공학",
-      "통계",
-      "토목"
-    ],
-    "method": "regex+llm",
-    "model": "gpt-4o-mini",
-    "tokens": 334,
-    "cost": 0.001002,
-    "analyzed_at": "2026-05-16T07:09:05.159279Z"
+    "complexity": "low",
+    "skills_additional": [],
+    "method": "regex+heuristic",
+    "model": null,
+    "tokens": 0,
+    "cost": 0.0,
+    "analyzed_at": "2026-05-16T08:07:24.378013Z"
   }
 }

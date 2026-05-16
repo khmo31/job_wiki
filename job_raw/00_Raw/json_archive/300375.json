@@ -35,23 +35,23 @@
     "explicit_skills": [],
     "skills_found": [
       "분석력",
-      "판단력",
-      "검증 능력"
+      "평가 능력",
+      "규정 준수"
     ],
-    "core_logic": "공무원 임용에 대한 심사 및 검증 행위",
-    "domain_context": "사업관리, 경영",
+    "core_logic": "공무원 임용에 대한 심사 및 평가",
+    "domain_context": "사업관리, 경영, 회계, 사무",
     "latent_skills": [
       "분석력",
-      "판단력",
-      "검증 능력"
+      "평가 능력",
+      "규정 준수"
     ],
     "job_nature": "운영/관리",
     "complexity": "low",
     "skills_additional": [],
     "method": "regex+llm",
     "model": "gpt-4o-mini",
-    "tokens": 151,
-    "cost": 0.000453,
-    "analyzed_at": "2026-05-16T07:08:17.113270Z"
+    "tokens": 153,
+    "cost": 0.000459,
+    "analyzed_at": "2026-05-16T08:06:37.006753Z"
   }
 }

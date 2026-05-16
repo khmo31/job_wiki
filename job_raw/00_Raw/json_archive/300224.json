@@ -32,8 +32,12 @@
     "ncsCdNmLst": "경영.회계.사무"
   },
   "analysis": {
-    "explicit_skills": [],
-    "skills_found": [],
+    "explicit_skills": [
+      "취업 지원"
+    ],
+    "skills_found": [
+      "취업 지원"
+    ],
     "core_logic": "주요 업무 로직이 공고에 명시되어있음",
     "domain_context": "경영.회계.사무",
     "latent_skills": [],
@@ -44,6 +48,6 @@
     "model": null,
     "tokens": 0,
     "cost": 0.0,
-    "analyzed_at": "2026-05-16T07:09:54.472693Z"
+    "analyzed_at": "2026-05-16T08:07:55.186595Z"
   }
 }
