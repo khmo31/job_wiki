@@ -1,3 +1,4 @@
+"""로컬 매칭 파이프라인 - 사용자 프로필 기반 추천 기관 점수화"""
 from __future__ import annotations
 
 import json
@@ -20,29 +21,6 @@ def _log(message: str) -> None:
         print(f"[career_pipeline] {message}", file=sys.stderr)
     except Exception:
         pass
-
-
-def _parse_json_object(text: str) -> dict[str, Any] | None:
-    candidate = text.strip()
-    if not candidate:
-        return None
-
-    try:
-        parsed = json.loads(candidate)
-        return parsed if isinstance(parsed, dict) else None
-    except Exception:
-        pass
-
-    match = re.search(r"\{[\s\S]*\}", candidate)
-    if not match:
-        return None
-
-    try:
-        parsed = json.loads(match.group(0))
-    except Exception:
-        return None
-
-    return parsed if isinstance(parsed, dict) else None
 
 
 def _extract_candidate_keywords(user_profile: str) -> list[str]:
@@ -310,140 +288,6 @@ def build_fallback_report(user_profile: str) -> dict[str, Any]:
     return {"recommended_institutions": recommendations}
 
 
-def _normalize_result_payload(payload: dict[str, Any]) -> dict[str, Any] | None:
-    recommendations = payload.get("recommended_institutions")
-    if isinstance(recommendations, list):
-        normalized: list[dict[str, Any]] = []
-        for item in recommendations:
-            if not isinstance(item, dict):
-                continue
-            institution = str(item.get("institution") or item.get("company") or "").strip()
-            if not institution:
-                continue
-
-            file_name = str(item.get("file") or item.get("file_name") or "").strip()
-            try:
-                score = int(item.get("score") or 0)
-            except Exception:
-                score = 0
-
-            matched_keywords = item.get("matched_keywords") or item.get("keywords") or []
-            if isinstance(matched_keywords, str):
-                matched_keywords = [keyword.strip() for keyword in re.split(r"[,\n;|]+", matched_keywords) if keyword.strip()]
-            elif not isinstance(matched_keywords, list):
-                matched_keywords = []
-
-            if score <= 0:
-                continue
-
-            normalized.append(
-                {
-                    "institution": institution,
-                    "file": file_name,
-                    "score": score,
-                    "matched_keywords": [str(keyword).strip() for keyword in matched_keywords if str(keyword).strip()],
-                }
-            )
-
-        if normalized:
-            return {"recommended_institutions": _attach_related_files(normalized)}
-
-    recommendations = payload.get("recommendations")
-    if isinstance(recommendations, list):
-        normalized = []
-        for item in recommendations:
-            if not isinstance(item, dict):
-                continue
-            institution = str(item.get("institution") or item.get("company") or "").strip()
-            if not institution:
-                continue
-
-            file_name = str(item.get("file") or item.get("file_name") or "").strip()
-            try:
-                score = int(item.get("score") or 0)
-            except Exception:
-                score = 0
-
-            matched_keywords = item.get("matched_keywords") or item.get("keywords") or []
-            if isinstance(matched_keywords, str):
-                matched_keywords = [keyword.strip() for keyword in re.split(r"[,\n;|]+", matched_keywords) if keyword.strip()]
-            elif not isinstance(matched_keywords, list):
-                matched_keywords = []
-
-            if score <= 0:
-                continue
-
-            normalized.append(
-                {
-                    "institution": institution,
-                    "file": file_name,
-                    "score": score,
-                    "matched_keywords": [str(keyword).strip() for keyword in matched_keywords if str(keyword).strip()],
-                }
-            )
-
-        if normalized:
-            return {"recommended_institutions": _attach_related_files(normalized)}
-
-    return None
-
-
-def _merge_recommendations(primary: list[dict[str, Any]], secondary: list[dict[str, Any]]) -> list[dict[str, Any]]:
-    merged: list[dict[str, Any]] = []
-    seen: set[str] = set()
-
-    for item in primary + secondary:
-        if not isinstance(item, dict):
-            continue
-        institution = str(item.get("institution") or "").strip()
-        if not institution or institution in seen:
-            continue
-        seen.add(institution)
-        merged.append(item)
-        if len(merged) >= 5:
-            break
-
-    return merged
-
-
-def _run_crew(user_profile: str) -> Any:
-    try:
-        from .crew import CareerAgentCrew, _LLM_SEMAPHORE
-    except Exception:
-        from career_agent.crew import CareerAgentCrew, _LLM_SEMAPHORE
-
-    _log("crew kickoff starting")
-    with _LLM_SEMAPHORE:
-        result = CareerAgentCrew().crew().kickoff(inputs={"user_profile": user_profile})
-    _log(f"crew kickoff finished with {type(result).__name__}")
-    return result
-
-
 def generate_report(user_profile: str) -> dict[str, Any]:
-    try:
-        crew_result = _run_crew(user_profile)
-    except Exception as exc:
-        _log(f"crew kickoff failed: {exc!r}")
-        return build_fallback_report(user_profile)
-
-    parsed = None
-    if isinstance(crew_result, dict):
-        parsed = crew_result
-    else:
-        parsed = _parse_json_object(str(crew_result))
-
-    if parsed:
-        normalized = _normalize_result_payload(parsed)
-        if normalized and normalized.get("recommended_institutions"):
-            recommendations = normalized["recommended_institutions"]
-            if len(recommendations) >= 5:
-                return normalized
-
-            fallback_report = build_fallback_report(user_profile)
-            fallback_recommendations = fallback_report.get("recommended_institutions") or []
-            merged = _merge_recommendations(recommendations, fallback_recommendations)
-            if merged:
-                return {"recommended_institutions": merged}
-
-    _log("crew result incomplete, using fallback report")
+    """사용자 프로필 기반 추천 기관 보고서 생성 (로컬 매칭 전용)"""
     return build_fallback_report(user_profile)

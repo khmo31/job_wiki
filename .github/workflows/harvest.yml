@@ -1,0 +1,54 @@
+name: 주간 채용공고 수집
+
+on:
+  schedule:
+    # 매주 월요일 09:00 KST (일요일 24:00 UTC)
+    - cron: '0 0 * * 0'
+  workflow_dispatch:
+    inputs:
+      mock:
+        description: '모의 데이터 사용'
+        type: boolean
+        default: true
+      days:
+        description: '수집 기간(일)'
+        type: number
+        default: 7
+
+jobs:
+  harvest:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Run harvester
+        env:
+          ALIO_API_KEY: ${{ secrets.ALIO_API_KEY }}
+          NVIDIA_API_KEY: ${{ secrets.NVIDIA_API_KEY }}
+          FORCE_LLM_OVERRIDE: ${{ secrets.NVIDIA_API_KEY && '1' || '0' }}
+        run: |
+          cd job_raw
+          MOCK_FLAG="${{ github.event_name == 'schedule' && '--no-mock' || inputs.mock == 'false' && '--no-mock' || '--mock' }}"
+          DAYS_FLAG="${{ github.event_name == 'schedule' && '--days 7' || format('--days {0}', inputs.days || '7') }}"
+          python scripts/main.py $MOCK_FLAG $DAYS_FLAG 2>&1
+
+      - name: Commit & push changes
+        run: |
+          git config user.name "job-wiki-bot"
+          git config user.email "bot@job-wiki.gh"
+          git add -A
+          git diff --staged --quiet || git commit -m "auto: 채용공고 수집 ($(date +'%Y-%m-%d'))"
+          git push
