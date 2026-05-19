@@ -63,6 +63,7 @@ jobs:
         run: |
           cd job_raw
           DAYS="${{ github.event_name == 'schedule' && '7' || inputs.days || '7' }}"
+          DAYS="${DAYS%.*}"  # float → int (GitHub number 입력 버그 대응)
           MOCK="${{ (github.event_name == 'schedule' || !inputs.mock) && '--no-mock' || '' }}"
           python scripts/main.py $MOCK --days $DAYS 2>&1
 
