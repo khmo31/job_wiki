@@ -299,10 +299,21 @@ def _call_llm_for_dna(text: str, ontology_matched: List[str],
                         parsed = json.loads(m.group(0))
                     except Exception:
                         pass
-            approx_tokens = int((len(user_msg) + len(content)) / 4)
-            cost = (approx_tokens / 1000.0) * float(getattr(config, "ANALYSIS_COST_PER_1K_TOKENS", 0.003))
-            return parsed, approx_tokens, cost
-        except Exception:
+            if parsed:
+                approx_tokens = int((len(user_msg) + len(content)) / 4)
+                cost = (approx_tokens / 1000.0) * float(getattr(config, "ANALYSIS_COST_PER_1K_TOKENS", 0.003))
+                return parsed, approx_tokens, cost
+            else:
+                err_msg = content[:300] if content else "(empty response)"
+                print(f"[analyzer] LLM parse failed: {err_msg}", file=sys.stderr)
+                return None, 0, 0.0
+        except requests.RequestException as e:
+            print(f"[analyzer] LLM HTTP error ({provider}): {e}", file=sys.stderr)
+            if hasattr(e, 'response') and e.response is not None:
+                print(f"[analyzer] LLM response body: {e.response.text[:300]}", file=sys.stderr)
+            return None, 0, 0.0
+        except Exception as e:
+            print(f"[analyzer] LLM unexpected error ({provider}): {e}", file=sys.stderr)
             return None, 0, 0.0
 
     # ── NVIDIA Integrate ──
