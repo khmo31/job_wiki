@@ -305,8 +305,26 @@ def _call_llm_for_dna(text: str, ontology_matched: List[str],
                 return parsed, approx_tokens, cost
             else:
                 err_msg = content[:300] if content else "(empty response)"
-                print(f"[analyzer] LLM parse failed: {err_msg}", file=sys.stderr)
-                return None, 0, 0.0
+                # Also log the raw response structure for debugging
+                try:
+                    resp_summary = {k: type(v).__name__ for k, v in j.items()}
+                    if "choices" in j:
+                        resp_summary["choices_len"] = len(j["choices"])
+                        if j["choices"]:
+                            c0 = j["choices"][0]
+                            if isinstance(c0, dict):
+                                resp_summary["choice0_keys"] = list(c0.keys())
+                                if "message" in c0 and isinstance(c0["message"], dict):
+                                    resp_summary["message_keys"] = list(c0["message"].keys())
+                                    resp_summary["content_type"] = type(c0["message"].get("content")).__name__
+                                    if c0["message"].get("content") is not None:
+                                        resp_summary["content_len"] = len(str(c0["message"]["content"]))
+                                elif "delta" in c0:
+                                    resp_summary["has_delta"] = True
+                    print(f"[analyzer] LLM parse failed: {err_msg} | resp: {resp_summary}", file=sys.stderr)
+                except Exception as log_e:
+                    print(f"[analyzer] LLM parse failed: {err_msg}", file=sys.stderr)
+            return None, 0, 0.0
         except requests.RequestException as e:
             print(f"[analyzer] LLM HTTP error ({provider}): {e}", file=sys.stderr)
             if hasattr(e, 'response') and e.response is not None:
