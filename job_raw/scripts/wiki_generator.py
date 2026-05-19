@@ -1,8 +1,14 @@
 #!/usr/bin/env python3
 """Raw → Wiki 변환 파이프라인.
 
-job_raw/00_Raw/ 에서 신규 채용공고 분석 결과를 읽어
+job_raw/00_Raw/ 에서 채용공고 분석 결과를 읽어
 job_wiki/10_Wiki/Analysis/ 분석 파일 + Wiki_Index.json + 신규 키워드 제안 생성.
+
+변경 사항 (feat/auto-ontology-feedback):
+- analyzer에서 new_keywords를 추출하므로, wiki_generator는 이 값을
+  바로 Suggested_Keywords.json에 저장 (별도 LLM 호출 최소화)
+- 리인덱스 여부와 관계없이 모든 entry의 new_keywords를 수집
+- _suggest_keywords()는 backward compat용 (analyzer가 없는 new_keywords 필드 처리)
 """
 from __future__ import annotations
 
@@ -10,7 +16,6 @@ import json
 import os
 import re
 import sys
-import time
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
@@ -58,23 +63,6 @@ def _save_wiki_index(entries: dict[str, Any]) -> None:
     _log(f"Wiki_Index.json updated: {len(entries)} entries")
 
 
-def _load_ontology_mappings() -> dict[str, list[str]]:
-    if ONTOLOGY_PATH.exists():
-        data = json.loads(ONTOLOGY_PATH.read_text(encoding="utf-8"))
-        mappings = data.get("mappings", {}) if isinstance(data, dict) else {}
-        return mappings if isinstance(mappings, dict) else {}
-    return {}
-
-
-def _save_ontology_mappings(mappings: dict[str, list[str]]) -> None:
-    payload = {
-        "generated_at": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%S+00:00"),
-        "version": "v1",
-        "mappings": mappings,
-    }
-    ONTOLOGY_PATH.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
-
-
 def _load_suggested() -> list[dict[str, Any]]:
     if SUGGESTED_KEYWORDS_PATH.exists():
         return json.loads(SUGGESTED_KEYWORDS_PATH.read_text(encoding="utf-8"))
@@ -85,11 +73,6 @@ def _save_suggested(suggestions: list[dict[str, Any]]) -> None:
     SUGGESTED_KEYWORDS_PATH.write_text(
         json.dumps(suggestions, ensure_ascii=False, indent=2), encoding="utf-8"
     )
-
-
-def _alio_id_from_job_file(filename: str) -> str | None:
-    """Extract ALIO ID from a raw markdown file's YAML frontmatter."""
-    return None  # Will be extracted from JSON archive
 
 
 def _read_analysis_from_archive(alio_id: str) -> dict[str, Any] | None:
@@ -138,20 +121,14 @@ def _parse_frontmatter(text: str) -> dict[str, Any]:
         key, _, value = line.partition(":")
         key = key.strip()
         value = value.strip().strip('"')
-        # Handle nested keys like skills: - "[[키워드]]"
         if key in ("skills", "objective_metadata"):
-            continue  # Skip complex nested fields
+            continue
         result[key] = value
 
     return result
 
 
 def _format_wiki_filename(alio_id: str, company: str, title: str, date_str: str | None = None) -> str:
-    """Generate wiki analysis filename matching existing convention.
-
-    Uses pbancBgngYmd (date_str) if available, otherwise falls back to ALIO ID prefix.
-    """
-    # Extract date from pbancBgngYmd or ALIO ID
     date_part = "unknown"
     if date_str:
         date_part = date_str.strip().replace("-", "")[:8]
@@ -178,7 +155,6 @@ def _render_wiki_analysis(
     raw_filename: str | None,
     captured_at: str,
 ) -> str:
-    """Render a wiki analysis markdown file matching the existing Obsidian format."""
     skills_linked = "\n".join(f"- [[{s}]]" for s in (skills or []))
     if latent_skills:
         all_skills = (skills or []) + [s for s in latent_skills if s not in (skills or [])]
@@ -246,25 +222,6 @@ def _render_company_profile(company: str, aliases: list[str], analysis_files: li
     )
 
 
-def _render_skill_profile(
-    skill_name: str, related_skills: list[str], parent_domain: str
-) -> str:
-    related_links = "\n".join(f"  - [[{s}]]" for s in related_skills) if related_skills else "  -"
-
-    return (
-        "---\n"
-        f"name: \"{skill_name}\"\n"
-        f"domain: \"[[{parent_domain}]]\"\n"
-        "related:\n"
-        f"{related_links}\n"
-        "---\n"
-        "\n"
-        f"# {skill_name}\n"
-        "\n"
-        "관련 역량 및 기술.\n"
-    )
-
-
 def generate_wiki_entry(alio_id: str, raw_index: dict) -> bool:
     """Generate/update wiki entry for a single job posting."""
     archive = _read_analysis_from_archive(alio_id)
@@ -277,13 +234,10 @@ def generate_wiki_entry(alio_id: str, raw_index: dict) -> bool:
     if not archive and not raw_text:
         return False
 
-    # Extract metadata
     analysis = archive.get("analysis", {}) if archive else {}
     raw_data = archive.get("raw", {}) if archive else {}
-    # Data may be nested under 'list' (ALIO API raw.list) or flat (legacy format)
     raw_list = raw_data.get("list", {}) if isinstance(raw_data, dict) else {}
 
-    # Fallback: parse from raw markdown YAML frontmatter
     if not analysis and raw_text:
         front = _parse_frontmatter(raw_text)
         analysis = {
@@ -294,10 +248,8 @@ def generate_wiki_entry(alio_id: str, raw_index: dict) -> bool:
     title = (raw_list.get("recrutPbancTtl") or raw_data.get("title") or raw_data.get("recrutPbancTtl") or analysis.get("title") or "")
     captured_at = (raw_data.get("captured_at", "") or analysis.get("captured_at", datetime.now(timezone.utc).strftime("%Y-%m-%d")))
 
-    # Determine domain
     domain = analysis.get("domain_context", "") or ""
     if not domain:
-        # Try to infer from NCS or company type
         ncs = raw_list.get("ncsCdNmLst") or raw_data.get("ncs_nm", "") or raw_data.get("ncs_nm", "") or ""
         if "의료" in ncs or "병원" in company:
             domain = "보건.의료"
@@ -308,7 +260,6 @@ def generate_wiki_entry(alio_id: str, raw_index: dict) -> bool:
         else:
             domain = "경영.회계.사무"
 
-    # Skills
     skills = analysis.get("skills_found", []) or []
     if isinstance(skills, str):
         skills = [s.strip().replace("[[", "").replace("]]", "") for s in skills.split(",") if s.strip()]
@@ -317,41 +268,30 @@ def generate_wiki_entry(alio_id: str, raw_index: dict) -> bool:
     if isinstance(latent, str):
         latent = [s.strip() for s in latent.split(",") if s.strip()]
 
-    # Job nature & complexity
     job_nature = analysis.get("job_nature", "실무/혼합")
     complexity = analysis.get("complexity", "medium")
     core_logic = analysis.get("core_logic", "주요 업무 로직")
 
-    # Wiki index entry
+    # Wiki index
     wiki_index = _load_wiki_index()
     date_str = raw_list.get("pbancBgngYmd") or raw_data.get("pbancBgngYmd") or ""
     wiki_filename = _format_wiki_filename(alio_id, company, title, date_str=date_str)
-    existing = wiki_index.get(wiki_filename)
 
-    if existing:
+    if wiki_index.get(wiki_filename):
         _log(f"already indexed: {wiki_filename}")
         return False
 
-    # Render and save analysis markdown
+    # Save analysis markdown
     analysis_md = _render_wiki_analysis(
-        alio_id=alio_id,
-        company=company,
-        title=title,
-        domain=domain,
-        skills=skills,
-        latent_skills=latent,
-        job_nature=job_nature,
-        complexity=complexity,
-        core_logic=core_logic,
-        raw_filename=raw_filename,
-        captured_at=captured_at,
+        alio_id=alio_id, company=company, title=title, domain=domain,
+        skills=skills, latent_skills=latent,
+        job_nature=job_nature, complexity=complexity, core_logic=core_logic,
+        raw_filename=raw_filename, captured_at=captured_at,
     )
-
     analysis_path = WIKI_ANALYSIS_DIR / wiki_filename
     analysis_path.write_text(analysis_md, encoding="utf-8")
     _log(f"created: {wiki_filename}")
 
-    # Update Wiki_Index
     wiki_entry: dict[str, Any] = {
         "company": f"[[{company}]]" if company else "",
         "title": title,
@@ -361,47 +301,95 @@ def generate_wiki_entry(alio_id: str, raw_index: dict) -> bool:
     wiki_index[wiki_filename] = wiki_entry
     _save_wiki_index(wiki_index)
 
-    # Update company profile
+    # Company profile
     company_filename = _company_profile_filename(company) if company else None
     if company_filename:
         company_path = WIKI_COMPANIES_DIR / company_filename
-        existing_analyses: list[str] = []
-        if company_path.exists():
-            # Read existing to find current analysis files
-            existing_analyses = [wiki_filename]
-        else:
+        if not company_path.exists():
             company_md = _render_company_profile(
-                company=company,
-                aliases=[company],
-                analysis_files=[wiki_filename],
-                domain=domain,
+                company=company, aliases=[company],
+                analysis_files=[wiki_filename], domain=domain,
             )
             company_path.write_text(company_md, encoding="utf-8")
             _log(f"company profile created: {company_filename}")
 
-    # Suggest new ontology keywords
-    suggest_text = raw_text or ""
-    if not suggest_text or len(suggest_text) < 100:
-        # Fallback: read from json_archive raw data
-        archive = _read_analysis_from_archive(alio_id)
-        if archive:
-            rd = archive.get("raw", {})
-            if isinstance(rd, dict):
-                raw_list_src = rd.get("list", {}) if isinstance(rd, dict) else {}
-                parts = []
-                for key in ("recrutPbancTtl", "aplyQlfcCn", "prefCondCn", "prefCn", "scrnprcdrMthdExpln"):
-                    val = raw_list_src.get(key) or rd.get(key, "")
-                    if val and isinstance(val, str):
-                        parts.append(val)
-                if parts:
-                    suggest_text = "\n".join(parts)
-    _suggest_keywords(alio_id, skills, suggest_text)
-
     return True
 
 
-def _suggest_keywords(alio_id: str, existing_skills: list[str], text: str) -> None:
-    """Use LLM to suggest new ontology keywords, save for manual review."""
+# ── 키워드 제안 (2가지 소스) ──
+
+def _harvest_new_keywords_from_analysis() -> list[dict[str, Any]]:
+    """json_archive 내 모든 analysis에서 new_keywords 필드를 수집.
+
+    analyzer의 LLM extraction이 all_keywords와 new_keywords를
+    analysis에 저장하므로, 여기서 바로 읽어서 Suggested_Keywords에 추가.
+    별도 LLM 호출 불필요.
+    """
+    json_archive_dir = RAW_ROOT / "json_archive"
+    if not json_archive_dir.exists():
+        return []
+
+    collected: list[dict[str, Any]] = []
+    for fpath in sorted(json_archive_dir.iterdir()):
+        if not fpath.name.endswith(".json"):
+            continue
+        alio_id = fpath.stem
+        try:
+            data = json.loads(fpath.read_text(encoding="utf-8"))
+            analysis = data.get("analysis", {})
+            if not isinstance(analysis, dict):
+                continue
+            new_kws = analysis.get("new_keywords", [])
+            if not new_kws or not isinstance(new_kws, list):
+                continue
+            for kw in new_kws:
+                if kw and isinstance(kw, str) and kw.strip():
+                    collected.append({
+                        "keyword": kw.strip(),
+                        "source_alio_id": alio_id,
+                        "discovered_at": datetime.now(timezone.utc).isoformat(),
+                        "status": "suggested",
+                    })
+        except Exception:
+            continue
+
+    return collected
+
+
+def _merge_keywords_into_suggested(new_entries: list[dict[str, Any]]) -> int:
+    """중복 제거하고 Suggested_Keywords.json에 추가."""
+    if not new_entries:
+        return 0
+
+    existing = _load_suggested()
+    seen_keywords = {s.get("keyword", "") for s in existing}
+
+    added = 0
+    for entry in new_entries:
+        kw = entry.get("keyword", "")
+        if kw and kw not in seen_keywords:
+            existing.append(entry)
+            seen_keywords.add(kw)
+            added += 1
+
+    if added > 0:
+        _save_suggested(existing)
+        _log(f"added {added} new keyword suggestions to Suggested_Keywords.json")
+    else:
+        _log("no new keyword suggestions (all duplicates)")
+
+    return added
+
+
+def _suggest_keywords_llm(alio_id: str, existing_skills: list[str], text: str) -> None:
+    """Backward compat: LLM으로 키워드 제안 (analyzer가 new_keywords 없는 경우).
+
+    참고: 새 analyzer는 new_keywords를 직접 저장하므로,
+    이 함수는 기존 분석 결과(cache) 처리용 fallback.
+    """
+    if not text or len(text) < 50:
+        return
+
     try:
         import importlib.util
         llm_path = PROJECT_ROOT / "job_career" / "src" / "career_agent" / "llm_client.py"
@@ -411,13 +399,8 @@ def _suggest_keywords(alio_id: str, existing_skills: list[str], text: str) -> No
             spec.loader.exec_module(llm_mod)
             suggest_ontology_keywords = llm_mod.suggest_ontology_keywords
         else:
-            _log("llm_client module not found")
             return
     except Exception:
-        _log("llm_client not available for keyword suggestions")
-        return
-
-    if not text or len(text) < 50:
         return
 
     suggestions = suggest_ontology_keywords(text, existing_skills)
@@ -426,7 +409,6 @@ def _suggest_keywords(alio_id: str, existing_skills: list[str], text: str) -> No
 
     existing = _load_suggested()
     seen_keywords = {s.get("keyword", "") for s in existing}
-
     new_entries = []
     for kw in suggestions:
         if kw not in seen_keywords:
@@ -437,23 +419,63 @@ def _suggest_keywords(alio_id: str, existing_skills: list[str], text: str) -> No
                 "status": "suggested",
             })
             seen_keywords.add(kw)
-
     if new_entries:
         existing.extend(new_entries)
         _save_suggested(existing)
-        _log(f"new keyword suggestions: {[e['keyword'] for e in new_entries]}")
+        _log(f"LLM keyword suggestions: {[e['keyword'] for e in new_entries]}")
 
 
 def main() -> int:
     raw_index = _load_index()
-    new_count = 0
 
+    # ── Step 1: Wiki entry 생성 (신규만) ──
+    new_count = 0
     for alio_id, entry in raw_index.items():
         if isinstance(entry, dict) and entry.get("last_analyzed_at"):
             if generate_wiki_entry(str(alio_id), raw_index):
                 new_count += 1
-
     _log(f"wiki generation complete: {new_count} new entries")
+
+    # ── Step 2: new_keywords 수집 (모든 entry, 신규/기존 무관) ──
+    # analyzer가 저장한 new_keywords → Suggested_Keywords.json
+    from_analysis = _harvest_new_keywords_from_analysis()
+    if from_analysis:
+        _merge_keywords_into_suggested(from_analysis)
+
+    # ── Step 3: (backward compat) 분석에 new_keywords 없는 entry만 LLM 제안 ──
+    # legacy cache에서 new_keywords가 누락된 경우 대비
+    llm_fallback_count = 0
+    for alio_id, entry in raw_index.items():
+        if not (isinstance(entry, dict) and entry.get("last_analyzed_at")):
+            continue
+        alio_id_str = str(alio_id)
+        archive = _read_analysis_from_archive(alio_id_str)
+        if not archive:
+            continue
+        analysis = archive.get("analysis", {})
+        if not isinstance(analysis, dict):
+            continue
+        # skip if new_keywords already exists in analysis
+        if analysis.get("new_keywords"):
+            continue
+        # fallback: use old LLM suggestion path
+        existing_skills = analysis.get("skills_found", []) or []
+        text_parts = []
+        rd = archive.get("raw", {})
+        if isinstance(rd, dict):
+            rl = rd.get("list", {})
+            for key in ("recrutPbancTtl", "aplyQlfcCn", "prefCondCn", "prefCn", "scrnprcdrMthdExpln"):
+                val = rl.get(key) or rd.get(key, "")
+                if val and isinstance(val, str):
+                    text_parts.append(val)
+        suggest_text = "\n".join(text_parts) if text_parts else ""
+        if suggest_text:
+            _suggest_keywords_llm(alio_id_str, existing_skills, suggest_text)
+            llm_fallback_count += 1
+
+    if llm_fallback_count > 0:
+        _log(f"LLM fallback suggestions: {llm_fallback_count} entries processed")
+
     return 0
 
 

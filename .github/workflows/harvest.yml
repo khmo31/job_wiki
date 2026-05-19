@@ -58,8 +58,8 @@ jobs:
           LLM_PROVIDER: opencode-go
           LLM_EXTRACT_MODEL: deepseek-v4-flash
           NCS_FILTER_MODE: off
-          DETAIL_MAX_DETAIL_CALLS: "50"
-          ANALYSIS_MIN_CHARS_TO_CALL_LLM: "300"
+          DETAIL_MAX_DETAIL_CALLS: "0"      # 0 = unlimited
+          ANALYSIS_MIN_CHARS_TO_CALL_LLM: "0"  # 0 = LLM 호출 조건 없음 (모든 공고 추출)
         run: |
           cd job_raw
           DAYS="${{ github.event_name == 'schedule' && '7' || inputs.days || '7' }}"

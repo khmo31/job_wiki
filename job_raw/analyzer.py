@@ -4,97 +4,98 @@ import json
 import time
 import hashlib
 import datetime
-from typing import List, Tuple, Dict, Optional
+from typing import List, Tuple, Dict, Optional, Set
 import html
 import requests
 import random
+from pathlib import Path
 
 import config
 from writer import get_index_entry, save_json_archive, update_index_entry
 
-# 경량 패턴 사전: 필요하면 확장하세요
-SKILL_PATTERNS: Dict[str, List[str]] = {
-    # === 기존 (제조/IT) ===
-    "아두이노": [r"아두이노", r"arduino"],
-    "시리얼 통신": [r"시리얼", r"Serial", r"UART"],
-    "PLC": [r"PLC"],
-    "자동화 알고리즘": [r"자동화 알고리즘", r"자동화 로직", r"제어 알고리즘", r"제어 로직", r"최적화"],
-    "C/C++": [r"C\+\+", r"\bC\b"],
-    "Python": [r"Python", r"파이썬"],
-    "센서": [r"센서", r"sensor"],
-    "데이터 로깅": [r"데이터 로깅", r"로깅", r"데이터 수집"],
-    "ROS": [r"ROS"],
-    "임베디드": [r"임베디드", r"embedded"],
-    # factory-simulation / logistics / production keywords
-    "자원 배분": [r"자원 배분", r"자원배분", r"resource allocation"],
-    "물류": [r"물류", r"로지스틱", r"물류 최적화", r"물류관리"],
-    "재고 관리": [r"재고", r"재고 관리", r"inventory"],
-    "생산계획": [r"생산계획", r"스케줄링", r"스케줄", r"생산 스케줄"],
-    "병목 분석": [r"병목", r"bottleneck", r"throughput", r"takt"],
-    "시뮬레이션": [r"시뮬레이션", r"디지털 트윈", r"시뮬레이터"],
-    "MES": [r"MES", r"생산관리시스템"],
-
-    # === 보건.의료 ===
-    "의무 기록": [r"의무기록", r"EMR", r"전자의무기록"],
-    "의료 행정": [r"의료.?행정", r"의무.?행정"],
-    "간호": [r"간호", r"간호사"],
-    "의료정보 관리": [r"의료정보", r"의료.?정보.?관리", r"의료.?데이터"],
-    "환자 응대": [r"환자.?응대", r"환자.?상담", r"고객.?응대"],
-    "보건 교육": [r"보건.?교육", r"건강.?교육", r"보건.?홍보"],
-    "감염 관리": [r"감염.?관리", r"방역", r"소독"],
-    "의료기기 운영": [r"의료.?기기", r"의료.?장비", r"MRI", r"CT", r"초음파"],
-    "건강검진": [r"건강.?검진", r"검체", r"채혈"],
-
-    # === 경영.회계.사무 ===
-    "예산 편성": [r"예산.?편성", r"예산.?수립", r"예산.?운용", r"결산"],
-    "회계": [r"회계", r"세무", r"재무.?회계"],
-    "계약 관리": [r"계약.?관리", r"계약.?심사", r"계약.?행정"],
-    "인사 관리": [r"인사.?관리", r"인사.?행정", r"인사.?노무"],
-    "총무": [r"총무", r"관재", r"자산.?관리"],
-    "문서 작성": [r"문서.?작성", r"보고서.?작성", r"기안"],
-    "사무 행정": [r"사무.?행정", r"일반.?행정", r"행정.?지원"],
-    "민원 응대": [r"민원", r"고충", r"제보"],
-
-    # === 연구/교육 ===
-    "연구 기획": [r"연구.?기획", r"연구.?과제", r"R&D.?기획"],
-    "논문 작성": [r"논문", r"학술지", r"연구.?결과.?보고"],
-    "데이터 분석": [r"데이터.?분석", r"통계.?분석", r"SPSS", r"R.?분석"],
-    "실험 설계": [r"실험.?설계", r"연구.?설계", r"시험.?방법"],
-    "교수/강의": [r"강의", r"교수", r"교육.?과정.?개발"],
-    "교육 훈련": [r"교육.?훈련", r"직무.?교육", r"역량.?개발"],
-
-    # === 정보통신 ===
-    "정보보안": [r"정보.?보안", r"개인정보.?보호", r"보안.?관제"],
-    "IT 운영": [r"IT.?운영", r"시스템.?운영", r"서버.?운영", r"네트워크.?운영"],
-    "DB 관리": [r"데이터베이스", r"DB.?관리", r"SQL"],
-    "소프트웨어 개발": [r"소프트웨어.?개발", r"프로그래밍", r"웹.?개발", r"앱.?개발"],
-    "전산 지원": [r"전산.?지원", r"HELP.?DESK", r"PC.?지원"],
-
-    # === 환경.에너지.안전 ===
-    "환경 관리": [r"환경.?관리", r"환경영향.?평가", r"탄소.?중립"],
-    "안전 관리": [r"안전.?관리", r"산업.?안전", r"재해.?예방"],
-    "품질 관리": [r"품질.?관리", r"ISO", r"KS.?인증"],
-    "에너지 관리": [r"에너지.?관리", r"신재생.?에너지", r"에너지.?효율"],
-
-    # === 사회복지/돌봄 ===
-    "사회복지": [r"사회.?복지", r"복지.?행정", r"복지.?상담"],
-    "노인 돌봄": [r"노인.?돌봄", r"요양", r"간병"],
-    "장애인 지원": [r"장애인.?지원", r"장애인.?복지"],
-    "취업 지원": [r"취업.?지원", r"일자리", r"직업.?상담"],
-
-    # === 운전.운송 ===
-    "운전": [r"운전", r"운송", r"차량.?관리"],
-    "물품 배송": [r"배송", r"수송", r"납품"],
-
-    # === 기계/시설 ===
-    "기계 정비": [r"정비", r"수리", r"점검"],
-    "시설 관리": [r"시설.?관리", r"설비.?관리", r"건축.?관리"],
-    "전기": [r"전기.?관리", r"전기.?안전", r"전기.?공사"],
-}
+# ── Ontology 로딩 (단일 진실 공급원) ──
+# 실행 시점에 Ontology_Map.json을 읽어 키워드 집합을 구성한다.
+# 더 이상 SKILL_PATTERNS 하드코딩 dict는 사용하지 않음.
+_ONTOLOGY_KEYWORDS: List[str] = []
+_ONTOLOGY_KEYWORD_SET: Set[str] = set()
+_ONTOLOGY_SYNONYM_MAP: Dict[str, str] = {}  # synonym → standard_keyword
+_ONTOLOGY_LOADED: bool = False
 
 
-# Simple heuristics for whether an occurrence seems to be a "responsibility/requirement" sentence
-BOOST_CONTEXT_WORDS = ["주요", "담당", "필수", "필요", "요구", "우대", "자격", "경력", "경험", "책임", "역할"]
+def _load_ontology(pjroot: Optional[Path] = None) -> None:
+    """Ontology_Map.json에서 표준 키워드 + 동의어 목록을 로드."""
+    global _ONTOLOGY_KEYWORDS, _ONTOLOGY_KEYWORD_SET, _ONTOLOGY_SYNONYM_MAP, _ONTOLOGY_LOADED
+    if _ONTOLOGY_LOADED:
+        return
+    try:
+        if pjroot is None:
+            pjroot = Path(__file__).resolve().parents[1]
+        onto_path = pjroot / "job_wiki" / "20_Meta" / "Ontology_Map.json"
+        if not onto_path.exists():
+            print(f"[analyzer] ontology file not found: {onto_path}", file=sys.stderr)
+            _ONTOLOGY_LOADED = True
+            return
+        data = json.loads(onto_path.read_text(encoding="utf-8"))
+        mappings = data.get("mappings", {}) if isinstance(data, dict) else {}
+        if not isinstance(mappings, dict):
+            mappings = {}
+        keywords = []
+        synonym_map = {}
+        for std_key, syns in mappings.items():
+            keywords.append(std_key)
+            for syn in syns:
+                if syn and syn != std_key:
+                    keywords.append(syn)
+                    synonym_map[syn] = std_key
+        _ONTOLOGY_KEYWORDS = keywords
+        _ONTOLOGY_KEYWORD_SET = set(keywords)
+        _ONTOLOGY_SYNONYM_MAP = synonym_map
+        _ONTOLOGY_LOADED = True
+        print(f"[analyzer] ontology loaded: {len(keywords)} keywords ({len(mappings)} standards)", file=sys.stderr)
+    except Exception as e:
+        print(f"[analyzer] ontology load failed: {e}", file=sys.stderr)
+        _ONTOLOGY_LOADED = True
+
+
+import sys  # noqa: E402 (needed for print to stderr)
+_ONTOLOGY_LOADED = False  # force reload on import
+
+
+def _normalize_for_match(kw: str) -> str:
+    """키워드 비교용 정규화: 공백/특수문자 제거, 소문자 변환."""
+    return re.sub(r"[^\w가-힣]", "", kw).strip().lower()
+
+
+def _match_ontology_keywords(text: str) -> List[str]:
+    """텍스트에서 온톨로지 키워드를 substring 매칭으로 찾는다.
+
+    우선순위: 긴 키워드 우선 (ex: "소프트웨어 개발 및 유지보수"가
+    "소프트웨어"보다 먼저 매칭되도록).
+    """
+    _load_ontology()
+    if not _ONTOLOGY_KEYWORDS:
+        return []
+    cleaned = re.sub(r"<[^>]+>", " ", text)
+    cleaned = html.unescape(cleaned)
+    cleaned_lower = cleaned.lower()
+
+    # 긴 키워드 우선 정렬 (longest first for greedy matching)
+    sorted_kw = sorted(_ONTOLOGY_KEYWORDS, key=lambda k: (-len(k), k))
+
+    found = []
+    seen = set()
+    for kw in sorted_kw:
+        nk = _normalize_for_match(kw)
+        if nk in seen:
+            continue
+        if nk in cleaned_lower or kw.lower() in cleaned_lower:
+            # map synonym to standard keyword
+            std = _ONTOLOGY_SYNONYM_MAP.get(kw, kw)
+            norm_std = _normalize_for_match(std)
+            if norm_std not in seen:
+                found.append(std)
+                seen.add(norm_std)
+    return found
 
 
 def preprocess_text(text: str) -> str:
@@ -108,24 +109,11 @@ def preprocess_text(text: str) -> str:
     return text.strip()
 
 
-def _regex_extract_skills(text: str) -> List[str]:
-    """Run lightweight regex dictionary matching to get explicitly mentioned skills (zero-cost)."""
-    text = preprocess_text(text)
-    found = []
-    for skill, patterns in SKILL_PATTERNS.items():
-        for p in patterns:
-            if re.search(p, text, flags=re.I):
-                if skill not in found:
-                    found.append(skill)
-                break
-    return found
+# ── Fallback heuristic (LLM 장애 시만 사용) ──
+def _heuristic_analysis(text: str, ontology_matched: List[str], ncs_text: str = "") -> Dict:
+    """Fallback deterministic analysis when LLM is unavailable.
 
-
-def _heuristic_analysis(text: str, explicit_skills: List[str], ncs_text: str = "") -> Dict:
-    """Fallback deterministic analysis when LLM is unavailable or unnecessary.
-
-    Uses ncsCdNmLst (NCS category from ALIO API) as the primary source for
-    domain_context. Falls back to regex heuristics when NCS is unavailable.
+    Ontology 매칭 결과 + NCS 기반으로 최소한의 정보만 생성.
     """
     text = preprocess_text(text)
 
@@ -139,8 +127,7 @@ def _heuristic_analysis(text: str, explicit_skills: List[str], ncs_text: str = "
     else:
         job_nature = "실무/혼합"
 
-    # complexity: simple heuristic by number of explicit skills
-    k = len(explicit_skills)
+    k = len(ontology_matched)
     if k >= 6:
         complexity = "high"
     elif k >= 3:
@@ -148,72 +135,95 @@ def _heuristic_analysis(text: str, explicit_skills: List[str], ncs_text: str = "
     else:
         complexity = "low"
 
-    # latent skills: try to infer from keywords not explicitly in patterns
-    latent = []
-    if re.search(r"시리얼|UART|SPI|I2C", text, flags=re.I) and "시리얼 통신" not in explicit_skills:
-        latent.append("시리얼 통신")
-    if re.search(r"데이터\s*로깅|데이터 수집|로깅", text, flags=re.I) and "데이터 로깅" not in explicit_skills:
-        latent.append("데이터 로깅")
-    if re.search(r"PLC|플라스틱로직컨트롤러|PLC", text, flags=re.I) and "PLC" not in explicit_skills:
-        latent.append("PLC")
-
-    # core logic
     core_logic = "; ".join(re.findall(r"(모니터링|스케줄링|스케줄|제어|최적화|시뮬레이션|검증|테스트)", text, flags=re.I)[:3]) or "주요 업무 로직이 공고에 명시되어있음"
 
-    # domain_context: prioritize ALIO NCS category over regex heuristic
-    if ncs_text:
-        domain_context = ncs_text
-    else:
-        domain_context = "제조/공장/임베디드 관련" if re.search(r"제조|생산|공장|임베디드|로봇", text, flags=re.I) else "일반 소프트웨어/IT"
+    domain_context = ncs_text if ncs_text else "일반"
 
     return {
         "core_logic": core_logic,
         "domain_context": domain_context,
-        "latent_skills": latent,
         "job_nature": job_nature,
         "complexity": complexity,
-        "skills_additional": [],
     }
 
 
-def _call_llm_for_dna(text: str, explicit_skills: List[str], domain_hint: Optional[str] = None) -> Tuple[Optional[dict], int, float]:
-    """Call external LLM (supports OpenAI or NVIDIA Integrate). Returns (parsed_json, tokens_estimate, cost_estimate).
+# ── LLM extraction (메인) ──
+def _build_ontology_context(max_keywords: int = 30) -> str:
+    """프롬프트용 온톨로지 컨텍스트 문자열 생성."""
+    _load_ontology()
+    if not _ONTOLOGY_KEYWORDS:
+        return ""
+    # standard keywords만 (synonym 제외) 보여줌
+    std_set = set()
+    result = []
+    for kw in _ONTOLOGY_KEYWORDS:
+        std = _ONTOLOGY_SYNONYM_MAP.get(kw, kw)
+        if std not in std_set:
+            std_set.add(std)
+            result.append(f"  - {std}")
+    if not result:
+        return ""
+    return (
+        "\nCurrent ontology standard keywords (use these for matching where possible):\n"
+        + "\n".join(result[:max_keywords])
+        + ("\n  ... (truncated)" if len(result) > max_keywords else "")
+    )
 
+
+def _call_llm_for_dna(text: str, ontology_matched: List[str],
+                      ncs_text: Optional[str] = None) -> Tuple[Optional[dict], int, float]:
+    """Call external LLM for exhaustive keyword extraction.
+
+    Returns (parsed_json, tokens_estimate, cost_estimate).
     If provider key not present or a call fails, returns (None, 0, 0.0).
     """
-    provider = getattr(config, "LLM_PROVIDER", os.getenv("LLM_PROVIDER", "nvidia")).lower()
+    provider = getattr(config, "LLM_PROVIDER", os.getenv("LLM_PROVIDER", "opencode-go")).lower()
+
+    ontology_ctx = _build_ontology_context(max_keywords=30)
 
     system = (
-        "You are a pragmatic job-analysis assistant. Given a job posting excerpt and an optional domain hint,"
-        " produce a concise JSON summary describing the role's core logic.\n"
-        "Output only valid JSON with keys: core_logic (short string), domain_context (short string), latent_skills (array of short strings),"
-        " job_nature (one of: 연구/개발, 운영/관리, 설계, 실무/혼합), complexity (low/medium/high), skills_additional (array).\n"
-        "GUIDELINES:\n"
-        "- Extract the primary operational or technical purpose directly from the input text; base your answer only on evidence present in the input.\n"
-        "- Do not invent specific certifications, qualifications, vendor names, or technical terms that are not explicitly present in the input.\n"
-        "- If the input lacks granular technical detail, summarize at a higher-level category rather than fabricating specifics.\n"
-        "- Prefer concise phrasing. When feasible, format `core_logic` as '[domain] / [target]에 대한 [동사]적 행위', but do not force precise labels without evidence.\n"
-        "Return only valid JSON; do not include extraneous commentary."
+        "You are a comprehensive job-posting analyzer. Given a job posting excerpt, "
+        "extract ALL skill/domain keywords present in the text exhaustively.\n\n"
+        "Rules:\n"
+        "1. Output ONLY valid JSON — no commentary, no markdown wrappers.\n"
+        "2. Extract every relevant keyword without filtering against any predefined list. "
+        "If a skill/domain term appears in the text, capture it.\n"
+        "3. new_keywords: terms that are NOT covered by the provided ontology keywords.\n"
+        "4. Be specific — prefer '경마 운영·관리' over generic '운영/관리'.\n"
+        "5. domain_context: single concise phrase describing the job domain "
+        "(e.g., '경마/레저', '보건.의료', '제조/자동화', 'IT/소프트웨어').\n"
+        "6. core_logic: '분야 / 대상에 대한 행위' format (e.g., '경마장/시설 및 마필 관리에 대한 운영적 행위').\n\n"
+        "JSON keys:\n"
+        "  - core_logic: string\n"
+        "  - domain_context: string\n"
+        "  - all_keywords: array of strings (ALL keywords found, include ontology matches and new ones)\n"
+        "  - new_keywords: array of strings (keywords NOT in the ontology list above)\n"
+        "  - job_nature: one of '연구/개발', '운영/관리', '설계', '실무/혼합'\n"
+        "  - complexity: 'low', 'medium', or 'high'\n\n"
+        "Return valid JSON only."
     )
 
-    # include explicit domain hint (NCS or raw category) in the user message to reduce domain confusion
-    domain_hint_text = f"DOMAIN_HINT: {domain_hint}\n\n" if domain_hint else ""
+    domain_hint_text = f"NCS_HINT: {ncs_text}\n\n" if ncs_text else ""
+    matched_str = ", ".join(ontology_matched) if ontology_matched else "(none yet)"
     user_msg = (
-        domain_hint_text + f"EXPLICIT_SKILLS: {json.dumps(explicit_skills, ensure_ascii=False)}\n\nTEXT:\n{text}\n\nReturn valid JSON only."
+        domain_hint_text
+        + f"ONTOLOGY_MATCHED: {matched_str}\n"
+        + (ontology_ctx + "\n\n" if ontology_ctx else "")
+        + f"JOB_TEXT:\n{text[:2000]}\n\n"
+        + "Return valid JSON only."
     )
 
-    # Default values
     parsed = None
     approx_tokens = 0
     cost = 0.0
 
+    # ── OpenCode Go ──
     if provider == "opencode-go":
         api_key = os.getenv("OPENCODE_API_KEY")
         if not api_key:
             return None, 0, 0.0
         base_url = os.getenv("OPENCODE_BASE_URL", "https://opencode.ai/zen/go/v1").rstrip("/")
         model = os.getenv("LLM_EXTRACT_MODEL", "deepseek-v4-flash")
-
         payload = {
             "model": model,
             "messages": [
@@ -221,15 +231,13 @@ def _call_llm_for_dna(text: str, explicit_skills: List[str], domain_hint: Option
                 {"role": "user", "content": user_msg},
             ],
             "temperature": 0.0,
-            "max_tokens": 256,
+            "max_tokens": 512,
         }
         headers = {"Authorization": f"Bearer {api_key}", "Content-Type": "application/json"}
         try:
             resp = requests.post(
                 f"{base_url}/chat/completions",
-                headers=headers,
-                json=payload,
-                timeout=30,
+                headers=headers, json=payload, timeout=30,
             )
             resp.raise_for_status()
             j = resp.json()
@@ -238,7 +246,6 @@ def _call_llm_for_dna(text: str, explicit_skills: List[str], domain_hint: Option
                 content = j["choices"][0]["message"]["content"]
             except Exception:
                 content = j.get("choices", [{}])[0].get("text", "")
-
             try:
                 parsed = json.loads(content)
             except Exception:
@@ -247,21 +254,20 @@ def _call_llm_for_dna(text: str, explicit_skills: List[str], domain_hint: Option
                     try:
                         parsed = json.loads(m.group(0))
                     except Exception:
-                        parsed = None
-
+                        pass
             approx_tokens = int((len(user_msg) + len(content)) / 4)
             cost = (approx_tokens / 1000.0) * float(getattr(config, "ANALYSIS_COST_PER_1K_TOKENS", 0.003))
             return parsed, approx_tokens, cost
-        except Exception as e:
+        except Exception:
             return None, 0, 0.0
 
+    # ── NVIDIA Integrate ──
     if provider == "nvidia":
         api_key = os.getenv("NVIDIA_API_KEY") or getattr(config, "NVIDIA_API_KEY", None)
         if not api_key:
             return None, 0, 0.0
         base_url = getattr(config, "NVIDIA_BASE_URL", "https://integrate.api.nvidia.com/v1").rstrip("/")
         model = getattr(config, "NVIDIA_MODEL", None) or getattr(config, "ANALYSIS_MODEL", None)
-
         payload = {
             "model": model,
             "messages": [
@@ -270,30 +276,24 @@ def _call_llm_for_dna(text: str, explicit_skills: List[str], domain_hint: Option
             ],
             "temperature": 0.0,
             "top_p": 0.95,
-            "max_tokens": 256,
+            "max_tokens": 512,
             "extra_body": {"chat_template_kwargs": {"thinking": True, "reasoning_effort": "high"}},
         }
         headers = {"Authorization": f"Bearer {api_key}", "Content-Type": "application/json"}
-
-        # respect global LLM timeout and retry settings
-        timeout = getattr(config, "LLM_TIMEOUT", getattr(config, "NVIDIA_TIMEOUT", 20))
+        timeout = getattr(config, "LLM_TIMEOUT", getattr(config, "NVIDIA_TIMEOUT", 30))
         max_attempts = int(getattr(config, "RETRY_ATTEMPTS", 3) or 3)
         backoff_factor = float(getattr(config, "RETRY_BACKOFF_FACTOR", 1.5) or 1.5)
-
         last_exc = None
         for attempt in range(1, max_attempts + 1):
             try:
                 resp = requests.post(f"{base_url}/chat/completions", headers=headers, json=payload, timeout=timeout)
                 resp.raise_for_status()
                 j = resp.json()
-                # try common locations for content
                 content = ""
                 try:
                     content = j["choices"][0]["message"]["content"]
                 except Exception:
                     content = j.get("choices", [{}])[0].get("text", "")
-
-                # parse JSON
                 try:
                     parsed = json.loads(content)
                 except Exception:
@@ -302,26 +302,21 @@ def _call_llm_for_dna(text: str, explicit_skills: List[str], domain_hint: Option
                         try:
                             parsed = json.loads(m.group(0))
                         except Exception:
-                            parsed = None
-
+                            pass
                 approx_tokens = int((len(user_msg) + len(content)) / 4)
                 cost = (approx_tokens / 1000.0) * float(getattr(config, "ANALYSIS_COST_PER_1K_TOKENS", 0.003))
                 return parsed, approx_tokens, cost
             except requests.RequestException as e:
                 last_exc = e
-                # retry on network/HTTP errors with exponential backoff + jitter
                 if attempt >= max_attempts:
                     break
                 sleep_for = backoff_factor * (2 ** (attempt - 1)) + random.uniform(0, 1)
                 time.sleep(sleep_for)
-                continue
-            except Exception as e:
-                # non-network error — do not retry
-                last_exc = e
+            except Exception:
                 break
-
         return None, 0, 0.0
 
+    # ── OpenAI ──
     elif provider == "openai":
         api_key = os.getenv("OPENAI_API_KEY") or os.getenv("OPENAI_API_TOKEN")
         if not api_key:
@@ -333,7 +328,7 @@ def _call_llm_for_dna(text: str, explicit_skills: List[str], domain_hint: Option
                 {"role": "system", "content": system},
                 {"role": "user", "content": user_msg},
             ],
-            "max_tokens": 256,
+            "max_tokens": 512,
             "temperature": 0.0,
         }
         try:
@@ -345,12 +340,7 @@ def _call_llm_for_dna(text: str, explicit_skills: List[str], domain_hint: Option
             )
             resp.raise_for_status()
             j = resp.json()
-            content = ""
-            try:
-                content = j["choices"][0]["message"]["content"]
-            except Exception:
-                content = j.get("choices", [{}])[0].get("text", "")
-
+            content = j.get("choices", [{}])[0].get("message", {}).get("content", "")
             try:
                 parsed = json.loads(content)
             except Exception:
@@ -359,21 +349,20 @@ def _call_llm_for_dna(text: str, explicit_skills: List[str], domain_hint: Option
                     try:
                         parsed = json.loads(m.group(0))
                     except Exception:
-                        parsed = None
-
+                        pass
             approx_tokens = int((len(user_msg) + len(content)) / 4)
             cost = (approx_tokens / 1000.0) * float(getattr(config, "ANALYSIS_COST_PER_1K_TOKENS", 0.003))
             return parsed, approx_tokens, cost
         except Exception:
             return None, 0, 0.0
 
+    # ── Groq ──
     elif provider == "groq":
         api_key = os.getenv("GROQ_API_KEY")
         if not api_key:
             return None, 0, 0.0
         base_url = os.getenv("GROQ_BASE_URL", "https://api.groq.com/openai/v1").rstrip("/")
         primary_model = os.getenv("LLM_EXTRACT_MODEL", "llama-3.3-70b-versatile")
-        # Fallback models for rate limit handling (separate rate limit pools)
         groq_fallbacks = [
             primary_model,
             "meta-llama/llama-4-scout-17b-16e-instruct",
@@ -391,14 +380,13 @@ def _call_llm_for_dna(text: str, explicit_skills: List[str], domain_hint: Option
                     {"role": "system", "content": system},
                     {"role": "user", "content": user_msg},
                 ],
-                "max_tokens": 256,
+                "max_tokens": 512,
                 "temperature": 0.0,
             }
             max_attempts = int(getattr(config, "RETRY_ATTEMPTS", 3) or 3)
             backoff_factor = float(getattr(config, "RETRY_BACKOFF_FACTOR", 1.5) or 1.5)
             for attempt in range(1, max_attempts + 1):
                 try:
-                    # Rate limit: 30 RPM
                     now = time.time()
                     if now - _last_groq_call < _groq_min_interval:
                         time.sleep(_groq_min_interval - (now - _last_groq_call))
@@ -410,7 +398,7 @@ def _call_llm_for_dna(text: str, explicit_skills: List[str], domain_hint: Option
                         timeout=30,
                     )
                     if resp.status_code == 429:
-                        break  # Try next model
+                        break
                     resp.raise_for_status()
                     j = resp.json()
                     content = j.get("choices", [{}])[0].get("message", {}).get("content", "")
@@ -422,7 +410,7 @@ def _call_llm_for_dna(text: str, explicit_skills: List[str], domain_hint: Option
                             try:
                                 parsed = json.loads(m.group(0))
                             except Exception:
-                                parsed = None
+                                pass
                     if model_name != primary_model:
                         print(f"[analyzer] switched to fallback model: {model_name}", file=sys.stderr)
                     approx_tokens = int((len(user_msg) + len(content)) / 4)
@@ -430,7 +418,7 @@ def _call_llm_for_dna(text: str, explicit_skills: List[str], domain_hint: Option
                     return parsed, approx_tokens, cost
                 except requests.RequestException as e:
                     if "429" in str(e) or "Too Many Requests" in str(e):
-                        break  # Try next model
+                        break
                     if attempt >= max_attempts:
                         break
                     sleep_for = backoff_factor * (2 ** (attempt - 1)) + random.uniform(0, 1)
@@ -439,145 +427,33 @@ def _call_llm_for_dna(text: str, explicit_skills: List[str], domain_hint: Option
                     break
         return None, 0, 0.0
 
-    # unsupported provider
     return None, 0, 0.0
 
 
-def _find_sentence_with_pattern(text: str, pattern: str) -> Optional[str]:
-    # split into sentences by punctuation
-    for sent in re.split(r"(?<=[\.\?\!\n])\s+", text):
-        if re.search(pattern, sent, flags=re.I):
-            return sent.strip()
-    return None
-
-
-def extract_skills_and_reasoning(
-    text: str,
-    user_interests: List[str],
-    top_n: int = 4,
-    ncs: Optional[str] = None,
-) -> Tuple[List[str], Dict[str, str]]:
-    text = preprocess_text(text)
-    scores: Dict[str, Dict] = {}
-    for skill, patterns in SKILL_PATTERNS.items():
-        score = 0
-        evidence = None
-        for p in patterns:
-            hits = re.findall(p, text, flags=re.I)
-            if hits:
-                score += len(hits)
-                if not evidence:
-                    evidence = _find_sentence_with_pattern(text, p)
-        # boost if appears in context words
-        if evidence:
-            if any(w in evidence for w in BOOST_CONTEXT_WORDS):
-                score += 2
-        scores[skill] = {"score": score, "evidence": evidence}
-
-    # interest-based boost
-    INTEREST_MAP = {
-        "아두이노": ["아두이노", "임베디드", "시리얼 통신"],
-        "공장 게임": ["자원 배분", "물류", "재고 관리", "생산계획", "병목 분석", "시뮬레이션", "PLC", "데이터 로깅", "센서"],
-        "자동화 로직": ["자동화 알고리즘", "PLC", "임베디드", "C/C++", "MES"],
-    }
-
-    for interest in user_interests:
-        related = INTEREST_MAP.get(interest, [])
-        for r in related:
-            if r in scores:
-                scores[r]["score"] += 3
-
-    # extra boost if interest keywords appear directly in text
-    for interest in user_interests:
-        if re.search(re.escape(interest), text, flags=re.I):
-            related = INTEREST_MAP.get(interest, [])
-            for r in related:
-                if r in scores:
-                    scores[r]["score"] += 5
-
-    # if NCS info provided, boost skills that map to that NCS category
-    try:
-        if ncs:
-            ncs_norm = ncs or ""
-            for ncs_key, synonyms in config.NCS_MAP.items():
-                if any(syn.lower() in ncs_norm.lower() for syn in synonyms + [ncs_key]):
-                    # boost skills that are semantically related to this NCS key
-                    for skill_name, pattern_list in SKILL_PATTERNS.items():
-                        # simple heuristic: if skill name contains ncs_key or synonyms, boost
-                        if ncs_key.lower() in skill_name.lower():
-                            scores.setdefault(skill_name, {"score": 0, "evidence": None})
-                            scores[skill_name]["score"] += 4
-                    # also add small boost to all interest-related skills
-                    for interest in user_interests:
-                        related = INTEREST_MAP.get(interest, [])
-                        for r in related:
-                            if r in scores:
-                                scores[r]["score"] += 2
-    except Exception:
-        pass
-
-    items = sorted(scores.items(), key=lambda kv: kv[1]["score"], reverse=True)
-    selected = [k for k, v in items if v["score"] > 0][:top_n]
-    if not selected:
-        selected = [k for k, _ in items][:top_n]
-
-    reasoning: Dict[str, str] = {}
-    for s in selected:
-        ev = scores[s].get("evidence") or "공고에서 관련 표현이 발견됨"
-        # find best matching interest for the skill
-        best_interest = next((i for i in user_interests if s in INTEREST_MAP.get(i, [])), (user_interests[0] if user_interests else "관심사"))
-
-        # richer template depending on interest/skill
-        if best_interest == "공장 게임":
-            insight = (
-                f"{s}: 공고 문구 '{ev}'이(가) 관찰되어, 이는 생산/물류 흐름의 '설계' 관점—예: 자원 배분·스케줄링·재고 최적화와 직결됩니다. 당신의 '공장 게임' 성향(시스템 설계·자원흐름 최적화)과 실무 연결 가능성이 높습니다."
-            )
-        elif best_interest == "아두이노":
-            insight = (
-                f"{s}: 공고 문구 '{ev}'이(가) 관찰되어, 이는 하드웨어-펌웨어 통합(임베디드/시리얼 통신) 역량과 직접 연결됩니다. 간단한 프로토타입부터 신뢰성 있는 제어까지 확장 가능한 기술입니다."
-            )
-        else:
-            insight = (
-                f"{s}: 공고 문구 '{ev}'이(가) 관찰되어, 이는 당신의 '{best_interest}' 관심사와 실무 기술이 연결된다는 직관적 비약입니다."
-            )
-
-        # NCS hints
-        ncs_hint = ""
-        try:
-            if ncs:
-                for ncs_key, synonyms in config.NCS_MAP.items():
-                    if any(syn.lower() in (ncs or "").lower() for syn in synonyms + [ncs_key]):
-                        ncs_hint = f"(NCS: {ncs_key} 관련 역량으로 분류될 가능성이 높음)"
-                        break
-        except Exception:
-            pass
-
-        reasoning[s] = insight + (" " + ncs_hint if ncs_hint else "")
-
-    return selected, reasoning
-
-
-def analyze_objective_dna(job: dict, trimmed_text: str, alio_id: Optional[str] = None, force_llm: bool = False, base_dir: str = ".", raw_dir: str = "00_Raw") -> Dict:
-    """Hybrid analyzer that returns an 'objective DNA' dict for the job posting.
+def analyze_objective_dna(job: dict, trimmed_text: str,
+                          alio_id: Optional[str] = None, force_llm: bool = False,
+                          base_dir: str = ".", raw_dir: str = "00_Raw") -> Dict:
+    """온톨로지 기반 + LLM 추출 하이브리드 분석기.
 
     Strategy:
-    1) cheap regex dictionary match to get explicit skills
-    2) if necessary and available, call a low-cost LLM to distill core_logic, domain_context, latent_skills, job_nature, complexity
-    3) cache results in json_archive and update index with last_analyzed_at and content_hash
+    1) Ontology_Map.json에서 키워드 substring 매칭 (무료)
+    2) 항상 LLM 호출 (API 키 있으면) — exhaustive keyword extraction
+    3) LLM 결과에 ontology-matched + new_keywords 통합
+    4) 새 키워드 감지 시 json_archive에 new_keywords 필드 저장
+       (wiki_generator가 이를 읽어 Suggested_Keywords.json에 반영)
     """
+    _load_ontology()
     trimmed = (trimmed_text or "")
     content_hash = hashlib.sha256(trimmed.encode("utf-8") if isinstance(trimmed, str) else trimmed).hexdigest()
 
-    # check cache
+    # cache check
     if alio_id:
         entry = get_index_entry(alio_id, base_dir=base_dir, raw_dir=raw_dir)
-        # support legacy index entries that may be a filename string
         if isinstance(entry, str):
             entry_dict = {"filename": entry}
         else:
             entry_dict = entry or {}
         if entry_dict and entry_dict.get("content_hash") == content_hash and not force_llm:
-            # try to return existing analysis from json archive
             archive_path = os.path.join(str(config.BASE_DIR), config.RAW_DIR, config.JSON_ARCHIVE_DIR, f"{alio_id}.json")
             try:
                 if os.path.exists(archive_path):
@@ -590,78 +466,40 @@ def analyze_objective_dna(job: dict, trimmed_text: str, alio_id: Optional[str] =
             except Exception:
                 pass
 
-    explicit = _regex_extract_skills(trimmed)
+    # 1) Ontology keyword matching (zero-cost)
+    ontology_matched = _match_ontology_keywords(trimmed)
 
-    # detect NCS / domain hint text for later use (do NOT short-circuit here)
+    # 2) NCS / domain hint detection
     ncs_text = ""
-    ncs_nontechnical = False
     try:
         raw_src = job.get("raw") if isinstance(job, dict) else {}
-        ncs_text = (raw_src.get("ncsCdNmLst") or raw_src.get("ncsCdLst") or job.get("ncsCdNmLst") or job.get("ncs") or "")
-        ncs_text = str(ncs_text).lower()
-        non_technical_terms = [
-            "보건",
-            "의료",
-            "간호",
-            "교육",
-            "복지",
-            "사회복지",
-            "예술",
-            "행정",
-            "사무",
-        ]
-        for term in non_technical_terms:
-            if term in ncs_text:
-                ncs_nontechnical = True
-                break
+        ncs_text = (raw_src.get("ncsCdNmLst") or raw_src.get("ncsCdLst")
+                    or job.get("ncsCdNmLst") or job.get("ncs") or "")
+        ncs_text = str(ncs_text)
     except Exception:
-        ncs_nontechnical = False
+        pass
 
-    # decide whether to call LLM (provider-aware)
-    provider = getattr(config, "LLM_PROVIDER", os.getenv("LLM_PROVIDER", "nvidia")).lower()
-    call_llm = False
-    if force_llm:
-        call_llm = True
-    else:
-        if len(trimmed) >= getattr(config, "ANALYSIS_MIN_CHARS_TO_CALL_LLM", 80):
-            if provider == "opencode-go" and os.getenv("OPENCODE_API_KEY"):
-                call_llm = True
-            elif provider == "nvidia" and (os.getenv("NVIDIA_API_KEY") or getattr(config, "NVIDIA_API_KEY", None)):
-                call_llm = True
-            elif provider == "openai" and (os.getenv("OPENAI_API_KEY") or os.getenv("OPENAI_API_TOKEN")):
-                call_llm = True
-            elif provider == "groq" and os.getenv("GROQ_API_KEY"):
-                call_llm = True
-
-    # Apply NCS filter mode (configurable). Default is 'off' (no short-circuit).
-    ncs_filter_mode = getattr(config, "NCS_FILTER_MODE", os.getenv("NCS_FILTER_MODE", "off")).lower()
-    force_override = getattr(config, "FORCE_LLM_OVERRIDE", False) or str(os.getenv("FORCE_LLM_OVERRIDE", "0")).lower() in ("1", "true", "yes")
-
-    filtered_due_to_ncs = False
-    if not force_llm and not force_override and ncs_nontechnical:
-        if ncs_filter_mode == "hard":
-            call_llm = False
-            filtered_due_to_ncs = True
-        elif ncs_filter_mode == "soft":
-            # sample a small fraction to call LLM for audit; others are filtered
-            sample_rate = float(getattr(config, "SAMPLE_FILTERED_RATE", os.getenv("SAMPLE_FILTERED_RATE", 0.1)))
-            if random.random() < sample_rate:
-                call_llm = True
-            else:
-                call_llm = False
-                filtered_due_to_ncs = True
-        # if mode == 'off', do nothing (allow LLM if other conditions permit)
+    # 3) LLM extraction (always call when API key present)
+    provider = getattr(config, "LLM_PROVIDER", os.getenv("LLM_PROVIDER", "opencode-go")).lower()
+    has_api_key = (
+        (provider == "opencode-go" and os.getenv("OPENCODE_API_KEY"))
+        or (provider == "nvidia" and (os.getenv("NVIDIA_API_KEY") or getattr(config, "NVIDIA_API_KEY", None)))
+        or (provider == "openai" and (os.getenv("OPENAI_API_KEY") or os.getenv("OPENAI_API_TOKEN")))
+        or (provider == "groq" and os.getenv("GROQ_API_KEY"))
+    )
+    call_llm = force_llm or has_api_key
 
     analysis: Dict = {
-        "explicit_skills": explicit,
-        "skills_found": list(explicit),
+        "explicit_skills": list(ontology_matched),
+        "skills_found": list(ontology_matched),
         "core_logic": None,
         "domain_context": None,
         "latent_skills": [],
         "job_nature": None,
         "complexity": None,
         "skills_additional": [],
-        "method": "regex",
+        "new_keywords": [],
+        "method": "ontology_match",
         "model": None,
         "tokens": 0,
         "cost": 0.0,
@@ -669,61 +507,52 @@ def analyze_objective_dna(job: dict, trimmed_text: str, alio_id: Optional[str] =
     }
 
     if call_llm:
-        parsed, tokens_used, cost = _call_llm_for_dna(trimmed, explicit, domain_hint=ncs_text if ncs_text else None)
+        parsed, tokens_used, cost_used = _call_llm_for_dna(trimmed, ontology_matched, ncs_text=ncs_text if ncs_text else None)
         if parsed:
-            # merge parsed fields
-            analysis["core_logic"] = parsed.get("core_logic")
-            analysis["domain_context"] = parsed.get("domain_context")
-            analysis["latent_skills"] = parsed.get("latent_skills") or []
-            analysis["job_nature"] = parsed.get("job_nature")
-            analysis["complexity"] = parsed.get("complexity")
-            analysis["skills_additional"] = parsed.get("skills_additional") or []
-            # merge skills
-            combined = list(dict.fromkeys(list(explicit) + list(analysis["skills_additional"]) + list(analysis["latent_skills"])))
+            analysis["core_logic"] = parsed.get("core_logic") or analysis["core_logic"]
+            analysis["domain_context"] = parsed.get("domain_context") or ncs_text or ""
+            analysis["job_nature"] = parsed.get("job_nature") or "실무/혼합"
+            analysis["complexity"] = parsed.get("complexity") or "medium"
+
+            # Combine: ontology-matched + LLM all_keywords (dedup)
+            llm_all = parsed.get("all_keywords") or []
+            llm_new = parsed.get("new_keywords") or []
+            combined = list(dict.fromkeys(list(ontology_matched) + llm_all))
+            analysis["explicit_skills"] = list(ontology_matched)
             analysis["skills_found"] = combined
-            analysis["method"] = "regex+llm"
-            # Determine model name for the analysis record
-            if isinstance(parsed, dict) and parsed.get("model"):
-                analysis["model"] = parsed.get("model")
-            elif provider == "opencode-go":
+            analysis["skills_additional"] = [kw for kw in llm_all if kw not in ontology_matched]
+            analysis["new_keywords"] = llm_new
+            analysis["latent_skills"] = llm_new  # new = latent (not yet in ontology)
+            analysis["method"] = "ontology+llm"
+
+            if provider == "opencode-go":
                 analysis["model"] = os.getenv("LLM_EXTRACT_MODEL", "deepseek-v4-flash")
             elif provider == "nvidia":
                 analysis["model"] = getattr(config, "NVIDIA_MODEL", None)
             else:
                 analysis["model"] = getattr(config, "ANALYSIS_MODEL", None)
             analysis["tokens"] = tokens_used
-            analysis["cost"] = cost
+            analysis["cost"] = cost_used
         else:
-            # fallback heuristic
-            h = _heuristic_analysis(trimmed, explicit, ncs_text=ncs_text)
+            # LLM failed — fallback: ontology match + minimal heuristic
+            h = _heuristic_analysis(trimmed, ontology_matched, ncs_text=ncs_text)
             analysis.update(h)
-            analysis["method"] = "regex+heuristic"
+            analysis["skills_found"] = list(ontology_matched)
+            analysis["method"] = "ontology+heuristic"
     else:
-        h = _heuristic_analysis(trimmed, explicit, ncs_text=ncs_text)
+        # No API key — ontology match only
+        h = _heuristic_analysis(trimmed, ontology_matched, ncs_text=ncs_text)
         analysis.update(h)
-        analysis["method"] = "regex+heuristic"
+        analysis["skills_found"] = list(ontology_matched)
+        analysis["method"] = "ontology_only"
 
-    # If this job was filtered by NCS rules (hard or sampled-soft), set safe defaults
-    if filtered_due_to_ncs:
-        analysis["core_logic"] = "일반 직무"
-        analysis["domain_context"] = ncs_text or analysis.get("domain_context")
-        analysis["latent_skills"] = []
-        analysis["skills_additional"] = []
-        analysis["method"] = "filtered_ncs"
-        analysis["complexity"] = analysis.get("complexity") or "low"
-        if not analysis.get("job_nature"):
-            analysis["job_nature"] = "실무/혼합"
-
-    # save analysis into json archive if alio_id provided
+    # 4) save analysis into json archive
     try:
         if alio_id:
-            # try to save the full job raw if present in job param
             job_raw = job.get("raw") if isinstance(job, dict) else None
-            # if job is a full job dict, include it
             if isinstance(job, dict) and job.get("raw") is None:
                 job_raw = job
             save_json_archive(job_raw or {}, alio_id, base_dir=base_dir, raw_dir=raw_dir)
-            # now write analysis inside archive file
             archive_path = os.path.join(str(config.BASE_DIR), config.RAW_DIR, config.JSON_ARCHIVE_DIR, f"{alio_id}.json")
             try:
                 if os.path.exists(archive_path):
@@ -736,14 +565,9 @@ def analyze_objective_dna(job: dict, trimmed_text: str, alio_id: Optional[str] =
                     json.dump(cur, fh, ensure_ascii=False, indent=2)
             except Exception:
                 pass
-            # update index
-            update_index_entry(alio_id, content_hash=content_hash, last_analyzed_at=analysis.get("analyzed_at"), base_dir=base_dir, raw_dir=raw_dir)
+            update_index_entry(alio_id, content_hash=content_hash, last_analyzed_at=analysis.get("analyzed_at"),
+                               base_dir=base_dir, raw_dir=raw_dir)
     except Exception:
         pass
 
     return analysis
-
-
-if __name__ == "__main__":
-    sample = "<p>아두이노 및 센서 연동, 시리얼 통신, PLC 인터페이스 요구</p>"
-    print(extract_skills_and_reasoning(sample, ["아두이노", "공장 게임", "자동화 로직"]))

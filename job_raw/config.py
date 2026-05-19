@@ -21,8 +21,9 @@ ANALYSIS_MODEL = os.getenv("ANALYSIS_MODEL") or "gpt-4o-mini"
 ANALYSIS_COST_PER_1K_TOKENS = float(os.getenv("ANALYSIS_COST_PER_1K_TOKENS", "0.003"))
 # Maximum number of input characters to send to LLM (trim for cost). Set conservatively.
 ANALYSIS_MAX_INPUT_CHARS = int(os.getenv("ANALYSIS_MAX_INPUT_CHARS", "4000"))
-# Minimum characters required before considering an LLM call (avoid tiny prompts)
-ANALYSIS_MIN_CHARS_TO_CALL_LLM = int(os.getenv("ANALYSIS_MIN_CHARS_TO_CALL_LLM", "80"))
+# Minimum characters required before considering an LLM call.
+# Set to 0 to enable LLM extraction for ALL job postings (default).
+ANALYSIS_MIN_CHARS_TO_CALL_LLM = int(os.getenv("ANALYSIS_MIN_CHARS_TO_CALL_LLM", "0"))
 
 # LLM request timeout (seconds) used by analyzer LLM calls. Increase to 60 for unstable networks.
 LLM_TIMEOUT = int(os.getenv("LLM_TIMEOUT", "60"))
@@ -131,6 +132,6 @@ DETAIL_FETCH_WINDOW_DAYS = int(os.getenv("DETAIL_FETCH_WINDOW_DAYS", "7"))
 # Optional keywords (or NCS) to force detail fetch if matched in the list item
 DETAIL_KEYWORDS = ["아두이노", "자동화", "로봇", "PLC"]
 # Maximum number of detail calls per run (None = unlimited)
-DETAIL_MAX_DETAIL_CALLS = int(os.getenv("DETAIL_MAX_DETAIL_CALLS", "0")) or None
+DETAIL_MAX_DETAIL_CALLS = int(os.getenv("DETAIL_MAX_DETAIL_CALLS", "0")) or None  # 0 = unlimited
 
 
