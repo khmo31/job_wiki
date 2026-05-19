@@ -226,27 +226,11 @@ def _call_llm_for_dna(text: str, ontology_matched: List[str],
     ontology_ctx = _build_ontology_context(max_keywords=30)
 
     system = (
-        "You are a comprehensive job-posting analyzer. Given a job posting excerpt, "
-        "extract ALL skill/domain keywords present in the text exhaustively.\n\n"
-        "Rules:\n"
-        "1. Output ONLY valid JSON — no commentary, no markdown wrappers.\n"
-        "2. Extract every relevant keyword without filtering against any predefined list. "
-        "If a skill/domain term appears in the text, capture it.\n"
-        "3. new_keywords: terms that are NOT covered by the provided ontology keywords.\n"
-        "4. Be specific — prefer '경마 운영·관리' over generic '운영/관리'.\n"
-        "5. domain_context: single concise phrase describing the job domain "
-        "(e.g., '경마/레저', '보건.의료', '제조/자동화', 'IT/소프트웨어').\n"
-        "6. core_logic: '분야 / 대상에 대한 행위' format (e.g., '경마장/시설 및 마필 관리에 대한 운영적 행위').\n\n"
-        "JSON keys:\n"
-        "  - core_logic: string\n"
-        "  - domain_context: string\n"
-        "  - all_keywords: array of strings (ALL keywords found, include ontology matches and new ones)\n"
-        "  - new_keywords: array of strings (keywords NOT in the ontology list above)\n"
-        "  - job_nature: one of '연구/개발', '운영/관리', '설계', '실무/혼합'\n"
-        "  - complexity: 'low', 'medium', or 'high'\n\n"
-        "Return valid JSON only."
+        "Extract ALL keywords from this job posting. "
+        "Output strict JSON only with keys: core_logic, domain_context, all_keywords (array), "
+        "new_keywords (array, KEYWORDS NOT in ontology below), job_nature, complexity. "
+        "Be specific. No thinking. JSON only."
     )
-
     domain_hint_text = f"NCS_HINT: {ncs_text}\n\n" if ncs_text else ""
     matched_str = ", ".join(ontology_matched) if ontology_matched else "(none yet)"
     user_msg = (
@@ -276,7 +260,6 @@ def _call_llm_for_dna(text: str, ontology_matched: List[str],
             ],
             "temperature": 0.0,
             "max_tokens": 4096,
-            "extra_body": {"chat_template_kwargs": {"thinking": False}},
         }
         headers = {"Authorization": f"Bearer {api_key}", "Content-Type": "application/json"}
         try:
@@ -333,7 +316,7 @@ def _call_llm_for_dna(text: str, ontology_matched: List[str],
                                         resp_summary["content_len"] = len(str(c0["message"]["content"]))
                                 elif "delta" in c0:
                                     resp_summary["has_delta"] = True
-                    print(f"[analyzer] LLM parse failed: {err_msg} | resp: {resp_summary}", file=sys.stderr)
+                    print(f"[analyzer] LLM parse failed: {err_msg} | finish_reason={j.get('choices',[{}])[0].get('finish_reason','?')} | resp: {resp_summary}", file=sys.stderr)
                 except Exception as log_e:
                     print(f"[analyzer] LLM parse failed: {err_msg}", file=sys.stderr)
             return None, 0, 0.0
