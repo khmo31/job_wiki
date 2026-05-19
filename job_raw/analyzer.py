@@ -259,7 +259,7 @@ def _call_llm_for_dna(text: str, ontology_matched: List[str],
                 {"role": "user", "content": user_msg},
             ],
             "temperature": 0.0,
-            "max_tokens": 4096,
+            "max_tokens": 8192,
         }
         headers = {"Authorization": f"Bearer {api_key}", "Content-Type": "application/json"}
         try:
@@ -285,15 +285,7 @@ def _call_llm_for_dna(text: str, ontology_matched: List[str],
                         content = rc
             except Exception:
                 content = j.get("choices", [{}])[0].get("text", "")
-            try:
-                parsed = json.loads(content)
-            except Exception:
-                m = re.search(r"\{[\s\S]*\}", content)
-                if m:
-                    try:
-                        parsed = json.loads(m.group(0))
-                    except Exception:
-                        pass
+            parsed = _parse_partial_json(content)
             if parsed:
                 approx_tokens = int((len(user_msg) + len(content)) / 4)
                 cost = (approx_tokens / 1000.0) * float(getattr(config, "ANALYSIS_COST_PER_1K_TOKENS", 0.003))
@@ -409,15 +401,7 @@ def _call_llm_for_dna(text: str, ontology_matched: List[str],
             resp.raise_for_status()
             j = resp.json()
             content = j.get("choices", [{}])[0].get("message", {}).get("content", "")
-            try:
-                parsed = json.loads(content)
-            except Exception:
-                m = re.search(r"\{[\s\S]*\}", content)
-                if m:
-                    try:
-                        parsed = json.loads(m.group(0))
-                    except Exception:
-                        pass
+            parsed = _parse_partial_json(content)
             approx_tokens = int((len(user_msg) + len(content)) / 4)
             cost = (approx_tokens / 1000.0) * float(getattr(config, "ANALYSIS_COST_PER_1K_TOKENS", 0.003))
             return parsed, approx_tokens, cost
@@ -648,6 +632,55 @@ def analyze_objective_dna(job: dict, trimmed_text: str,
 # Backward compat: extract_skills_and_reasoning
 # (used by reanalyze.py and harvester.py — wraps new ontology logic)
 # ═══════════════════════════════════════
+
+
+
+
+def _parse_partial_json(text: str):
+    """Try to parse JSON, with partial/truncated JSON recovery.
+    
+    Handles truncated responses (finish_reason=length).
+    """
+    if not text:
+        return None
+    # 1) Try normal full parse
+    try:
+        return json.loads(text)
+    except Exception:
+        pass
+    # 2) Extract first JSON block via regex
+    m = re.search(r"\{[\s\S]*\}", text)
+    if m:
+        candidate = m.group(0)
+        try:
+            return json.loads(candidate)
+        except Exception:
+            pass
+        # 3) Try to repair truncated JSON
+        repaired = candidate
+        # Close unclosed strings at end
+        if repaired.count('"') % 2 != 0:
+            repaired += '"'
+        # Close unclosed arrays
+        if repaired.count('[') > repaired.count(']'):
+            repaired += ']' * (repaired.count('[') - repaired.count(']'))
+        # Close unclosed objects
+        if repaired.count('{') > repaired.count('}'):
+            repaired += '}' * (repaired.count('{') - repaired.count('}'))
+        try:
+            return json.loads(repaired)
+        except Exception:
+            pass
+        # 4) Last resort: strip trailing partial key-value pairs
+        # Remove last incomplete item
+        last_brace = repaired.rfind('}')
+        if last_brace > 0:
+            try:
+                return json.loads(repaired[:last_brace + 1])
+            except Exception:
+                pass
+    return None
+
 
 
 def extract_skills_and_reasoning(text: str, user_interests: list, top_n: int = 4, ncs: str = "") -> tuple:
