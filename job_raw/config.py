@@ -27,8 +27,9 @@ ANALYSIS_MIN_CHARS_TO_CALL_LLM = int(os.getenv("ANALYSIS_MIN_CHARS_TO_CALL_LLM",
 # LLM request timeout (seconds) used by analyzer LLM calls. Increase to 60 for unstable networks.
 LLM_TIMEOUT = int(os.getenv("LLM_TIMEOUT", "60"))
 
-# LLM provider config: supports 'openai' or 'nvidia' (default: nvidia)
-LLM_PROVIDER = os.getenv("LLM_PROVIDER") or "nvidia"
+# LLM provider config: supports 'opencode-go', 'groq', 'openai', 'nvidia'
+# Default: opencode-go (deepseek-v4-flash via OpenCode Go)
+LLM_PROVIDER = os.getenv("LLM_PROVIDER") or "opencode-go"
 
 # NVIDIA Integrate API settings (used when LLM_PROVIDER=nvidia)
 NVIDIA_API_KEY = os.getenv("NVIDIA_API_KEY")

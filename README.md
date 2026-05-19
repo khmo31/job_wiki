@@ -97,6 +97,13 @@ job_wiki/
 
 **LLM은 옵션** — 키 없어도 파이프라인은 동작합니다.
 
+### LLM 제공자 우선순위
+
+1. **OpenCode Go** (`OPENCODE_API_KEY`) — `deepseek-v4-flash`, $0.14/M input, rate limit 없음
+2. Groq (`GROQ_API_KEY`) — `llama-3.3-70b`, 30 RPM 제한
+3. OpenAI (`OPENAI_API_KEY`) — `gpt-4o-mini`
+4. NVIDIA (`NVIDIA_API_KEY`) — `deepseek-ai/deepseek-v4-flash`
+
 ## 빠른 시작
 
 ```bash
@@ -106,7 +113,7 @@ source venv/bin/activate
 pip install -r requirements.txt
 
 # 2. 환경변수 설정 (선택)
-export GROQ_API_KEY="gsk_..."     # LLM 분석용 (없으면 regex-only)
+export OPENCODE_API_KEY="sk-..."   # LLM 분석용 (OpenCode Go, deepseek-v4-flash)
 export ALIO_API_KEY="..."         # 실제 ALIO API 수집용
 
 # 3. 수집 실행 (모의 데이터)
@@ -134,9 +141,10 @@ python scripts/merge_ontology.py
 | Secret | 용도 | 필수 |
 |--------|------|------|
 | `ALIO_API_KEY` | 실제 ALIO API 호출 | 수집 시 필수 |
-| `GROQ_API_KEY` | LLM 분석 (harvester + wiki) | 권장 |
-| `OPENAI_API_KEY` | GROQ 대체 | 선택 |
-| `NVIDIA_API_KEY` | GROQ 대체 | 선택 |
+| `OPENCODE_API_KEY` | LLM 분석 (OpenCode Go, deepseek-v4-flash) | 권장 |
+| `GROQ_API_KEY` | Groq 대체 (fallback) | 선택 |
+| `OPENAI_API_KEY` | OpenAI 대체 (fallback) | 선택 |
+| `NVIDIA_API_KEY` | NVIDIA 대체 (fallback) | 선택 |
 
 ## 주요 버그 수정 (2026-05-19)
 

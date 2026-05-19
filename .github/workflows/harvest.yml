@@ -54,9 +54,9 @@ jobs:
           ALIO_API_KEY: ${{ secrets.ALIO_API_KEY }}
           ALIO_ENDPOINT: ${{ secrets.ALIO_ENDPOINT || 'https://opendata.alio.go.kr/new/v1/recruit/list.do' }}
           ALIO_MAX_PAGES: "10"
-          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
-          LLM_PROVIDER: groq
-          LLM_EXTRACT_MODEL: llama-3.3-70b-versatile
+          OPENCODE_API_KEY: ${{ secrets.OPENCODE_API_KEY }}
+          LLM_PROVIDER: opencode-go
+          LLM_EXTRACT_MODEL: deepseek-v4-flash
           NCS_FILTER_MODE: off
           DETAIL_MAX_DETAIL_CALLS: "50"
           ANALYSIS_MIN_CHARS_TO_CALL_LLM: "300"
@@ -70,8 +70,8 @@ jobs:
       - name: Step 2 — Wiki 변환 (Raw → Analysis + Index)
         id: wiki
         env:
-          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
-          LLM_EXTRACT_MODEL: llama-3.3-70b-versatile
+          OPENCODE_API_KEY: ${{ secrets.OPENCODE_API_KEY }}
+          LLM_EXTRACT_MODEL: deepseek-v4-flash
         run: |
           cd job_raw
           python scripts/wiki_generator.py 2>&1

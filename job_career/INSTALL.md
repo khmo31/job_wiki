@@ -20,16 +20,18 @@ pip install crewai  # 커스텀 도구용
 
 ## 환경변수
 
-매칭 엔진은 3가지 LLM 제공자를 지원합니다 (우선순위 순):
+매칭 엔진은 4가지 LLM 제공자를 지원합니다 (우선순위 순):
 
 | 변수 | 예시 | 제공자 |
 |------|------|--------|
-| `GROQ_API_KEY` | `gsk_...` | Groq (1순위) |
-| `OPENAI_API_KEY` | `sk-...` | OpenAI (2순위) |
-| `NVIDIA_API_KEY` | `nvapi-...` | NVIDIA (3순위) |
+| `OPENCODE_API_KEY` | (OpenClaw key) | OpenCode Go (1순위, deepseek-v4-flash) |
+| `GROQ_API_KEY` | `gsk_...` | Groq (2순위) |
+| `OPENAI_API_KEY` | `sk-...` | OpenAI (3순위) |
+| `NVIDIA_API_KEY` | `nvapi-...` | NVIDIA (4순위) |
 
 선택적 변수:
-- `LLM_EXTRACT_MODEL`: 사용할 모델명 (기본: `llama-3.3-70b-versatile`)
+- `LLM_EXTRACT_MODEL`: 사용할 모델명 (기본: `deepseek-v4-flash`)
+- `OPENCODE_BASE_URL`: OpenCode Go API 엔드포인트 (기본: `https://opencode.ai/zen/go/v1`)
 - `ONTOLOGY_CHECK_CACHE_TTL`: 온톨로지 캐시 TTL (초, 기본 60)
 
 ## 실행

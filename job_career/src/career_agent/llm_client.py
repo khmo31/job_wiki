@@ -43,6 +43,8 @@ def _log(message: str) -> None:
 
 
 def _detect_provider() -> str:
+    if os.getenv("OPENCODE_API_KEY"):
+        return "opencode-go"
     if os.getenv("GROQ_API_KEY"):
         return "groq"
     if os.getenv("OPENAI_API_KEY"):
@@ -54,6 +56,11 @@ def _detect_provider() -> str:
 
 def _provider_config(provider: str) -> dict[str, Any]:
     configs = {
+        "opencode-go": {
+            "base_url": os.getenv("OPENCODE_BASE_URL", "https://opencode.ai/zen/go/v1"),
+            "api_key": os.getenv("OPENCODE_API_KEY", ""),
+            "model": os.getenv("LLM_EXTRACT_MODEL", "deepseek-v4-flash"),
+        },
         "groq": {
             "base_url": os.getenv("GROQ_BASE_URL", "https://api.groq.com/openai/v1"),
             "api_key": os.getenv("GROQ_API_KEY", ""),

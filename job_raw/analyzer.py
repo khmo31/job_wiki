@@ -207,6 +207,54 @@ def _call_llm_for_dna(text: str, explicit_skills: List[str], domain_hint: Option
     approx_tokens = 0
     cost = 0.0
 
+    if provider == "opencode-go":
+        api_key = os.getenv("OPENCODE_API_KEY")
+        if not api_key:
+            return None, 0, 0.0
+        base_url = os.getenv("OPENCODE_BASE_URL", "https://opencode.ai/zen/go/v1").rstrip("/")
+        model = os.getenv("LLM_EXTRACT_MODEL", "deepseek-v4-flash")
+
+        payload = {
+            "model": model,
+            "messages": [
+                {"role": "system", "content": system},
+                {"role": "user", "content": user_msg},
+            ],
+            "temperature": 0.0,
+            "max_tokens": 256,
+        }
+        headers = {"Authorization": f"Bearer {api_key}", "Content-Type": "application/json"}
+        try:
+            resp = requests.post(
+                f"{base_url}/chat/completions",
+                headers=headers,
+                json=payload,
+                timeout=30,
+            )
+            resp.raise_for_status()
+            j = resp.json()
+            content = ""
+            try:
+                content = j["choices"][0]["message"]["content"]
+            except Exception:
+                content = j.get("choices", [{}])[0].get("text", "")
+
+            try:
+                parsed = json.loads(content)
+            except Exception:
+                m = re.search(r"\{[\s\S]*\}", content)
+                if m:
+                    try:
+                        parsed = json.loads(m.group(0))
+                    except Exception:
+                        parsed = None
+
+            approx_tokens = int((len(user_msg) + len(content)) / 4)
+            cost = (approx_tokens / 1000.0) * float(getattr(config, "ANALYSIS_COST_PER_1K_TOKENS", 0.003))
+            return parsed, approx_tokens, cost
+        except Exception as e:
+            return None, 0, 0.0
+
     if provider == "nvidia":
         api_key = os.getenv("NVIDIA_API_KEY") or getattr(config, "NVIDIA_API_KEY", None)
         if not api_key:
@@ -576,7 +624,9 @@ def analyze_objective_dna(job: dict, trimmed_text: str, alio_id: Optional[str] =
         call_llm = True
     else:
         if len(trimmed) >= getattr(config, "ANALYSIS_MIN_CHARS_TO_CALL_LLM", 80):
-            if provider == "nvidia" and (os.getenv("NVIDIA_API_KEY") or getattr(config, "NVIDIA_API_KEY", None)):
+            if provider == "opencode-go" and os.getenv("OPENCODE_API_KEY"):
+                call_llm = True
+            elif provider == "nvidia" and (os.getenv("NVIDIA_API_KEY") or getattr(config, "NVIDIA_API_KEY", None)):
                 call_llm = True
             elif provider == "openai" and (os.getenv("OPENAI_API_KEY") or os.getenv("OPENAI_API_TOKEN")):
                 call_llm = True
@@ -632,7 +682,15 @@ def analyze_objective_dna(job: dict, trimmed_text: str, alio_id: Optional[str] =
             combined = list(dict.fromkeys(list(explicit) + list(analysis["skills_additional"]) + list(analysis["latent_skills"])))
             analysis["skills_found"] = combined
             analysis["method"] = "regex+llm"
-            analysis["model"] = parsed.get("model") if isinstance(parsed, dict) and parsed.get("model") else (getattr(config, "NVIDIA_MODEL", None) if provider == "nvidia" else getattr(config, "ANALYSIS_MODEL", None))
+            # Determine model name for the analysis record
+            if isinstance(parsed, dict) and parsed.get("model"):
+                analysis["model"] = parsed.get("model")
+            elif provider == "opencode-go":
+                analysis["model"] = os.getenv("LLM_EXTRACT_MODEL", "deepseek-v4-flash")
+            elif provider == "nvidia":
+                analysis["model"] = getattr(config, "NVIDIA_MODEL", None)
+            else:
+                analysis["model"] = getattr(config, "ANALYSIS_MODEL", None)
             analysis["tokens"] = tokens_used
             analysis["cost"] = cost
         else:
