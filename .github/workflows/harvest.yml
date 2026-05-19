@@ -14,6 +14,10 @@ on:
         description: '수집 기간(일)'
         type: number
         default: 7
+      count:
+        description: '분석 제한 개수 (비워두면 전체)'
+        type: number
+        default: 0
 
 permissions:
   contents: write
@@ -64,8 +68,10 @@ jobs:
           cd job_raw
           DAYS="${{ github.event_name == 'schedule' && '7' || inputs.days || '7' }}"
           DAYS="${DAYS%.*}"  # float → int (GitHub number 입력 버그 대응)
+          COUNT="${{ github.event_name == 'schedule' && '' || inputs.count || '' }}"
+          COUNT="${COUNT%.*}"
           MOCK="${{ (github.event_name == 'schedule' || !inputs.mock) && '--no-mock' || '' }}"
-          python scripts/main.py $MOCK --days $DAYS 2>&1
+          python scripts/main.py $MOCK --days $DAYS ${COUNT:+--count $COUNT} 2>&1
 
       # ── Step 2: Wiki 변환 ──
       - name: Step 2 — Wiki 변환 (Raw → Analysis + Index)
