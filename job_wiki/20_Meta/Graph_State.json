@@ -1,61 +1,25 @@
 {
-  "generated_at": "2026-05-01T00:00:00+09:00",
-  "analysis_count": 20,
-  "companies_count": 11,
-  "skills_count": 52,
-  "total_wiki_files": 83,
-  "wiki_index_count": 20,
-  "skill_references_in_analysis": 74,
-  "notes": "Counts computed from 10_Wiki files during this session. 'total_wiki_files' = Analysis + Companies + Skills. 'skill_references_in_analysis' = total number of skill mentions in Analysis files."
+  "generated_at": "2026-05-19T03:23:49+00:00",
+  "analysis_count": 417,
+  "companies_count": 121,
+  "skills_count": 830,
+  "total_wiki_files": 847,
+  "wiki_index_count": 417,
+  "skill_references_in_analysis": 2236,
+  "notes": "Recovered from bugfix run on 2026-05-19."
 }
 {
-  "last_updated": "2026-04-30",
+  "last_updated": "2026-05-19",
   "stats": {
-    "total_companies": 13,
-    "total_skills": 26,
-    "active_matches": 2,
-    "graph_density": 0.10
+    "total_companies": 121,
+    "total_skills": 830,
+    "active_matches": 0,
+    "graph_density": 0.13
   },
-  "nodes": [
-    { "id": "user_profile", "type": "root", "label": "나의 경력/경험" },
-    { "id": "company_ALIO-2026-0002", "type": "company", "label": "한국산업기술원 (제조로봇)" },
-    { "id": "company_ALIO-2026-0001", "type": "company", "label": "국립자동화연구소 (스마트팩토리)" },
-    { "id": "company_한국어촌어항공단", "type": "company", "label": "한국어촌어항공단" },
-    { "id": "company_충남대학교병원", "type": "company", "label": "충남대학교병원" },
-    { "id": "company_한국물기술인증원", "type": "company", "label": "한국물기술인증원" },
-    { "id": "company_KDI국제정책대학원", "type": "company", "label": "KDI국제정책대학원" },
-    { "id": "company_한국환경연구원", "type": "company", "label": "한국환경연구원" },
-    { "id": "company_근로복지공단", "type": "company", "label": "근로복지공단" },
-    { "id": "company_한국도로공사", "type": "company", "label": "한국도로공사" },
-    { "id": "company_경북대학교병원", "type": "company", "label": "경북대학교병원" },
-    { "id": "company_에너지경제연구원", "type": "company", "label": "에너지경제연구원" },
-    { "id": "company_대한적십자사", "type": "company", "label": "대한적십자사" },
-    { "id": "company_한국문화예술위원회", "type": "company", "label": "한국문화예술위원회" },
-    { "id": "insights_2026-04-29_batch", "type": "insights", "label": "Batch Insights 2026-04-29" },
-    { "id": "moc_제조로봇", "type": "moc", "label": "제조로봇 MOC" },
-    { "id": "moc_스마트팩토리", "type": "moc", "label": "스마트팩토리 MOC" }
-  ],
-  "edges": [
-    { "source": "user_profile", "target": "company_ALIO-2026-0002", "type": "matched" },
-    { "source": "company_ALIO-2026-0002", "target": "moc_제조로봇", "type": "related" },
-    { "source": "user_profile", "target": "company_ALIO-2026-0001", "type": "matched" },
-    { "source": "company_ALIO-2026-0001", "target": "moc_스마트팩토리", "type": "related" },
-    { "source": "insights_2026-04-29_batch", "target": "company_한국어촌어항공단", "type": "insights_for" },
-    { "source": "insights_2026-04-29_batch", "target": "company_충남대학교병원", "type": "insights_for" },
-    { "source": "insights_2026-04-29_batch", "target": "company_한국물기술인증원", "type": "insights_for" },
-    { "source": "insights_2026-04-29_batch", "target": "company_KDI국제정책대학원", "type": "insights_for" },
-    { "source": "insights_2026-04-29_batch", "target": "company_한국환경연구원", "type": "insights_for" },
-    { "source": "insights_2026-04-29_batch", "target": "company_근로복지공단", "type": "insights_for" },
-    { "source": "insights_2026-04-29_batch", "target": "company_한국도로공사", "type": "insights_for" },
-    { "source": "insights_2026-04-29_batch", "target": "company_경북대학교병원", "type": "insights_for" },
-    { "source": "insights_2026-04-29_batch", "target": "company_에너지경제연구원", "type": "insights_for" },
-    { "source": "insights_2026-04-29_batch", "target": "company_대한적십자사", "type": "insights_for" },
-    { "source": "insights_2026-04-29_batch", "target": "company_한국문화예술위원회", "type": "insights_for" }
-  ],
+  "nodes": [],
+  "edges": [],
   "clusters": {
-    "high_gravity_skills": ["임베디드","C/C++","아두이노","PLC","ROS","자동화 알고리즘"],
-    "target_industries": ["제조로봇","스마트팩토리","보건의료","연구","운전.운송","문화예술"]
+    "high_gravity_skills": [],
+    "target_industries": []
   }
 }
-
-

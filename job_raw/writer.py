@@ -104,18 +104,17 @@ def get_index_entry(alio_id: str, base_dir: str = ".", raw_dir: str = "00_Raw") 
 
 def save_markdown(content: str, base_dir: str = ".", filename: str = "untitled.md", alio_id: Optional[str] = None, job_raw: Optional[dict] = None) -> Optional[str]:
     raw_dir = ensure_dirs(base_dir=base_dir)
-    # if alio_id provided and exists, skip
-    if alio_id and exists_for_id(alio_id, base_dir, raw_dir):
+    path = os.path.join(raw_dir, filename)
+    # Skip if the actual file already exists on disk (dedup by filename, not by index)
+    if os.path.exists(path):
         return None
 
-    path = os.path.join(raw_dir, filename)
     with open(path, "w", encoding="utf-8") as f:
         f.write(content)
 
-    # save raw json archive and update index (filename)
+    # save raw json archive and update index (filename + content_hash)
     if alio_id and job_raw is not None:
         save_json_archive(job_raw, alio_id, base_dir, raw_dir)
-        # write/update index with filename; analysis and content_hash will be updated by analyzer later
         update_index_entry(alio_id, filename=filename, base_dir=base_dir, raw_dir=raw_dir)
 
     return path

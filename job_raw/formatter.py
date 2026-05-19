@@ -66,6 +66,8 @@ def render_markdown(job: Dict, skills: List[str], reasoning: Dict[str, str], ana
     body.append("---")
     body.append("## 원본 공고(아카이브)")
     raw = job.get("raw") if isinstance(job, dict) and job.get("raw") else job
+    # Data may be nested under 'list' (ALIO) or flat (legacy)
+    raw_list = raw.get("list", {}) if isinstance(raw, dict) else {}
     # list of common ALIO raw fields to preserve
     raw_keys = [
         ("기관명", "instNm"),
@@ -84,7 +86,9 @@ def render_markdown(job: Dict, skills: List[str], reasoning: Dict[str, str], ana
     ]
     for label, key in raw_keys:
         try:
-            val = raw.get(key) if isinstance(raw, dict) else None
+            val = raw_list.get(key) if isinstance(raw_list, dict) else None
+            if not val:
+                val = raw.get(key) if isinstance(raw, dict) else None
             if val:
                 body.append(f"- {label}: {str(val).strip()}")
         except Exception:

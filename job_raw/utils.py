@@ -15,13 +15,23 @@ def slugify_segment(text: str) -> str:
     return text
 
 
+def _raw_list(raw: dict | None) -> dict:
+    """Extract the list sub-dict from a raw dict (supports nested raw.list format)."""
+    if raw and isinstance(raw, dict):
+        lst = raw.get("list")
+        if isinstance(lst, dict):
+            return lst
+    return {}
+
+
 def filename_from_job(job: dict) -> str:
     # Prefer posted_date or date fields, otherwise use today
     date = job.get("posted_date") or job.get("date") or None
     # If nested raw contains pbancBgngYmd, prefer that
     raw = job.get("raw") if isinstance(job, dict) else None
+    raw_list = _raw_list(raw)
     if not date and raw:
-        date = raw.get("pbancBgngYmd") or raw.get("pbancBgngYmd")
+        date = raw_list.get("pbancBgngYmd") or raw.get("pbancBgngYmd")
     if not date:
         date = datetime.now().strftime("%Y-%m-%d")
     date_key = str(date).replace("-", "")
@@ -29,7 +39,9 @@ def filename_from_job(job: dict) -> str:
     # Prefer institution name from raw (instNm) then fallback to company/title fields
     company = "unknown"
     try:
-        if raw and raw.get("instNm"):
+        if raw_list and raw_list.get("instNm"):
+            company = raw_list.get("instNm")
+        elif raw and raw.get("instNm"):
             company = raw.get("instNm")
         else:
             company = job.get("company") or job.get("instNm") or "unknown"
@@ -39,10 +51,12 @@ def filename_from_job(job: dict) -> str:
     # Prefer recruitment publication title if present
     title = "untitled"
     try:
-        if raw and raw.get("recrutPbancTtl"):
+        if raw_list and raw_list.get("recrutPbancTtl"):
+            title = raw_list.get("recrutPbancTtl")
+        elif raw and raw.get("recrutPbancTtl"):
             title = raw.get("recrutPbancTtl")
         else:
-            title = job.get("title") or job.get("recrutPbancTtl") or job.get("recrutPbancTtl") or "untitled"
+            title = job.get("title") or job.get("recrutPbancTtl") or "untitled"
     except Exception:
         title = job.get("title") or "untitled"
 
@@ -64,11 +78,18 @@ def filename_from_job(job: dict) -> str:
 
 
 def extract_alio_id(job: dict) -> str:
-    # Prefer explicit id field, otherwise attempt to find common keys in raw
+    # Prefer explicit id field
     if job.get("id"):
         return str(job.get("id"))
     raw = job.get("raw") or {}
     if isinstance(raw, dict):
+        # Check raw.list first (ALIO API nested format)
+        raw_list_src = raw.get("list", {})
+        if isinstance(raw_list_src, dict):
+            for k in ("recrutPblntSn", "id", "idx", "postNo", "noticeNo", "jobId", "recruitmentNo", "postId"):
+                if k in raw_list_src and raw_list_src[k]:
+                    return str(raw_list_src[k])
+        # Fallback to raw top-level
         for k in ("id", "idx", "postNo", "noticeNo", "jobId", "recruitmentNo", "postId"):
             if k in raw and raw[k]:
                 return str(raw[k])

@@ -280,6 +280,8 @@ def generate_wiki_entry(alio_id: str, raw_index: dict) -> bool:
     # Extract metadata
     analysis = archive.get("analysis", {}) if archive else {}
     raw_data = archive.get("raw", {}) if archive else {}
+    # Data may be nested under 'list' (ALIO API raw.list) or flat (legacy format)
+    raw_list = raw_data.get("list", {}) if isinstance(raw_data, dict) else {}
 
     # Fallback: parse from raw markdown YAML frontmatter
     if not analysis and raw_text:
@@ -288,15 +290,15 @@ def generate_wiki_entry(alio_id: str, raw_index: dict) -> bool:
             "skills_found": front.get("skills", "").split(", "),
         }
 
-    company = raw_data.get("company") or raw_data.get("instNm") or analysis.get("company") or ""
-    title = raw_data.get("title") or raw_data.get("recrutPbancTtl") or analysis.get("title") or ""
-    captured_at = raw_data.get("captured_at", "") or analysis.get("captured_at", datetime.now(timezone.utc).strftime("%Y-%m-%d"))
+    company = (raw_list.get("instNm") or raw_data.get("company") or raw_data.get("instNm") or analysis.get("company") or "")
+    title = (raw_list.get("recrutPbancTtl") or raw_data.get("title") or raw_data.get("recrutPbancTtl") or analysis.get("title") or "")
+    captured_at = (raw_data.get("captured_at", "") or analysis.get("captured_at", datetime.now(timezone.utc).strftime("%Y-%m-%d")))
 
     # Determine domain
     domain = analysis.get("domain_context", "") or ""
     if not domain:
         # Try to infer from NCS or company type
-        ncs = raw_data.get("ncs_nm", "") or ""
+        ncs = raw_list.get("ncsCdNmLst") or raw_data.get("ncs_nm", "") or raw_data.get("ncs_nm", "") or ""
         if "의료" in ncs or "병원" in company:
             domain = "보건.의료"
         elif "연구" in ncs or "연구원" in company:
@@ -322,7 +324,7 @@ def generate_wiki_entry(alio_id: str, raw_index: dict) -> bool:
 
     # Wiki index entry
     wiki_index = _load_wiki_index()
-    date_str = raw_data.get("pbancBgngYmd") or ""
+    date_str = raw_list.get("pbancBgngYmd") or raw_data.get("pbancBgngYmd") or ""
     wiki_filename = _format_wiki_filename(alio_id, company, title, date_str=date_str)
     existing = wiki_index.get(wiki_filename)
 
@@ -385,9 +387,10 @@ def generate_wiki_entry(alio_id: str, raw_index: dict) -> bool:
         if archive:
             rd = archive.get("raw", {})
             if isinstance(rd, dict):
+                raw_list_src = rd.get("list", {}) if isinstance(rd, dict) else {}
                 parts = []
                 for key in ("recrutPbancTtl", "aplyQlfcCn", "prefCondCn", "prefCn", "scrnprcdrMthdExpln"):
-                    val = rd.get(key, "")
+                    val = raw_list_src.get(key) or rd.get(key, "")
                     if val and isinstance(val, str):
                         parts.append(val)
                 if parts:
