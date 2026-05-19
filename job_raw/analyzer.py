@@ -265,7 +265,7 @@ def _call_llm_for_dna(text: str, ontology_matched: List[str],
         try:
             resp = requests.post(
                 f"{base_url}/chat/completions",
-                headers=headers, json=payload, timeout=30,
+                headers=headers, json=payload, timeout=90,
             )
             resp.raise_for_status()
             j = resp.json()
