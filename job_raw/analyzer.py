@@ -88,13 +88,53 @@ def _match_ontology_keywords(text: str) -> List[str]:
         nk = _normalize_for_match(kw)
         if nk in seen:
             continue
+
+        # 1) direct substring match
         if nk in cleaned_lower or kw.lower() in cleaned_lower:
-            # map synonym to standard keyword
             std = _ONTOLOGY_SYNONYM_MAP.get(kw, kw)
             norm_std = _normalize_for_match(std)
             if norm_std not in seen:
                 found.append(std)
                 seen.add(norm_std)
+            continue
+
+        # 2) word-level partial match (보조)
+        #    "간호사" (kw word) matches "간호" (text word) via containment
+        #    조건: 최소 3글자, 포함 비율 50% 이상, stopword 제외
+        _STOPWORDS = {"관리", "시스템", "운영", "기술", "지원", "업무", "평가", "검사", "개발",
+                      "교육", "능력", "처리", "계획", "정보", "분석", "기반", "이해", "조직"}
+        kw_words = nk.split()
+        if not kw_words:
+            continue
+        text_words = [w for w in cleaned_lower.split()
+                      if len(w) >= 3 and w not in _STOPWORDS]
+        if not text_words:
+            continue
+        matched = False
+        for kw_word in kw_words:
+            if len(kw_word) < 3 or kw_word in _STOPWORDS:
+                continue
+            for tw in text_words:
+                if len(tw) < 3 or tw in _STOPWORDS:
+                    continue
+                # proportion check: the containER must be >= 50% longer than containEE
+                if kw_word in tw:
+                    ratio = len(kw_word) / len(tw)
+                elif tw in kw_word:
+                    ratio = len(tw) / len(kw_word)
+                else:
+                    continue
+                if ratio >= 0.5:
+                    std = _ONTOLOGY_SYNONYM_MAP.get(kw, kw)
+                    norm_std = _normalize_for_match(std)
+                    if norm_std not in seen:
+                        found.append(std)
+                        seen.add(norm_std)
+                    matched = True
+                    break
+            if matched:
+                break
+
     return found
 
 
@@ -571,3 +611,40 @@ def analyze_objective_dna(job: dict, trimmed_text: str,
         pass
 
     return analysis
+
+
+# ═══════════════════════════════════════
+# Backward compat: extract_skills_and_reasoning
+# (used by reanalyze.py and harvester.py — wraps new ontology logic)
+# ═══════════════════════════════════════
+
+
+def extract_skills_and_reasoning(text: str, user_interests: list, top_n: int = 4, ncs: str = "") -> tuple:
+    """Backward-compatible wrapper for legacy callers.
+
+    Uses ontology matching + LLM extraction internally.
+    Returns (skills_list, reason_string).
+    """
+    preprocessed = preprocess_text(text)
+    onto_matched = _match_ontology_keywords(preprocessed)
+
+    provider = getattr(config, "LLM_PROVIDER", os.getenv("LLM_PROVIDER", "opencode-go")).lower()
+    has_key = (
+        (provider == "opencode-go" and os.getenv("OPENCODE_API_KEY"))
+        or (provider == "nvidia" and (os.getenv("NVIDIA_API_KEY") or getattr(config, "NVIDIA_API_KEY", None)))
+        or (provider == "openai" and (os.getenv("OPENAI_API_KEY") or os.getenv("OPENAI_API_TOKEN")))
+        or (provider == "groq" and os.getenv("GROQ_API_KEY"))
+    )
+    if has_key and len(preprocessed) >= 50:
+        parsed, _, _ = _call_llm_for_dna(preprocessed, onto_matched, ncs_text=ncs if ncs else None)
+        if parsed:
+            all_kw = parsed.get("all_keywords", []) or []
+            combined = list(dict.fromkeys(onto_matched + all_kw))[:top_n]
+            reason = f"ontology+llm: {parsed.get('core_logic', '') or ''}"
+            return combined, reason
+
+    if onto_matched:
+        return onto_matched[:top_n], f"ontology_match: {len(onto_matched)} keywords found"
+
+    h = _heuristic_analysis(preprocessed, [], ncs_text=ncs)
+    return [], f"heuristic_fallback: {h.get('core_logic', '') or ''}"
