@@ -3,19 +3,19 @@
 ## 요구사항
 
 - Python 3.11+
-- 요청: `pip install -r ../requirements.txt` (루트 requirements.txt 사용)
-- CrewAI (온톨로지 검증 도구용, 경량)
-- LLM API 키 (선택 — 없으면 regex+Ontology fallback)
+- `conda activate job_career`
+- `pip install -e .` 로 `job_career` 패키지 설치
+- LLM API 키 (선택 — 없으면 regex+facet fallback)
 
 ## 설치
 
 ```bash
-# 1. 루트 requirements.txt 설치
-cd job_wiki
-pip install -r requirements.txt
+# 1. conda 환경 활성화
+conda activate job_career
 
-# 2. job_career 전용 추가 패키지
-pip install crewai  # 커스텀 도구용
+# 2. job_career 패키지 설치
+cd job_wiki/job_career
+pip install -e .
 ```
 
 ## 환경변수
@@ -48,9 +48,9 @@ python src/career_agent/main_batch.py
 python server.py
 ```
 
-## 온톨로지 캐시
+## 캐시
 
-`20_Meta/ontology_cache.json`에 온톨로지 검증 결과가 TTL 기간 동안 캐시됩니다.
+`20_Meta/ontology_cache.json`에 검증 결과가 TTL 기간 동안 캐시됩니다.
 캐시 초기화가 필요하면:
 ```bash
 rm job_wiki/20_Meta/ontology_cache.json
@@ -62,9 +62,8 @@ rm job_wiki/20_Meta/ontology_cache.json
 
 ```
 job_wiki/20_Meta/
-├── Ontology_Map.json      # 표준 키워드 + 동의어 (필수)
-├── Wiki_Index.json        # 검색 인덱스 (필수, 417 entries)
-└── Suggested_Keywords.json # LLM 제안 키워드 (선택)
+├── Facet_Index.json       # facet 집계 색인 (필수)
+└── ontology_cache.json    # 검증 캐시 (선택)
 ```
 
-Wiki_Index.json이 비어있으면 (`{}`) 먼저 wiki_generator.py를 실행하세요.
+Facet_Index.json이 없으면 먼저 `job_core/scripts/wiki_generator.py`를 실행하세요.

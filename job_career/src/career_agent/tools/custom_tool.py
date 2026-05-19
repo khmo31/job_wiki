@@ -15,8 +15,8 @@ from pydantic import BaseModel, Field
 
 
 PROJECT_ROOT = Path(__file__).resolve().parents[3]
-WIKI_ANALYSIS_ROOT = PROJECT_ROOT.parent / "job_wiki" / "10_Wiki" / "Analysis"
 META_ROOT = PROJECT_ROOT.parent / "job_wiki" / "20_Meta"
+RAW_ARCHIVE_ROOT = PROJECT_ROOT.parent / "job_raw" / "00_Raw"
 
 
 def _normalize_keyword(value: str) -> str:
@@ -103,7 +103,7 @@ def _load_ontology_mappings() -> tuple[dict[str, list[str]], str | None]:
 
 @lru_cache(maxsize=1)
 def _load_wiki_index() -> tuple[dict[str, dict], str | None]:
-    index_file = META_ROOT / "Wiki_Index.json"
+    index_file = META_ROOT / "Facet_Index.json"
     if not index_file.exists():
         return {}, None
 
@@ -112,14 +112,68 @@ def _load_wiki_index() -> tuple[dict[str, dict], str | None]:
     except Exception:
         return {}, str(index_file)
 
-    entries = payload.get("entries", {}) if isinstance(payload, dict) else {}
-    if not isinstance(entries, dict):
+    categories = payload.get("categories", {}) if isinstance(payload, dict) else {}
+    if not isinstance(categories, dict):
         return {}, str(index_file)
 
     normalized_entries: dict[str, dict] = {}
-    for file_name, entry in entries.items():
-        if isinstance(file_name, str) and isinstance(entry, dict):
-            normalized_entries[file_name] = entry
+    for category_key, label_map in categories.items():
+        if not isinstance(category_key, str) or not isinstance(label_map, dict):
+            continue
+
+        for facet_label, items in label_map.items():
+            if not isinstance(facet_label, str) or not isinstance(items, list):
+                continue
+
+            for item in items:
+                if not isinstance(item, dict):
+                    continue
+
+                raw_filename = str(item.get("raw_filename") or "").strip()
+                if not raw_filename:
+                    alio_id = str(item.get("alio_id") or "").strip()
+                    raw_filename = f"{category_key}_{facet_label}_{alio_id}.md" if alio_id else f"{category_key}_{facet_label}.md"
+
+                entry = normalized_entries.setdefault(
+                    raw_filename,
+                    {
+                        "company": "",
+                        "title": "",
+                        "date": "",
+                        "raw_filename": raw_filename,
+                        "categories": [],
+                        "facet_labels": [],
+                        "keywords": [],
+                        "summary": "",
+                    },
+                )
+
+                company = str(item.get("company") or "").strip()
+                title = str(item.get("title") or "").strip()
+                date = str(item.get("date") or "").strip()
+
+                if company and not entry["company"]:
+                    entry["company"] = company
+                if title and not entry["title"]:
+                    entry["title"] = title
+                if date and not entry["date"]:
+                    entry["date"] = date
+
+                categories_list = entry.setdefault("categories", [])
+                if category_key not in categories_list:
+                    categories_list.append(category_key)
+
+                labels_list = entry.setdefault("facet_labels", [])
+                if facet_label not in labels_list:
+                    labels_list.append(facet_label)
+
+                keywords_list = entry.setdefault("keywords", [])
+                for keyword in (category_key, facet_label, company, title):
+                    if keyword and keyword not in keywords_list:
+                        keywords_list.append(keyword)
+
+                summary_parts = [part for part in (", ".join(categories_list), ", ".join(labels_list)) if part]
+                entry["summary"] = " / ".join(summary_parts)
 
     return normalized_entries, str(index_file)
 
@@ -177,8 +231,12 @@ def _find_wiki_file(file_name: str) -> Path | None:
     if not wiki_index:
         return None
 
+    raw_candidate = RAW_ARCHIVE_ROOT / requested_name
+    if raw_candidate.exists():
+        return raw_candidate
+
     for indexed_file_name in wiki_index.keys():
-        indexed_path = WIKI_ANALYSIS_ROOT / indexed_file_name
+        indexed_path = RAW_ARCHIVE_ROOT / indexed_file_name
         if indexed_file_name.lower() == requested_name.lower() or indexed_path.stem.lower() == requested_stem.lower():
             if indexed_path.exists():
                 return indexed_path
@@ -196,7 +254,7 @@ class OntologyCheckInput(BaseModel):
 
 class WikiReadOnlyTool(BaseTool):
     name: str = "wiki_read_only_tool"
-    description: str = "키워드를 입력하면 Wiki_Index.json을 빠르게 검색하여 관련 파일명 목록을 알려줍니다. 정확한 파일명(.md)을 입력하면 해당 파일의 핵심 섹션만 추출해 반환합니다."
+    description: str = "키워드를 입력하면 Facet_Index.json을 빠르게 검색하여 관련 raw 파일명 목록을 알려줍니다. 정확한 파일명(.md)을 입력하면 해당 파일의 앞부분을 반환합니다."
     args_schema: Type[BaseModel] = WikiReadOnlyInput
 
     def _log(self, message: str) -> None:
@@ -226,8 +284,8 @@ class WikiReadOnlyTool(BaseTool):
         if extracted_parts:
             return "\n\n".join(extracted_parts)
         else:
-            # 혹시라도 못 찾으면 앞부분 800자만 반환
-            return content[:800] + "\n\n...(생략됨)..."
+            # raw/facet 문서는 앞부분만 반환
+            return content[:1200] + ("\n\n...(생략됨)..." if len(content) > 1200 else "")
 
     def _run(self, file_name: str) -> str:
         query = file_name.strip().replace("[[", "").replace("]]", "")
@@ -247,7 +305,7 @@ class WikiReadOnlyTool(BaseTool):
 
         wiki_index, _ = _load_wiki_index()
         if not wiki_index:
-            return f"위키 색인에서 '{query}'에 해당하는 문서를 찾을 수 없습니다."
+            return f"facet 색인에서 '{query}'에 해당하는 문서를 찾을 수 없습니다."
 
         search_terms = _split_keywords(query)
         if not search_terms:
@@ -288,9 +346,9 @@ class WikiReadOnlyTool(BaseTool):
                 scored_entries.append((score, file_name, entry))
 
         if not scored_entries:
-            return f"위키 색인에서 '{query}'에 해당하는 문서를 찾을 수 없습니다."
+            return f"facet 색인에서 '{query}'에 해당하는 문서를 찾을 수 없습니다."
 
-        lines = ["색인 검색 결과, 상위 3개 파일만 제공합니다. 상세 본문을 보려면 파일명(.md)을 다시 이 도구에 입력하세요."]
+        lines = ["facet 색인 검색 결과, 상위 3개 raw 파일만 제공합니다. 상세 본문을 보려면 파일명(.md)을 다시 이 도구에 입력하세요."]
         scored_entries.sort(key=lambda item: (-item[0], item[1]))
         for index, (_, file_name, entry) in enumerate(scored_entries[:3], start=1):
             company = entry.get("company", "미상")

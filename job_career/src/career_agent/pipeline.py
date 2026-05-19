@@ -7,13 +7,52 @@ import sys
 from pathlib import Path
 from typing import Any
 
-from .tools import OntologyCheckTool, WikiReadOnlyTool
+from functools import lru_cache
+
+from .tools import WikiReadOnlyTool
 from .tools.custom_tool import (
     _is_group_keyword,
-    _load_ontology_mappings,
     _load_wiki_index,
     _normalize_keyword,
 )
+
+
+FACET_INDEX_FILE = Path(__file__).resolve().parents[3].parent / "job_wiki" / "20_Meta" / "Facet_Index.json"
+
+
+@lru_cache(maxsize=1)
+def _load_facet_keywords() -> list[str]:
+    if not FACET_INDEX_FILE.exists():
+        return []
+
+    try:
+        payload = json.loads(FACET_INDEX_FILE.read_text(encoding="utf-8"))
+    except Exception:
+        return []
+
+    categories = payload.get("categories", {}) if isinstance(payload, dict) else {}
+    if not isinstance(categories, dict):
+        return []
+
+    keywords: list[str] = []
+    seen: set[str] = set()
+
+    for category_key, label_map in categories.items():
+        if not isinstance(category_key, str) or not isinstance(label_map, dict):
+            continue
+
+        for facet_label, items in label_map.items():
+            if not isinstance(facet_label, str) or not isinstance(items, list):
+                continue
+
+            for candidate in (category_key, facet_label):
+                normalized = _normalize_keyword(candidate)
+                if not normalized or normalized in seen:
+                    continue
+                seen.add(normalized)
+                keywords.append(candidate)
+
+    return keywords
 
 
 def _log(message: str) -> None:
@@ -28,16 +67,15 @@ def _extract_candidate_keywords(user_profile: str) -> list[str]:
     if not profile:
         return []
 
-    ontology_mappings, _ = _load_ontology_mappings()
+    facet_keywords = _load_facet_keywords()
     profile_case = profile.casefold()
 
     candidates: list[str] = []
     candidates.extend(re.findall(r"[가-힣A-Za-z0-9]{2,}", profile))
 
-    for standard_keyword, synonyms in ontology_mappings.items():
-        terms = [standard_keyword, *synonyms]
-        if any(term and term.casefold() in profile_case for term in terms):
-            candidates.append(standard_keyword)
+    for keyword in facet_keywords:
+        if keyword and keyword.casefold() in profile_case:
+            candidates.append(keyword)
 
     ordered: list[str] = []
     seen: set[str] = set()
@@ -58,20 +96,32 @@ def _extract_validated_keywords(candidate_keywords: list[str]) -> list[str]:
     if not candidate_keywords:
         return []
 
-    validation_input = ", ".join(candidate_keywords)
-    ontology_tool = OntologyCheckTool()
-    validated_text = ontology_tool._run(validation_input)
+    facet_keywords = _load_facet_keywords()
+    facet_norms = {_normalize_keyword(keyword) for keyword in facet_keywords if _normalize_keyword(keyword)}
 
-    validated_keywords = [
-        line.strip()
-        for line in validated_text.splitlines()
-        if line.strip().startswith("[[")
-    ]
+    validated: list[str] = []
+    seen: set[str] = set()
 
-    if validated_keywords:
-        return validated_keywords
+    for keyword in candidate_keywords:
+        clean_keyword = keyword.strip()
+        if len(clean_keyword) < 2 or _is_group_keyword(clean_keyword):
+            continue
 
-    return [keyword for keyword in candidate_keywords if len(keyword.strip()) >= 2 and not _is_group_keyword(keyword)]
+        normalized = _normalize_keyword(clean_keyword)
+        if not normalized or normalized in seen:
+            continue
+
+        if facet_norms and not any(
+            normalized == facet_norm or normalized in facet_norm or facet_norm in normalized
+            for facet_norm in facet_norms
+        ):
+            # Keep reasonably specific keywords even if they are not exact facet labels yet.
+            pass
+
+        seen.add(normalized)
+        validated.append(clean_keyword)
+
+    return validated
 
 
 def _extract_candidate_files(search_output: str) -> list[str]:
@@ -80,7 +130,9 @@ def _extract_candidate_files(search_output: str) -> list[str]:
         line = line.strip()
         if not line:
             continue
-        match = re.match(r"^\d+\.\s+([^\s(]+)", line)
+        match = re.match(r"^\d+\.\s+(.+?)\s+\(기관:", line)
+        if not match:
+            match = re.match(r"^\d+\.\s+([^\s(]+)", line)
         if match:
             candidate_files.append(match.group(1))
     return candidate_files
@@ -291,8 +343,8 @@ def build_fallback_report(user_profile: str) -> dict[str, Any]:
 def generate_report(user_profile: str) -> dict[str, Any]:
     """사용자 프로필 기반 추천 기관 보고서 생성.
     
-    1순위: LLM 키워드 추출 → Ontology 검증 → Wiki 스코어링
-    2순위: 순수 로컬 (regex + Ontology + Wiki 스코어링)
+    1순위: LLM 키워드 추출 → facet 검증 → facet 스코어링
+    2순위: 순수 로컬 (regex + facet + facet 스코어링)
     """
     # Try LLM-powered keyword extraction first
     try:

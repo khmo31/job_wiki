@@ -1,4 +1,10 @@
 #!/usr/bin/env python3
+"""job_raw Harvester — 순수 수집.
+
+job_raw는 더 이상 분석(LLM/Ontology)을 수행하지 않습니다.
+ALIO API에서 공고를 가져와 원본 그대로 저장합니다.
+분석은 job_core/에서 별도 실행됩니다.
+"""
 import sys, os, pathlib
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 SCRIPTS_DIR = pathlib.Path(__file__).resolve().parent
@@ -8,119 +14,120 @@ if str(SCRIPTS_DIR) not in sys.path:
     sys.path.insert(0, str(SCRIPTS_DIR))
 
 import argparse
-import os
-from typing import List, Dict, Optional
+import json
 import datetime
+from typing import Dict
 
 import config
 from fetcher import fetch_recent_jobs, fetch_detail_by_id, _parse_date, trim_for_analysis
-from analyzer import extract_skills_and_reasoning, preprocess_text, analyze_objective_dna
 from formatter import render_markdown
-from writer import save_markdown, save_json_archive, exists_for_id
+from writer import ensure_dirs, save_markdown, save_json_archive, exists_for_id
 from utils import filename_from_job, extract_alio_id
 
 
-def main(mock: bool = True, dry_run: bool = False, count: int | None = None, days: int = 7) -> Dict:
-    jobs = fetch_recent_jobs(api_key=config.ALIO_API_KEY, days=days, mock=mock)
+def _save_raw_archive(job: Dict, alio_id: str) -> None:
+    """Save raw job data to json_archive."""
+    job_raw = job.get("raw") if isinstance(job, dict) else None
+    save_json_archive(job_raw or job, alio_id,
+                      base_dir=str(config.BASE_DIR), raw_dir=config.RAW_DIR)
+
+
+def main(mock: bool = True, dry_run: bool = False, count: int | None = None,
+         days: int = 7, max_pages: int | None = None) -> Dict:
+    jobs = fetch_recent_jobs(api_key=config.ALIO_API_KEY, days=days, mock=mock,
+                             max_pages=max_pages)
+
     if count:
         jobs = jobs[:count]
 
-    stats = {"attempted": 0, "saved": 0, "skipped": 0, "errors": 0, "saved_files": [], "detail_calls": 0}
-    stats["llm_analyzed"] = 0
+    stats = {"attempted": 0, "saved": 0, "skipped": 0, "errors": 0,
+             "saved_files": [], "detail_calls": 0}
     detail_calls = 0
+
     for job in jobs:
         stats["attempted"] += 1
         try:
-            # Decide whether to fetch detail for this item
             alio_id = extract_alio_id(job)
+
+            # Decide whether to fetch detail
             need_detail = False
-            # recent window
             posted_raw = job.get("posted_date") or ""
             posted_date = _parse_date(posted_raw)
             if posted_date:
                 cutoff = datetime.date.today() - datetime.timedelta(days=config.DETAIL_FETCH_WINDOW_DAYS)
                 if posted_date >= cutoff:
                     need_detail = True
-            # NCS or keywords
-            if not need_detail:
-                ncs = job.get("ncs_nm") or ""
-                if ncs and any(k in ncs for k in config.NCS_MAP.keys()):
-                    need_detail = True
-            if not need_detail:
-                # check title/description keywords
-                text_for_kw = ((job.get("title", "") or "") + " \n " + (job.get("description", "") or "")).lower()
-                if any(kw.lower() in text_for_kw for kw in config.DETAIL_KEYWORDS):
-                    need_detail = True
 
-            # enforce max detail calls
             if config.DETAIL_MAX_DETAIL_CALLS is not None and detail_calls >= config.DETAIL_MAX_DETAIL_CALLS:
                 need_detail = False
 
-            # === SKIP if already exists (BEFORE any analysis!) ===
+            # Skip if already exists
             if alio_id and exists_for_id(alio_id, base_dir=str(config.BASE_DIR), raw_dir=config.RAW_DIR):
                 stats["skipped"] += 1
                 continue
 
-            # fetch and merge detail if needed
+            # Fetch detail if needed
             if need_detail and alio_id:
                 detail = fetch_detail_by_id(alio_id, api_key=config.ALIO_API_KEY, mock=mock)
                 if detail:
                     detail_calls += 1
                     stats["detail_calls"] = detail_calls
-                    # merge critical fields
                     job["description"] = detail.get("description") or job.get("description")
                     job["requirements"] = detail.get("requirements") or job.get("requirements")
                     job["ncs_nm"] = job.get("ncs_nm") or detail.get("ncs_nm")
                     job_raw_list = job.get("raw") or {}
                     job["raw"] = {"list": job_raw_list, "detail": detail.get("raw")}
 
-            # trim the job text to relevant sections for analysis (cost shield)
-            trimmed = trim_for_analysis(job)
-            # perform hybrid analysis (regex + optional LLM). This will update json archive and index.
-            analysis = analyze_objective_dna(job, trimmed, alio_id=alio_id, base_dir=str(config.BASE_DIR), raw_dir=config.RAW_DIR)
-            skills = analysis.get("skills_found") or []
-            # build lightweight reasoning map (backwards-compatible)
-            reasoning = {s: "공고에서 명시적 또는 추론적으로 관찰됨" for s in skills}
-            md = render_markdown(job, skills, reasoning, analysis=analysis, interests=config.USER_INTERESTS)
+            # ── Save raw archive + markdown (NO analysis) ──
+            _save_raw_archive(job, alio_id)
+            md = render_markdown(job)
             filename = filename_from_job(job)
+
             if dry_run:
-                print(f"[DRY RUN] would write: {os.path.join(config.RAW_DIR, filename)} (ALIO_ID={alio_id})")
-                print(repr(md[:200]))
-                stats["saved" if False else "skipped"] += 0
+                print(f"[DRY RUN] would write: {os.path.join(config.RAW_DIR, filename)} "
+                      f"(ALIO_ID={alio_id})", file=sys.stderr)
             else:
-                path = save_markdown(md, base_dir=str(config.BASE_DIR), filename=filename, alio_id=alio_id, job_raw=job.get("raw"))
+                path = save_markdown(md, base_dir=str(config.BASE_DIR), filename=filename,
+                                     alio_id=alio_id, job_raw=job.get("raw"))
                 if path:
                     stats["saved"] += 1
                     stats["saved_files"].append(path)
                 else:
                     stats["skipped"] += 1
-            # track analysis cost (if produced)
-            try:
-                tok = int(analysis.get("tokens", 0)) if isinstance(analysis, dict) else 0
-                cost = float(analysis.get("cost", 0.0)) if isinstance(analysis, dict) else 0.0
-                stats.setdefault("tokens", 0)
-                stats.setdefault("cost", 0.0)
-                stats["tokens"] += tok
-                stats["cost"] += cost
-                if isinstance(analysis, dict) and analysis.get("method") in ("regex+llm", "ontology+llm"):
-                    stats["llm_analyzed"] += 1
-            except Exception:
-                pass
-        except Exception:
+
+        except Exception as e:
             stats["errors"] += 1
+            print(f"[harvester] error on job #{stats['attempted']}: {e}", file=sys.stderr)
+
     return stats
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="P-Reinforce Harvester batch runner")
-    parser.add_argument("--no-mock", dest="mock", action="store_false", help="disable mock data", default=True)
-    parser.add_argument("--dry-run", action="store_true", help="do not write files", default=False)
-    parser.add_argument("--count", type=int, default=None)
-    parser.add_argument("--days", type=int, default=7, help="fetch postings from the last N days")
+    parser = argparse.ArgumentParser(description="job_raw Harvester — 순수 수집")
+    parser.add_argument("--no-mock", dest="mock", action="store_false",
+                        help="disable mock data", default=True)
+    parser.add_argument("--dry-run", action="store_true",
+                        help="do not write files", default=False)
+    parser.add_argument("--count", type=int, default=None,
+                        help="max jobs to process")
+    parser.add_argument("--days", type=int, default=7,
+                        help="fetch postings from the last N days")
+    parser.add_argument("--pages", type=int, default=None,
+                        help="max API pages (default: 1, each page = 50 items)")
     args = parser.parse_args()
-    summary = main(mock=args.mock, dry_run=args.dry_run, count=args.count, days=args.days)
+
+    summary = main(mock=args.mock, dry_run=args.dry_run, count=args.count,
+                   days=args.days, max_pages=args.pages)
+
     attempted = summary.get("attempted", 0)
     saved = summary.get("saved", 0)
     skipped = summary.get("skipped", 0)
     errors = summary.get("errors", 0)
-    print(f"Summary: attempted={attempted}, saved={saved}, skipped={skipped}, errors={errors}")
+    detail = summary.get("detail_calls", 0)
+
+    print("--- Report ---")
+    print(f"Attempted: {attempted}")
+    print(f"New saved: {saved}")
+    print(f"Skipped (dup): {skipped}")
+    print(f"Errors: {errors}")
+    print(f"Detail calls: {detail}")

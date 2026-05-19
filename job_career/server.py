@@ -18,6 +18,11 @@ from pathlib import Path
 import os
 import importlib.util
 
+try:
+    from dotenv import load_dotenv
+except Exception:  # pragma: no cover - optional runtime dependency
+    load_dotenv = None
+
 
 def _ensure_utf8_stdio() -> None:
     os.environ.setdefault("PYTHONIOENCODING", "utf-8")
@@ -35,6 +40,46 @@ def _ensure_utf8_stdio() -> None:
 
 _ensure_utf8_stdio()
 
+
+def _load_project_environment() -> None:
+    if load_dotenv is None:
+        return
+
+    project_root = Path(__file__).resolve().parent
+    workspace_root = project_root.parent
+    candidate_paths = [
+        workspace_root / ".env",
+        project_root / ".env",
+        project_root / "config" / ".env",
+    ]
+
+    for env_path in candidate_paths:
+        if env_path.exists():
+            load_dotenv(env_path, override=False)
+
+
+_load_project_environment()
+
+
+def _mask_env_value(value: str | None) -> str:
+    if not value:
+        return "<missing>"
+    if len(value) <= 8:
+        return "<set>"
+    return f"{value[:4]}...{value[-4:]}"
+
+
+def _log_env_state(prefix: str) -> None:
+    print(
+        f"[server] {prefix} OPENCODE_API_KEY={_mask_env_value(os.getenv('OPENCODE_API_KEY'))} "
+        f"GROQ_API_KEY={_mask_env_value(os.getenv('GROQ_API_KEY'))} "
+        f"OPENAI_API_KEY={_mask_env_value(os.getenv('OPENAI_API_KEY'))} "
+        f"NVIDIA_API_KEY={_mask_env_value(os.getenv('NVIDIA_API_KEY'))} "
+        f"OPENCODE_BASE_URL={os.getenv('OPENCODE_BASE_URL', 'https://opencode.ai/zen/go/v1')} "
+        f"LLM_EXTRACT_MODEL={os.getenv('LLM_EXTRACT_MODEL', 'deepseek-v4-flash')}",
+        file=sys.stderr,
+    )
+
 # 서브프로세스 Python 실행기: 환경변수 우선, 없으면 현재 인터프리터 사용
 PY_EXEC = os.getenv("JOB_CAREER_PYTHON") or sys.executable
 
@@ -42,6 +87,9 @@ PY_EXEC = os.getenv("JOB_CAREER_PYTHON") or sys.executable
 PROJECT_ROOT = Path(__file__).resolve().parent
 # 채용공고 Raw 데이터 경로 (job_wiki/00_Raw)
 RAW_ROOT = PROJECT_ROOT.parent / "job_wiki" / "00_Raw"
+
+
+_log_env_state("startup")
 
 
 def _parse_last_json_blob(text: str):
@@ -131,11 +179,19 @@ def analyze():
         if not profile:
             return jsonify({"status": "error", "error": "프로필이 필요합니다"}), 400
 
+        _log_env_state("analyze request")
+
         # subprocess 실행
         cmd_list = [str(PY_EXEC), str(PROJECT_ROOT / "src" / "career_agent" / "main_batch.py"), profile]
         env_copy = os.environ.copy()
         env_copy.setdefault("PYTHONIOENCODING", "utf-8")
         env_copy.setdefault("PYTHONUTF8", "1")
+
+        print(
+            f"[server] subprocess env OPENCODE_API_KEY={_mask_env_value(env_copy.get('OPENCODE_API_KEY'))} "
+            f"LLM_EXTRACT_MODEL={env_copy.get('LLM_EXTRACT_MODEL', 'deepseek-v4-flash')}",
+            file=sys.stderr,
+        )
 
         proc = subprocess.run(
             cmd_list,
@@ -243,6 +299,8 @@ if __name__ == "__main__":
     print(f"  서버: http://localhost:{port}")
     print(f"  Python: {PY_EXEC}")
     print(f"  Raw 데이터: {RAW_ROOT}")
+    print(f"  OPENCODE_API_KEY: {_mask_env_value(os.getenv('OPENCODE_API_KEY'))}")
+    print(f"  LLM_EXTRACT_MODEL: {os.getenv('LLM_EXTRACT_MODEL', 'deepseek-v4-flash')}")
     print(f"  API: POST /api/analyze")
     print("=" * 60)
     app.run(debug=False, use_reloader=False, host=host, port=port)

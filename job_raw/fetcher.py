@@ -41,6 +41,41 @@ def _extract_items_from_json(obj: Dict) -> List[Dict]:
     return candidates[0] if candidates else []
 
 
+def _tag_value(value):
+    if value is None:
+        return ""
+    if isinstance(value, str):
+        return value.strip()
+    if isinstance(value, (int, float, bool)):
+        return str(value)
+    if isinstance(value, list):
+        parts = []
+        for item in value:
+            text = _tag_value(item)
+            if text:
+                parts.append(text)
+        return ",".join(parts)
+    if isinstance(value, dict):
+        if not value:
+            return ""
+        try:
+            return json.dumps(value, ensure_ascii=False, sort_keys=True)
+        except Exception:
+            return str(value)
+    return str(value).strip()
+
+
+def _extract_raw_tags(item: Dict) -> Dict[str, str]:
+    tags: Dict[str, str] = {}
+    for key, value in item.items():
+        if key == "raw_tags":
+            continue
+        tag_value = _tag_value(value)
+        if tag_value:
+            tags[key] = tag_value
+    return tags
+
+
 def _normalize_item(item: Dict) -> Dict:
     # Map common possible keys to our schema
     def pick(*keys):
@@ -55,9 +90,19 @@ def _normalize_item(item: Dict) -> Dict:
     # ALIO API: aplyQlfcCn=응시자격, prefCondCn=우대사항, scrnprcdrMthdExpln=전형방법
     description = pick("description", "jobCont", "recruitmentContent", "jobContents", "mainDuty", "recruitCont", "cont", "aplyQlfcCn", "scrnprcdrMthdExpln")
     requirements = pick("requirements", "qualification", "req", "privilege", "preferentialTreatment", "requirements", "prefCondCn", "prefCn")
-    ncs_nm = pick("ncs_nm", "ncsNm", "ncs_name", "ncs", "ncsCdNmLst", "ncsCdLst")
+    hireTypeNmLst = pick("hireTypeNmLst")
+    recrutSeNm = pick("recrutSeNm")
+    acbgCondNmLst = pick("acbgCondNmLst")
+    workRgnNmLst = pick("workRgnNmLst")
+    prefCondCn = pick("prefCondCn")
+    ncsCdNmLst = pick("ncsCdNmLst", "ncs_nm", "ncsNm", "ncs_name", "ncs")
+    ncsCdLst = pick("ncsCdLst", "ncsCd", "ncsCode", "ncs_code")
+    ncs_nm = ncsCdNmLst or ncsCdLst
     # use provided id or attempt common fields (v1 uses 'idx')
     alio_id = pick("id", "idx", "recruitmentNo", "postNo", "jobId", "num", "noticeNo", "recrutPblntSn")
+
+    raw_tags = _extract_raw_tags(item)
+    item["raw_tags"] = raw_tags
 
     return {
         "id": str(alio_id) if alio_id is not None else "",
@@ -66,7 +111,15 @@ def _normalize_item(item: Dict) -> Dict:
         "posted_date": posted,
         "description": description,
         "requirements": requirements,
+        "hireTypeNmLst": hireTypeNmLst,
+        "recrutSeNm": recrutSeNm,
+        "acbgCondNmLst": acbgCondNmLst,
+        "workRgnNmLst": workRgnNmLst,
+        "prefCondCn": prefCondCn,
         "ncs_nm": ncs_nm,
+        "ncsCdNmLst": ncsCdNmLst,
+        "ncsCdLst": ncsCdLst,
+        "raw_tags": raw_tags,
         "raw": item,
     }
 
@@ -108,6 +161,8 @@ def fetch_recent_jobs(api_key: Optional[str] = None, days: int = 7, mock: bool =
                 "posted_date": (today).strftime("%Y-%m-%d"),
                 "description": "생산 라인 제어 및 센서 연동(아두이노). PLC 인터페이스, 시리얼 통신, 데이터 로깅, 자동화 알고리즘 설계 경험 우대.",
                 "requirements": "C/C++, 아두이노, 시리얼 통신, 센서 신호 처리, Python 스크립트",
+                "ncs_nm": "전기.전자",
+                "ncsCdNmLst": "전기.전자",
                 "raw": {"mock": True},
             },
             {
@@ -117,6 +172,8 @@ def fetch_recent_jobs(api_key: Optional[str] = None, days: int = 7, mock: bool =
                 "posted_date": (today - datetime.timedelta(days=1)).strftime("%Y-%m-%d"),
                 "description": "로봇 제어, 센서 퓨전, 임베디드 소프트웨어(임베디드 C/C++), 자동화 로직 최적화, ROS 경험 우대.",
                 "requirements": "임베디드 C, ROS, 제어이론, 센서퓨전",
+                "ncs_nm": "정보통신",
+                "ncsCdNmLst": "정보통신",
                 "raw": {"mock": True},
             },
         ]
@@ -225,16 +282,19 @@ def fetch_detail_by_id(alio_id: str, api_key: Optional[str] = None, mock: bool =
     if mock:
         # simple mock detail
         today = datetime.date.today()
-        return {
+        detail = {
             "id": alio_id,
             "title": f"상세 {alio_id} 직무(예시)",
             "company": "모의기관",
             "posted_date": today.strftime("%Y-%m-%d"),
             "description": "상세 직무 기술서: 센서 연동, 제어 알고리즘, 시험 및 검증 포함.",
             "requirements": "상세 요구사항: 아두이노, C/C++, 시리얼 통신, 센서 데이터 처리",
-            "ncs_nm": "자동화",
+            "ncs_nm": "전기.전자",
+            "ncsCdNmLst": "전기.전자",
             "raw": {"mock_detail": True},
         }
+        detail["raw_tags"] = _extract_raw_tags(detail)
+        return detail
 
     api_key = api_key or config.ALIO_API_KEY
     endpoint = config.ALIO_DETAIL_ENDPOINT

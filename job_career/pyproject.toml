@@ -7,7 +7,11 @@ name = "job-career"
 version = "0.2.0"
 description = "로컬 매칭 기반 커리어-잡 추천 엔진"
 requires-python = ">=3.10"
-dependencies = []
+dependencies = [
+	"crewai>=0.100.0",
+	"pydantic>=2.0.0",
+	"requests>=2.31.0",
+]
 
 [tool.setuptools]
 package-dir = {"" = "src"}

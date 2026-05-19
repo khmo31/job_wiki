@@ -6,6 +6,7 @@ import os
 import re
 import sys
 import time
+from functools import lru_cache
 from pathlib import Path
 from typing import Any
 
@@ -22,6 +23,39 @@ _GROQ_FALLBACK_MODELS = [
     "openai/gpt-oss-20b",
     "openai/gpt-oss-120b",
 ]
+
+_FACET_ROOT = Path(__file__).resolve().parents[3] / "job_wiki" / "10_Wiki" / "Facets"
+_FACET_INDEX_FILE = Path(__file__).resolve().parents[3] / "job_wiki" / "20_Meta" / "Facet_Index.json"
+_FACET_CONTEXT_MAX_CHARS = 1600
+_FACET_CONTEXT_MAX_PAGES = 4
+
+_FACET_CATEGORY_PRIORITY = [
+    "qualification",
+    "hire_type",
+    "region",
+    "ncs",
+    "preference",
+    "recruitment_type",
+    "education",
+    "process",
+]
+
+_LLM_EXTRACT_MAX_TOKENS = int(os.getenv("LLM_EXTRACT_MAX_TOKENS", "8192"))
+_LLM_REASONING_EFFORT = os.getenv("LLM_REASONING_EFFORT", "low").strip().lower()
+
+
+@lru_cache(maxsize=1)
+def _load_facet_index_payload() -> dict[str, Any]:
+    if not _FACET_INDEX_FILE.exists():
+        return {}
+
+    try:
+        payload = json.loads(_FACET_INDEX_FILE.read_text(encoding="utf-8"))
+    except Exception as exc:
+        _log(f"failed to load facet index: {exc}")
+        return {}
+
+    return payload if isinstance(payload, dict) else {}
 
 
 def _rate_limit() -> None:
@@ -80,7 +114,12 @@ def _provider_config(provider: str) -> dict[str, Any]:
     return configs.get(provider, {})
 
 
-def _call_llm(system_prompt: str, user_prompt: str, max_tokens: int = 256) -> str | None:
+def _call_llm(
+    system_prompt: str,
+    user_prompt: str,
+    max_tokens: int = 256,
+    reasoning_effort: str | None = None,
+) -> str | None:
     provider = _detect_provider()
     if not provider:
         _log("no LLM API key found in environment")
@@ -107,6 +146,10 @@ def _call_llm(system_prompt: str, user_prompt: str, max_tokens: int = 256) -> st
             "temperature": 0.0,
             "max_tokens": max_tokens,
         }
+        if provider == "opencode-go" and reasoning_effort:
+            normalized_effort = reasoning_effort.strip().lower()
+            if normalized_effort in {"low", "medium", "high"}:
+                payload["reasoning_effort"] = normalized_effort
         try:
             _rate_limit()
             resp = requests.post(
@@ -138,59 +181,98 @@ def _call_llm(system_prompt: str, user_prompt: str, max_tokens: int = 256) -> st
     return None
 
 
-def _load_ontology_keywords() -> list[str]:
-    """Load the full list of standard ontology keywords from Ontology_Map.json."""
+@lru_cache(maxsize=16)
+def _load_facet_context(query: str) -> str:
+    """Load a small, query-relevant set of facet index markdown pages."""
     try:
-        # Locate project root relative to this file
-        root = Path(__file__).resolve().parents[3]
-        ontology_path = root / "job_wiki" / "20_Meta" / "Ontology_Map.json"
-        if not ontology_path.exists():
-            return []
-        data = json.loads(ontology_path.read_text(encoding="utf-8"))
-        mappings = data.get("mappings", {}) if isinstance(data, dict) else {}
-        if not isinstance(mappings, dict):
-            return []
-        return list(mappings.keys())
+        if not _FACET_ROOT.exists():
+            return ""
+
+        query_case = query.casefold().strip()
+        query_terms = [term for term in re.findall(r"[가-힣A-Za-z0-9]{2,}", query_case) if term]
+        root_index_path = _FACET_ROOT / "index.md"
+
+        index_paths = [path for path in sorted(_FACET_ROOT.glob("*/index.md")) if path.is_file()]
+        scored_paths: list[tuple[int, int, Path, str]] = []
+
+        for priority, path in enumerate(index_paths):
+            text = path.read_text(encoding="utf-8").strip()
+            if not text:
+                continue
+
+            score = 0
+            path_text_case = text.casefold()
+            for term in query_terms:
+                if term and term in path_text_case:
+                    score += 1
+
+            if path.parent.name in _FACET_CATEGORY_PRIORITY:
+                score += len(_FACET_CATEGORY_PRIORITY) - _FACET_CATEGORY_PRIORITY.index(path.parent.name)
+
+            scored_paths.append((score, priority, path, text))
+
+        scored_paths.sort(key=lambda item: (-item[0], item[1], item[2].as_posix()))
+
+        selected_paths: list[tuple[Path, str]] = []
+        if root_index_path.is_file():
+            selected_paths.append((root_index_path, root_index_path.read_text(encoding="utf-8").strip()))
+
+        for _, _, path, text in scored_paths:
+            if len(selected_paths) >= _FACET_CONTEXT_MAX_PAGES:
+                break
+            selected_paths.append((path, text))
+
+        if len(selected_paths) == 1:
+            for _, _, path, text in scored_paths:
+                if len(selected_paths) >= _FACET_CONTEXT_MAX_PAGES:
+                    break
+                selected_paths.append((path, text))
+
+        chunks: list[str] = []
+        for path, text in selected_paths:
+            if not text:
+                continue
+
+            if len(text) > _FACET_CONTEXT_MAX_CHARS:
+                text = text[:_FACET_CONTEXT_MAX_CHARS].rstrip() + "\n..."
+
+            relative_path = path.relative_to(_FACET_ROOT).as_posix()
+            chunks.append(f"### {relative_path}\n{text}")
+
+        return "\n\n".join(chunks)
     except Exception as e:
-        _log(f"failed to load ontology: {e}")
-        return []
-
-
-def _build_ontology_context(max_keywords: int = 15) -> str:
-    """Build an ontology keyword list string for inclusion in prompts.
-    Limits to max_keywords to save input tokens.
-    """
-    keywords = _load_ontology_keywords()
-    if not keywords:
+        _log(f"failed to load facet context: {e}")
         return ""
-    if len(keywords) > max_keywords:
-        keywords = keywords[:max_keywords]
-    return "\nAvailable ontology keywords (match these if possible):\n" + "\n".join(f"- {kw}" for kw in keywords)
 
 
 def extract_keywords(user_profile: str) -> list[str] | None:
     """LLM으로 사용자 프로필에서 wiki 키워드 추출.
 
-    Ontology_Map.json의 표준 키워드 목록을 프롬프트에 포함시켜
-    LLM이 기존 온톨로지 키워드와 매칭하도록 유도.
+    Facet index md 파일들을 프롬프트에 포함시켜
+    LLM이 원문 facet 라벨과 가깝게 매칭하도록 유도.
     실패 시 None 반환.
     """
-    ontology_context = _build_ontology_context(max_keywords=15)
+    facet_context = _load_facet_context(user_profile)
 
     system = (
         "You are a career keyword extraction assistant.\n"
         "Given a user's career profile, extract the most relevant skill/domain keywords.\n"
-        "PRIORITIZE matching against the available ontology keywords below.\n"
-        "Only suggest NEW keywords if no ontology keyword adequately covers the skill.\n"
+        "PRIORITIZE matching against the facet index pages below.\n"
+        "Prefer concise keywords that appear in the facet pages, and avoid redundant variants.\n"
         "Output ONLY a JSON array of keyword strings, no other text.\n"
-        'Example: ["의료 행정 지식", "의료정보 보호", "문서 작성 및 관리"]'
+        'Example: ["경력", "학력무관", "서울"]'
     )
 
-    user_prompt = user_profile
-    if ontology_context:
-        user_prompt = f"{user_profile}\n\n{ontology_context}"
+    user_prompt = f"User profile:\n{user_profile.strip()}"
+    if facet_context:
+        user_prompt = f"{user_prompt}\n\nFacet index pages:\n{facet_context}"
 
-    result = _call_llm(system, user_prompt, max_tokens=256)
+    result = _call_llm(
+        system,
+        user_prompt,
+        max_tokens=_LLM_EXTRACT_MAX_TOKENS,
+        reasoning_effort=_LLM_REASONING_EFFORT,
+    )
     if not result:
         return None
 
@@ -236,33 +318,34 @@ def classify_job_analysis(text: str) -> dict[str, Any] | None:
 
 
 def suggest_ontology_keywords(text: str, existing_skills: list[str]) -> list[str] | None:
-    """공고 텍스트에서 기존 온톨로지에 없는 신규 키워드 제안.
+    """공고 텍스트에서 기존 facet 키워드에 없는 추가 키워드 제안.
 
-    Ontology_Map.json의 전체 표준 키워드 목록을 컨텍스트로 제공하여
-    중복 제안을 방지. Input token 절약을 위해 텍스트와 온톨로지를 제한.
+    Facet index md 파일들을 컨텍스트로 제공하여
+    중복 제안을 방지. Input token 절약을 위해 텍스트를 제한.
     """
-    ontology_context = _build_ontology_context(max_keywords=15)
     existing_str = ", ".join(existing_skills) if existing_skills else "(none yet)"
+    facet_context = _load_facet_context(f"{text}\n{existing_str}")
 
     # Truncate job text to save input tokens (800 chars ≈ 320 tokens)
     truncated_text = text[:800].strip()
 
     prompt = (
-        f"Existing ontology skills: [{existing_str}]\n\n"
+        f"Existing facet skills: [{existing_str}]\n\n"
         f"Job posting text:\n{truncated_text}\n\n"
-        "Extract skill/domain keywords that are NOT in any of the existing lists above (neither ontology nor existing_skills). "
+        "Extract skill/domain keywords that are NOT in any of the existing lists above (neither facet context nor existing_skills). "
         "If all relevant skills are already covered, output an empty array []."
         "Output ONLY a JSON array of strings."
     )
 
     full_prompt = prompt
-    if ontology_context:
-        full_prompt = f"{prompt}\n\n{ontology_context}"
+    if facet_context:
+        full_prompt = f"{prompt}\n\nFacet index pages:\n{facet_context}"
 
     result = _call_llm(
-        "You are an ontology expansion assistant. (Input) Find new skill keywords that do NOT exist in the provided ontology.",
+        "You are a facet expansion assistant. Find new skill keywords that do NOT exist in the provided facet index pages.",
         full_prompt,
-        max_tokens=256,
+        max_tokens=_LLM_EXTRACT_MAX_TOKENS,
+        reasoning_effort=_LLM_REASONING_EFFORT,
     )
     if not result:
         return None

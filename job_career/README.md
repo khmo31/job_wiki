@@ -7,6 +7,9 @@
 ## 빠른 사용
 
 ```bash
+# conda 환경 활성화
+conda activate job_career
+
 # 프로필 기반 추천
 python src/career_agent/pipeline.py --profile "의료정보관리 5년, 간호사 면허"
 
@@ -17,15 +20,15 @@ python server.py
 
 ## 아키텍처
 
-2-Track 매칭: **LLM 우선 → regex+Ontology fallback**
+2-Track 매칭: **LLM 우선 → regex+facet fallback**
 
-- LLM 키워드 추출 (Groq llama-3.3-70b → 5개 fallback 모델)
-- Ontology_Map.json 기반 키워드 검증
-- Wiki_Index 검색 + 점수화 (정확/부분 매칭)
+- LLM 키워드 추출 (Facet index md를 프롬프트 컨텍스트로 사용)
+- Facet_Index.json 기반 후보 라우팅
+- facet/raw 검색 + 점수화 (정확/부분 매칭)
 - 상위 5개 기관 추천
 
 ## 의존성
 
-- `job_wiki/20_Meta/Wiki_Index.json` — 검색 인덱스
-- `job_wiki/20_Meta/Ontology_Map.json` — 온톨로지 매핑
+- `job_wiki/20_Meta/Facet_Index.json` — 2차 분류 인덱스
+- `job_wiki/10_Wiki/Facets/**/*.md` — LLM 컨텍스트용 facet 페이지
 - LLM API 키 (선택) — 없으면 fallback 모드로 동작

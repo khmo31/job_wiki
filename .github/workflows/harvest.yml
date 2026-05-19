@@ -44,12 +44,12 @@ jobs:
           pip install --upgrade pip
           pip install -r requirements.txt
 
-      # ── Step 0: 만료 공고 정리 ──
+      # ── Step 0: 만료 공고 정리 (job_core) ──
       - name: Step 0 — 기한 만료 공고 정리 (Cleanup)
         id: cleanup
         run: |
-          cd job_raw
-          python scripts/cleanup_expired.py 2>&1
+          cd job_core\scripts
+          python cleanup_expired.py 2>&1
 
       # ── Step 1: 수집 ──
       - name: Step 1 — 채용공고 수집 (Harvester)
@@ -58,12 +58,7 @@ jobs:
           ALIO_API_KEY: ${{ secrets.ALIO_API_KEY }}
           ALIO_ENDPOINT: ${{ secrets.ALIO_ENDPOINT || 'https://opendata.alio.go.kr/new/v1/recruit/list.do' }}
           ALIO_MAX_PAGES: "10"
-          OPENCODE_API_KEY: ${{ secrets.OPENCODE_API_KEY }}
-          LLM_PROVIDER: opencode-go
-          LLM_EXTRACT_MODEL: deepseek-v4-flash
-          NCS_FILTER_MODE: off
           DETAIL_MAX_DETAIL_CALLS: "0"      # 0 = unlimited
-          ANALYSIS_MIN_CHARS_TO_CALL_LLM: "0"  # 0 = LLM 호출 조건 없음 (모든 공고 추출)
         run: |
           cd job_raw
           DAYS="${{ github.event_name == 'schedule' && '7' || inputs.days || '7' }}"
@@ -73,25 +68,15 @@ jobs:
           MOCK="${{ (github.event_name == 'schedule' || !inputs.mock) && '--no-mock' || '' }}"
           python scripts/main.py $MOCK --days $DAYS ${COUNT:+--count $COUNT} 2>&1
 
-      # ── Step 2: Wiki 변환 ──
-      - name: Step 2 — Wiki 변환 (Raw → Analysis + Index)
+      # ── Step 2: Wiki 변환 (raw → facet wiki) ──
+      - name: Step 2 — Wiki 변환 (Raw → Facets)
         id: wiki
-        env:
-          OPENCODE_API_KEY: ${{ secrets.OPENCODE_API_KEY }}
-          LLM_EXTRACT_MODEL: deepseek-v4-flash
         run: |
-          cd job_raw
-          python scripts/wiki_generator.py 2>&1
+          cd job_core\scripts
+          python wiki_generator.py 2>&1
 
-      # ── Step 3: 온톨로지 자동 병합 ──
-      - name: Step 3 — 신규 키워드 온톨로지 자동 병합 (Merge Ontology)
-        id: merge_ontology
-        run: |
-          cd job_raw
-          python scripts/merge_ontology.py 2>&1
-
-      # ── Step 4: Commit & Push ──
-      - name: Step 4 — 변경사항 커밋 및 푸시
+      # ── Step 3: Commit & Push ──
+      - name: Step 3 — 변경사항 커밋 및 푸시
         run: |
           git config user.name "job-wiki-bot"
           git config user.email "bot@job-wiki.gh"
