@@ -275,7 +275,7 @@ def _call_llm_for_dna(text: str, ontology_matched: List[str],
                 {"role": "user", "content": user_msg},
             ],
             "temperature": 0.0,
-            "max_tokens": 1024,
+            "max_tokens": 4096,
             "extra_body": {"chat_template_kwargs": {"thinking": False}},
         }
         headers = {"Authorization": f"Bearer {api_key}", "Content-Type": "application/json"}
@@ -290,9 +290,16 @@ def _call_llm_for_dna(text: str, ontology_matched: List[str],
             try:
                 c0_msg = j["choices"][0]["message"]
                 content = c0_msg.get("content", "") or ""
-                # DeepSeek 모델: reasoning_content에 실제 답변이 있을 수 있음
+                # DeepSeek reasoning_content fallback
                 if not content and "reasoning_content" in c0_msg:
-                    content = c0_msg.get("reasoning_content", "") or ""
+                    rc = c0_msg.get("reasoning_content", "") or ""
+                    # reasoning_content 마지막 부분에 JSON이 있을 가능성
+                    # 정규식으로 JSON-like 블록 먼저 시도
+                    json_match = re.search(r"\{[^{}]*\"all_keywords\"[^{}]*\}", rc, re.DOTALL)
+                    if json_match:
+                        content = json_match.group(0)
+                    elif rc:
+                        content = rc
             except Exception:
                 content = j.get("choices", [{}])[0].get("text", "")
             try:
