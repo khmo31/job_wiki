@@ -1,0 +1,61 @@
+{
+  "raw": {
+    "list": {
+      "pbadmsStdInstCd": "B555098",
+      "ongoingYn": "Y",
+      "ncsCdLst": "R600023",
+      "recrutPblntSn": 300666,
+      "aplyQlfcCn": "- 6급: 다음 각 호의 어느 하나에 해당하는 자\r\n   1. 해당분야에서 2년 이상 근무한 경력이 있는 자\r\n   2. 공공기관에서 6급 상당이상 직원으로 재직한 자*\r\n   * 「공공기관의 운영에 관한 법률」 제4조에 의하여 공고일 기준 공공기관으로 지정된 기관\r\n- 7급: 1. 보전원의 업무를 수행할 수 있는 지식과 역량을 갖춘 자",
+      "pblntInstCd": "C1062",
+      "instNm": "한국환경보전원",
+      "srcUrl": "https://www.keci.or.kr/common/bbs/selectBbs.do?bbs_code=A1003&bbs_seq=8342&sch_sort_col=&sch_sort=&sch_type=&row_per_page=&sch_text=&currentPage=1",
+      "pbancBgngYmd": "20260518",
+      "recrutPbancTtl": "2026년 한국환경보전원 상반기 정규직 채용 공고",
+      "replmprYn": "N",
+      "prefCondCn": "국가유공자 등 법정/특별/경력 가점 대상자, 각 직무분야별 자격증 배점 기준에 포함된 자격증 소지자, 주요 업무 관련 근무경력 보유자",
+      "pbancEndYmd": "20260602",
+      "acbgCondLst": "R7010",
+      "nonatchRsn": null,
+      "workRgnNmLst": "서울,광주,대전,경기,경남",
+      "disqlfcRsn": "1. 「국가공무원법」제33조 각 호의 어느 하나에 해당하는 자\r\n2. 「병역법」제76조제1항 각 호의 어느 하나에 해당하는 자\r\n3. 「부패방지 및 국민권익위원회의 설치와 운영에 관한 법률」 제82조의 규정에 따른 비위면직자 등의 취업제한 적용을 받는 자\r\n4. 개인 신상에 관한 이력사항 및 서류 등을 허위로 기재하거나 위장하여 제출한 자\r\n5. 인사청탁 ·채용비위 등 부정한 방법으로 채용되어 그 채용이 취소된 경우 취소된 날부터 5년이 지나지 아니한 사람\r\n6. 「성폭력범죄의 처벌 등에 관한 특례법」제2조에 규정된 죄를 범한 자로서 100만원 이상의 벌금형을 선고받고 그 형이 확정된 후 3년이 지나지 아니한 자\r\n7. 미성년자에 대한 다음 각 목의 어느 하나에 해당하는 죄를 저질러 파면·해임되거나 형 또는 치료감호를 선고받아 그 형 또는 치료감호가 확정된 자(집행유예를 선고받은 후 그 집행유예 기간이 경과한 자를 포함한다)\r\n  가.「성폭력범죄의 처벌 등에 관한 특례법」 제2조에 따른 성폭력범죄\r\n  나.「아동 ·청소년의 성보호에 관한 법률」 제2조제2호에 따른 아동 ·청소년대상 성범죄",
+      "hireTypeLst": "R1010",
+      "acbgCondNmLst": "학력무관",
+      "recrutNope": 15,
+      "recrutSeNm": "신입+경력",
+      "steps": [],
+      "decimalDay": 14,
+      "workRgnLst": "R3010,R3015,R3012,R3017,R3022",
+      "files": [],
+      "scrnprcdrMthdExpln": "1. 채용공고 및 응시원서 접수 \r\n2. 서류전형\r\n-  채용기준에 따른 적합여부 확인, 우대사항에 따른 해당분야 관련 경력 및 자격, 가점을 배점에 따라 평가하여 순위 정렬(채용 인원의 7배수 선발)\r\n3. 면접전형\r\n - 응시원서에 대한 증빙자료 검토를 통한 진위여부 확인\r\n - 서류전형 선발인원 대상 역량면접 실시\r\n - 심사 산술평균 점수 및 가점을 합산하여 순위 정렬\r\n4. 최종합격자 발표 ",
+      "prefCn": "1. 국가보훈대상자\r\n2. 국가등록장애인\r\n3. 취업보호대상자\r\n4. 경력가점대상자\r\n5. 각 직무분야별 자격증 배점 기준에 포함된 자격증 소지자\r\n6. 주요 업무 관련 근무경력 보유자",
+      "recrutSe": "R2030",
+      "hireTypeNmLst": "정규직",
+      "ncsCdNmLst": "환경.에너지.안전"
+    },
+    "detail": {
+      "resultCode": "6",
+      "resultMsgEng": "SERVER_UNKNOWN_ERROR",
+      "resultMsg": "서버 에러"
+    }
+  },
+  "analysis": {
+    "explicit_skills": [
+      "공공기관"
+    ],
+    "skills_found": [
+      "공공기관"
+    ],
+    "core_logic": "주요 업무 로직이 공고에 명시되어있음",
+    "domain_context": "일반",
+    "latent_skills": [],
+    "job_nature": "운영/관리",
+    "complexity": "low",
+    "skills_additional": [],
+    "new_keywords": [],
+    "method": "ontology+heuristic",
+    "model": null,
+    "tokens": 0,
+    "cost": 0.0,
+    "analyzed_at": "2026-05-19T05:21:30.453456Z"
+  }
+}

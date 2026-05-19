@@ -1,0 +1,57 @@
+{
+  "raw": {
+    "list": {
+      "pbadmsStdInstCd": "B551881",
+      "ongoingYn": "Y",
+      "ncsCdLst": "R600019",
+      "recrutPblntSn": 300691,
+      "aplyQlfcCn": "채용예정일 즉시 근무 가능한 자",
+      "pblntInstCd": "C0305",
+      "instNm": "한전KPS(주)",
+      "srcUrl": "https://www.kps.co.kr",
+      "pbancBgngYmd": "20260518",
+      "recrutPbancTtl": "한전KPS(주)제주사업소 송전선로 예방순시 단기노무원 채용공고",
+      "replmprYn": "N",
+      "prefCondCn": "보훈대상자, 장애인, 송전전기원 자격증 보유자",
+      "pbancEndYmd": "20260520",
+      "acbgCondLst": "R7010",
+      "nonatchRsn": null,
+      "workRgnNmLst": "제주",
+      "disqlfcRsn": "1. 신체검사 결과 부적격으로 판정된 자\r\n2. 채용구비서류에 허위사실이 발견된 자\r\n3. 기타 채용기준상 부적격으로 판정된 자",
+      "hireTypeLst": "R1040",
+      "acbgCondNmLst": "학력무관",
+      "recrutNope": 1,
+      "recrutSeNm": "신입+경력",
+      "steps": [],
+      "decimalDay": 1,
+      "workRgnLst": "R3025",
+      "files": [],
+      "scrnprcdrMthdExpln": "□ 채용조건\r\n1. 채용분야 및 계약기간\r\n○ 예방순시(1명) - 2026.6.11.~2026.8.31.\r\n2. 근무시간 및 보수\r\n○ 근무시간 : 1일 8시간(08:00~17:00)을 원칙으로 하되, 사업소 사정에 따라 변동가능\r\n○ 보수 : 일급(협의 후 결정)\r\n3. 최종합격자 미입사시 추가합격자 운영\r\n※ 문의처: 송변환부(064-755-0718)\r\n\r\n□ 전형일정\r\n1. 전형절차 : 서류전형 > 합격자발표\r\n2. 서류접수 기간 : 2026.5.18.~2026.5.20.\r\n○ 서류 양식 : 블라인드 입사지원서(반드시 별첨2 입사지원서 양식 사용)\r\n3. 서류접수 방법 : E-Mail, 방문접수\r\n○ E-mail: revon@kps.co.kr\r\n○ 방문접수 : 제주도 제주시 원당로 133 한전KPS(주)제주사업소 송변환부\r\n4. 서류전형 : 2026.5.22. 10:00\r\n5. 합격자 발표 : 2026.5.27. (개별 통보)\r\n\r\n□ 제출서류\r\n1. 블라인드 입사지원서 1부 (별첨2)\r\n2. 개인정보제공 동의서 1부 (별첨4)\r\n3. 취업지원대상자증명원 및 국가유공자증 각 1부(사진 및 생년월일, 주소 등 반드시 제거, 해당자에 한함)\r\n4. 장애인증명서 또는 장애인복지카드 앞,뒷면 1부(사진 및 생년월일, 주소 등 반드시 제거, 해당자에 한함)\r\n5. 송전전기원 자격증 1부(사진 및 생년월일, 주소 등 반드시 제거, 해당자에 한함)\r\n6. 경력증명서, 원천징수영수증, 4대보험 중 1개 자격득실확인서(사진 및 생년월일, 주소 등 반드시 제거, 해당자에 한함)\r\n\r\n□ 기타사항\r\n1. 채용 후 당사 규정에 따라 결격 사유가 확인되는 경우 채용이 취소될 수 있음\r\n2. 금번 채용 근로자는 「공공부문 정규직 전환 가이드라인('17. 07. 20.)」 상의 정규직 전환대상이 아님\r\n3. 채용일정 및 계약기간은 회사 사정 등에 따라 달라질 수 있음",
+      "prefCn": "□ 보훈대상자(각 전형별 만점의 5%~10% 가점)\r\n□ 장애인(각 전형별 만점의 10% 가점)\r\n□ 송전전기원 자격증 보유자(각 전형별 만점의 10% 가점)",
+      "recrutSe": "R2030",
+      "hireTypeNmLst": "비정규직",
+      "ncsCdNmLst": "전기.전자"
+    },
+    "detail": {
+      "resultCode": "6",
+      "resultMsgEng": "SERVER_UNKNOWN_ERROR",
+      "resultMsg": "서버 에러"
+    }
+  },
+  "analysis": {
+    "explicit_skills": [],
+    "skills_found": [],
+    "core_logic": "주요 업무 로직이 공고에 명시되어있음",
+    "domain_context": "일반",
+    "latent_skills": [],
+    "job_nature": "실무/혼합",
+    "complexity": "low",
+    "skills_additional": [],
+    "new_keywords": [],
+    "method": "ontology+heuristic",
+    "model": null,
+    "tokens": 0,
+    "cost": 0.0,
+    "analyzed_at": "2026-05-19T05:18:41.378525Z"
+  }
+}

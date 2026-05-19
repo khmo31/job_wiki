@@ -1,0 +1,71 @@
+{
+  "raw": {
+    "list": {
+      "pbadmsStdInstCd": "B554865",
+      "ongoingYn": "Y",
+      "ncsCdLst": "R600002,R600008,R600011",
+      "recrutPblntSn": 300735,
+      "aplyQlfcCn": "<기본 응시자격>\r\n1. 지역, 성별, 나이의 제한 없음(단, 만18세 미만 및 정년(만61세) 도달자는 지원 불가)\r\n2. 대한민국 국적을 보유한 자\r\n3. 남성의 경우 병역필 또는 면제자\r\n4. 임용예정일 즉시 근무가 가능한 자\r\n5. 하단의 사항에 해당이 없는 자(박물관 인사규정상 결격사유가 없는 자)\r\n ① ?국가공무원법? 제33조 각 호의 어느 하나에 해당하는 자\r\n ② ?병역법? 제76조제1항 각 호의 어느 하나에 해당하는 자\r\n ③ 개인 신상에 관한 이력사항 및 서류 등을 허위로 기재하거나 위장하여 제출한 자 \r\n ④ ?부패방지 및 국민권익위원회의 설치와 운영에 관한 법률? 제82조에 따른 비위면직자 등의 취업제한 적용을 받는 비위면직자 \r\n ⑤ 채용과정에서 비위행위에 직간접적으로 가담한 응시자 및 전 근무기관에서 채용비리를 이유로 합격이 취소된 후 5년이 지나지 않은 자\r\n6. 기타 법령에 의하여 응시자격이 정지되지 아니한 자로, 해당 직무를 수행할 수 있다고 인정되는 자\r\n\r\n<분야별 응시자격>\r\n1. 정규직-일반운영직-미화: 별도 자격요건 없음\r\n2. 기간제 직원-일반직 4급 상당-학예: 다음 ①∼④ 중 한 개 이상에 해당하는 자\r\n ① 공무원으로 관련 분야 경력 2년 이상인 자\r\n ②「공공기관 운영에 관한 법률」,「지방자치단체 출자·출연 기관의 운영에 관한 법률」,「지방공기업법」에 따라 지정·고시된 기관에서 관련 경력이 3년 이상인 자\r\n ③ 채용 예정 분야 관련 경력이 4년 이상인 자\r\n ④ 기타 이와 동등한 자격이 있다고 인정되는 자",
+      "pblntInstCd": "C1375",
+      "instNm": "국립농업박물관",
+      "srcUrl": "https://www.namuk.or.kr/kr/528/subview.do?enc=Zm5jdDF8QEB8JTJGYmJzJTJGa3IlMkYxODYlMkYxODQ0JTJGYXJ0Y2xWaWV3LmRvJTNGcGFnZSUzRDElMjZzcmNoQ29sdW1uJTNEJTI2c3JjaFdyZCUzRCUyNmJic0NsU2VxJTNEJTI2YmJzT3BlbldyZFNlcSUzRCUyNnJnc0JnbmRlU3RyJTNEJTI2cmdzRW5kZGVTdHIlM0QlM",
+      "pbancBgngYmd": "20260519",
+      "recrutPbancTtl": "국립농업박물관 2026년 제3차 직원 채용",
+      "replmprYn": "Y",
+      "prefCondCn": "별도 우대조건 없음",
+      "pbancEndYmd": "20260602",
+      "acbgCondLst": "R7010",
+      "nonatchRsn": null,
+      "workRgnNmLst": "경기",
+      "disqlfcRsn": "1. ?국가공무원법? 제33조 각 호의 어느 하나에 해당하는 자\r\n2. ?병역법? 제76조제1항 각 호의 어느 하나에 해당하는 자\r\n3. 개인 신상에 관한 이력사항 및 서류 등을 허위로 기재하거나 위장하여 제출한 자 \r\n4. ?부패방지 및 국민권익위원회의 설치와 운영에 관한 법률? 제82조에 따른 비위면직자 등의 취업제한 적용을 받는 비위면직자 \r\n5. 채용과정에서 비위행위에 직간접적으로 가담한 응시자 및 전 근무기관에서 채용비리를 이유로 합격이 취소된 후 5년이 지나지 않은 자",
+      "hireTypeLst": "R1010,R1030",
+      "acbgCondNmLst": "학력무관",
+      "recrutNope": 2,
+      "recrutSeNm": "신입+경력",
+      "steps": [],
+      "decimalDay": 14,
+      "workRgnLst": "R3017",
+      "files": [],
+      "scrnprcdrMthdExpln": "<전형절차 및 평가방법>\r\n1. 서류전형(5배수): 서류전형 점수 '40점' 이상(가점 포함)인 자 중 고득점자 순 선발\r\n ① 정규직-일반운영직-미화: 정량평가(50점, 경력)+정성평가(50점, 자기소개서)\r\n ② 기간제 직원-일반직 4급 상당-학예: 정성평가(100점, 자기소개서)\r\n2. 면접전형(1배수): 면접전형 점수 '70점' 이상(가점 포함)인 자 중 고득점 순 선발\r\n ① 정규직-일반운영직-미화: 상황·경험면접(100점), 다대다 면접\r\n ② 기간제 직원-일반직 4급 상당-학예: 상황·경험면접(100점), 다대일 면접\r\n\r\n보다 자세한 사항은 채용공고문 참고",
+      "prefCn": "별도 우대내용 없음",
+      "recrutSe": "R2030",
+      "hireTypeNmLst": "정규직,무기계약직",
+      "ncsCdNmLst": "경영.회계.사무,문화.예술.디자인.방송,경비.청소"
+    },
+    "detail": {
+      "resultCode": "6",
+      "resultMsgEng": "SERVER_UNKNOWN_ERROR",
+      "resultMsg": "서버 에러"
+    }
+  },
+  "analysis": {
+    "explicit_skills": [
+      "국가공무원법",
+      "인사 규정",
+      "공공기관",
+      "공무원법",
+      "기간제",
+      "병역법"
+    ],
+    "skills_found": [
+      "국가공무원법",
+      "인사 규정",
+      "공공기관",
+      "공무원법",
+      "기간제",
+      "병역법"
+    ],
+    "core_logic": "주요 업무 로직이 공고에 명시되어있음",
+    "domain_context": "일반",
+    "latent_skills": [],
+    "job_nature": "운영/관리",
+    "complexity": "high",
+    "skills_additional": [],
+    "new_keywords": [],
+    "method": "ontology+heuristic",
+    "model": null,
+    "tokens": 0,
+    "cost": 0.0,
+    "analyzed_at": "2026-05-19T05:13:37.388182Z"
+  }
+}
