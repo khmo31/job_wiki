@@ -275,7 +275,8 @@ def _call_llm_for_dna(text: str, ontology_matched: List[str],
                 {"role": "user", "content": user_msg},
             ],
             "temperature": 0.0,
-            "max_tokens": 512,
+            "max_tokens": 1024,
+            "extra_body": {"chat_template_kwargs": {"thinking": False}},
         }
         headers = {"Authorization": f"Bearer {api_key}", "Content-Type": "application/json"}
         try:
