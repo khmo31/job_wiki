@@ -287,7 +287,11 @@ def _call_llm_for_dna(text: str, ontology_matched: List[str],
             j = resp.json()
             content = ""
             try:
-                content = j["choices"][0]["message"]["content"]
+                c0_msg = j["choices"][0]["message"]
+                content = c0_msg.get("content", "") or ""
+                # DeepSeek 모델: reasoning_content에 실제 답변이 있을 수 있음
+                if not content and "reasoning_content" in c0_msg:
+                    content = c0_msg.get("reasoning_content", "") or ""
             except Exception:
                 content = j.get("choices", [{}])[0].get("text", "")
             try:
