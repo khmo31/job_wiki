@@ -21,6 +21,10 @@ _ONTOLOGY_KEYWORD_SET: Set[str] = set()
 _ONTOLOGY_SYNONYM_MAP: Dict[str, str] = {}  # synonym → standard_keyword
 _ONTOLOGY_LOADED: bool = False
 
+# Cache invalidation: 이 값을 올리면 모든 기존 analysis가 재실행됨
+# v1 = regex+heuristic (old), v2 = ontology+llm (new)
+ANALYSIS_SCHEMA_VERSION = 2
+
 
 def _load_ontology(pjroot: Optional[Path] = None) -> None:
     """Ontology_Map.json에서 표준 키워드 + 동의어 목록을 로드."""
@@ -500,9 +504,11 @@ def analyze_objective_dna(job: dict, trimmed_text: str,
                     with open(archive_path, "r", encoding="utf-8") as fh:
                         archived = json.load(fh)
                     if archived and isinstance(archived, dict) and archived.get("analysis"):
-                        archived["analysis"].setdefault("cached", True)
-                        archived["analysis"].setdefault("cached_at", entry.get("last_analyzed_at"))
-                        return archived["analysis"]
+                        cached_schema = archived["analysis"].get("schema_version", 1)
+                        if cached_schema >= ANALYSIS_SCHEMA_VERSION:
+                            archived["analysis"].setdefault("cached", True)
+                            archived["analysis"].setdefault("cached_at", entry.get("last_analyzed_at"))
+                            return archived["analysis"]
             except Exception:
                 pass
 
@@ -540,6 +546,7 @@ def analyze_objective_dna(job: dict, trimmed_text: str,
         "skills_additional": [],
         "new_keywords": [],
         "method": "ontology_match",
+        "schema_version": ANALYSIS_SCHEMA_VERSION,
         "model": None,
         "tokens": 0,
         "cost": 0.0,

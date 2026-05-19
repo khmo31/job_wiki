@@ -102,7 +102,7 @@ def main(mock: bool = True, dry_run: bool = False, count: int | None = None, day
                 stats.setdefault("cost", 0.0)
                 stats["tokens"] += tok
                 stats["cost"] += cost
-                if isinstance(analysis, dict) and analysis.get("method") == "regex+llm":
+                if isinstance(analysis, dict) and analysis.get("method") in ("regex+llm", "ontology+llm"):
                     stats["llm_analyzed"] += 1
             except Exception:
                 pass
