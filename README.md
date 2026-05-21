@@ -1,6 +1,6 @@
 # Job Wiki — 채용공고 자동 수집 · Wiki 변환 · 매칭
 
-공공기관 채용공고를 ALIO API로 자동 수집하고, 원문 태그를 바탕으로 Facet Wiki로 구조화하며, 사용자 프로필과 매칭하는 파이프라인입니다.
+공공기관 채용공고를 ALIO API로 자동 수집하고, 원문 태그를 바탕으로 Facet Wiki로 구조화하며, 사용자 프로필과 단계형 분류 선택을 거쳐 최종 매칭하는 파이프라인입니다.
 
 ## 디렉토리 구조
 
@@ -39,7 +39,7 @@ job_wiki/
 │           └── custom_tool.py  # WikiSearch
 │
 └── .github/workflows/
-    └── harvest.yml             # CI/CD: 주간 자동 수집 + Wiki 변환
+    └── harvest.yml             # CI/CD: 주간 자동 수집 + 정리 + Wiki 변환
 ```
 
 ## 현재 데이터 현황 (2026-05-19 기준)
@@ -65,15 +65,16 @@ job_wiki/
 - `Facet_Index.json` 업데이트
 
 ### Step 3: 매칭 (job_career/pipeline.py)
-- **1순위**: raw 태그 정규화 → facet 매칭
-- **2순위**: 규칙 기반 키워드 fallback
-- 결과: 사용자 프로필 기반 추천
+- **1순위**: LLM 키워드 추출 → facet 검증 → facet/raw 매칭
+- **2순위**: 로컬 regex + facet fallback
+- 1차 분석에서는 추천을 숨기고, 확정되지 않은 분류를 먼저 선택한 뒤 최종 추천을 반환
+- LLM이 키워드를 하나라도 반환하면 같은 요청에서 즉시 로컬 fallback으로 내려가지 않음
 
 ## 태그 기반 분류
 
 - 핵심 분류는 원문 필드를 그대로 사용합니다.
 - `ncsCdNmLst`, `hireTypeNmLst`, `recrutSeNm`, `acbgCondNmLst`, `workRgnNmLst`, `aplyQlfcCn`, `prefCondCn`, `prefCn`, `scrnprcdrMthdExpln`을 2차 분류 축으로 사용합니다.
-- LLM은 기본 파이프라인에서 제외했습니다.
+- `job_career`는 LLM 우선 경로를 사용하고, 추출 결과가 없을 때만 로컬 규칙 경로로 내려갑니다.
 
 ## 빠른 시작
 
@@ -87,20 +88,19 @@ pip install -r requirements.txt
 export ALIO_API_KEY="..."         # 실제 ALIO API 수집용
 
 # 3. 수집 실행 (모의 데이터)
-cd job_raw
-python scripts/main.py --days 7
+python job_raw/scripts/main.py --days 7
 
 # 4. Wiki 변환
-python scripts/wiki_generator.py
+python job_core/scripts/wiki_generator.py
 
 ```
 
 ## GitHub Actions (CI/CD)
 
 매주 월요일 09:00 KST 자동 실행:
-1. 만료 공고 정리 (`cleanup_expired.py`)
-2. 채용공고 수집 (`harvester.py`)
-3. Wiki 변환 (`wiki_generator.py`)
+1. 만료 공고 정리 (`job_core/scripts/cleanup_expired.py`)
+2. 채용공고 수집 (`job_raw/scripts/main.py`)
+3. Wiki 변환 (`job_core/scripts/wiki_generator.py`)
 4. 변경사항 커밋 및 푸시
 
 ### GitHub Secrets 설정
@@ -112,13 +112,17 @@ python scripts/wiki_generator.py
 | `OPENAI_API_KEY` | LLM 실험용 | 선택 |
 | `NVIDIA_API_KEY` | LLM 실험용 | 선택 |
 
-## 주요 버그 수정 (2026-05-19)
+## 주요 버그 수정 (2026-05-21)
 
 1. **save_markdown() 무한 스킵 버그** — `save_markdown()`이 실제 파일 존재 여부를 기준으로 건너뛰도록 수정.
 
 2. **raw.list 데이터 구조 불일치** — ALIO API의 raw 데이터가 `{"list": {...}, ...}` 형태여도 저장·렌더가 동작하도록 fallback 로직 추가.
 
 3. **Facet Wiki 추가** — 원문 태그를 기반으로 2차 분류 허브를 생성하도록 변경.
+
+4. **단계형 추천 흐름** — 초기 분석에서는 추천을 숨기고, 확정되지 않은 분류를 선택한 뒤 최종 추천을 반환하도록 변경.
+
+5. **워크플로우 정리** — GitHub Actions가 현재 `job_raw`/`job_core` 수집 구조를 직접 호출하도록 조정.
 
 ## 라이선스
 
