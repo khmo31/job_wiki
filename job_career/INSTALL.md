@@ -7,6 +7,14 @@
 - `pip install -e .` 로 `job_career` 패키지 설치
 - LLM API 키 (선택 — 없으면 regex+facet fallback)
 
+`pyproject.toml` 기준 런타임 의존성:
+- `flask`
+- `flask-cors`
+- `python-dotenv`
+- `crewai`
+- `pydantic`
+- `requests`
+
 ## 설치
 
 ```bash
@@ -16,6 +24,14 @@ conda activate job_career
 # 2. job_career 패키지 설치
 cd job_wiki/job_career
 pip install -e .
+```
+
+루트 워크스페이스를 처음 세팅할 때는 아래도 함께 설치하세요.
+
+```bash
+cd job_wiki
+pip install -r requirements.txt
+pip install -r job_raw/requirements.txt
 ```
 
 ## 환경변수
@@ -31,7 +47,7 @@ pip install -e .
 
 선택적 변수:
 - `LLM_EXTRACT_MODEL`: 사용할 모델명 (기본: `deepseek-v4-flash`)
-- `OPENCODE_BASE_URL`: OpenCode Go API 엔드포인트 (기본: `https://opencode.ai/zen/go/v1`)
+- `OPENCODE_BASE_URL`: OpenCode Go API 엔드포인트 (기본: `https://opencode.ai/zen/go/v1/chat/completions`)
 - `ONTOLOGY_CHECK_CACHE_TTL`: 온톨로지 캐시 TTL (초, 기본 60)
 
 ## 실행

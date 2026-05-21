@@ -83,6 +83,8 @@ job_wiki/
 python3 -m venv venv
 source venv/bin/activate
 pip install -r requirements.txt
+pip install -r job_raw/requirements.txt
+pip install -e ./job_career
 
 # 2. 환경변수 설정 (선택)
 export ALIO_API_KEY="..."         # 실제 ALIO API 수집용
@@ -93,7 +95,16 @@ python job_raw/scripts/main.py --days 7
 # 4. Wiki 변환
 python job_core/scripts/wiki_generator.py
 
+# 5. 웹 UI
+python job_career/server.py
+
 ```
+
+## 패키지 설치
+
+- 루트 `requirements.txt`는 공용 수집용 패키지(`requests`)를 담고 있습니다.
+- `job_raw/requirements.txt`는 수집기 실행용 패키지를 담고 있습니다.
+- `job_career/pyproject.toml`은 웹 UI와 매칭 엔진의 런타임 의존성을 담고 있습니다.
 
 ## GitHub Actions (CI/CD)
 
