@@ -1,4 +1,4 @@
-name: 주간 채용공고 수집
+name: 주간 채용공고 수집 및 위키 변환
 
 on:
   schedule:
@@ -43,13 +43,13 @@ jobs:
         run: |
           pip install --upgrade pip
           pip install -r requirements.txt
+          pip install -r job_raw/requirements.txt
 
       # ── Step 0: 만료 공고 정리 (job_core) ──
       - name: Step 0 — 기한 만료 공고 정리 (Cleanup)
         id: cleanup
         run: |
-          cd job_core\scripts
-          python cleanup_expired.py 2>&1
+          python job_core/scripts/cleanup_expired.py 2>&1
 
       # ── Step 1: 수집 ──
       - name: Step 1 — 채용공고 수집 (Harvester)
@@ -60,20 +60,18 @@ jobs:
           ALIO_MAX_PAGES: "10"
           DETAIL_MAX_DETAIL_CALLS: "0"      # 0 = unlimited
         run: |
-          cd job_raw
           DAYS="${{ github.event_name == 'schedule' && '7' || inputs.days || '7' }}"
           DAYS="${DAYS%.*}"  # float → int (GitHub number 입력 버그 대응)
           COUNT="${{ github.event_name == 'schedule' && '' || inputs.count || '' }}"
           COUNT="${COUNT%.*}"
           MOCK="${{ (github.event_name == 'schedule' || !inputs.mock) && '--no-mock' || '' }}"
-          python scripts/main.py $MOCK --days $DAYS ${COUNT:+--count $COUNT} 2>&1
+          python job_raw/scripts/main.py $MOCK --days $DAYS ${COUNT:+--count $COUNT} 2>&1
 
       # ── Step 2: Wiki 변환 (raw → facet wiki) ──
       - name: Step 2 — Wiki 변환 (Raw → Facets)
         id: wiki
         run: |
-          cd job_core\scripts
-          python wiki_generator.py 2>&1
+          python job_core/scripts/wiki_generator.py 2>&1
 
       # ── Step 3: Commit & Push ──
       - name: Step 3 — 변경사항 커밋 및 푸시
