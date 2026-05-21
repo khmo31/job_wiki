@@ -2,6 +2,65 @@
 
 기준: 2026-05-21 작업 내역을 커밋 순서대로 정리했습니다.
 
+## 프로젝트 변화 흐름 요약
+
+아래는 이번 대화에서 진행한 전체 변경 과정을 작업 순서대로 정리한 메모입니다.
+
+### 1) raw 수집 중심 구조로 재정리
+
+- `job_raw`의 수집 기준을 NCS 하드코딩에서 공고 원문 필드 중심으로 바꿨습니다.
+- `ncsCdNmLst`, `hireTypeNmLst`, `recrutSeNm`, `acbgCondNmLst`, `workRgnNmLst`, `aplyQlfcCn`, `prefCondCn`, `prefCn`, `scrnprcdrMthdExpln` 같은 원문 태그를 그대로 보존하도록 수정했습니다.
+- 상세 수집 조건도 NCS 필터가 아니라 최근성/호출 상한 기준으로 바꿨습니다.
+- `job_raw/config.py`는 환경변수 기반으로 정리하고, 불필요한 고정 필터 값들을 제거했습니다.
+
+### 2) raw 마크다운과 아카이브 확장
+
+- `job_raw/formatter.py`에서 원문 태그와 추출된 태그를 마크다운 frontmatter에 포함하도록 바꿨습니다.
+- `job_raw/scripts/harvester.py`는 수집, 저장, 아카이빙만 담당하도록 단순화했습니다.
+- 저장된 raw 파일은 `00_Raw`와 `json_archive`를 함께 유지하는 구조로 맞췄습니다.
+
+### 3) facet 기반 2차 분류 위키 생성
+
+- `job_core/scripts/wiki_generator.py`를 raw 기반 facet 생성기로 바꿨습니다.
+- `job_wiki/10_Wiki/Facets`와 `job_wiki/20_Meta/Facet_Index.json`를 생성하도록 만들었습니다.
+- NCS, 고용형태, 채용구분, 학력, 지역, 응시자격, 우대사항, 전형방법 등 2차 분류 축을 raw 데이터에서 직접 만들도록 정리했습니다.
+- 기존 분석/온톨로지/재분석 계열 스크립트와 설정 파일은 삭제했습니다.
+
+### 4) 불필요한 파일과 문서 정리
+
+- `job_core`에 남아 있던 분석, 온톨로지, 재분석, 통계, 복구용 스크립트들을 삭제했습니다.
+- `job_raw`의 임시/보조 스크립트와 `__pycache__`도 제거했습니다.
+- 루트 README와 `job_raw` 문서를 새 구조에 맞게 다시 썼습니다.
+- `job_career`는 UI이므로 유지하고, 그 외 구조만 정리했습니다.
+
+### 5) job_career의 추천 흐름을 facet 기반으로 전환
+
+- `job_career/src/career_agent/llm_client.py`를 온톨로지 중심에서 facet index md 중심으로 바꿨습니다.
+- LLM 프롬프트는 `Facet_Index.json`으로 관련 facet을 좁힌 뒤, 해당 `index.md`만 넣는 방식으로 정리했습니다.
+- `job_career/src/career_agent/pipeline.py`는 facet/raw 색인 기반으로 키워드 검증과 기관 점수화를 하도록 수정했습니다.
+- `job_career/src/career_agent/tools/custom_tool.py`는 `Facet_Index.json`과 raw 아카이브를 읽는 방식으로 맞췄습니다.
+- `job_career`의 `pyproject.toml`, `INSTALL.md`, `README.md`, `WORKFLOW.md`도 새 흐름에 맞게 고쳤습니다.
+
+### 6) job_career의 환경 로딩과 서버 디버그 정리
+
+- `job_career/src/career_agent/__init__.py`에서 workspace 루트 `.env`를 자동 로드하도록 넣었습니다.
+- `job_career/server.py`도 동일하게 `.env`를 직접 읽도록 바꿔, 서버 시작 시점부터 OpenCode Go 키가 보이게 했습니다.
+- 서버 로그에 `OPENCODE_API_KEY`, `OPENCODE_BASE_URL`, `LLM_EXTRACT_MODEL` 상태를 마스킹해서 남기도록 했습니다.
+- `main_batch.py`와 서버 subprocess 경로도 함께 검증했습니다.
+
+### 7) OpenCode Go 설정 확정
+
+- OpenCode Go 공식 문서를 기준으로 엔드포인트를 `https://opencode.ai/zen/go/v1/chat/completions`로 맞췄습니다.
+- 모델은 `deepseek-v4-flash`를 사용하도록 지정했습니다.
+- `reasoning_effort`는 `low`로 두고, 추출 토큰 상한은 기본 8192로 올렸습니다.
+- facet 컨텍스트가 들어가면 1024 토큰에서는 reasoning만 나오던 문제를 확인했고, 더 큰 토큰 예산에서 final JSON 배열이 실제로 반환되는 것도 검증했습니다.
+
+### 8) 검증과 배포
+
+- `job_career` conda 환경에서 editable install과 import 스모크 테스트를 성공시켰습니다.
+- 서버 실행 시 OpenCode Go 키가 실제로 읽히는 것도 확인했습니다.
+- 최종 변경분은 GitHub `main` 브랜치에 푸시했습니다.
+
 ## 2026-05-21 09ba7f91 - Refine career matching flow
 
 - `job_career`의 추천 흐름을 단계형으로 재구성했습니다.
