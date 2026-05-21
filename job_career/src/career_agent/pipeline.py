@@ -204,6 +204,24 @@ def _extract_validated_keywords(candidate_keywords: list[str]) -> list[str]:
     return validated
 
 
+def _merge_keywords(*keyword_groups: list[str]) -> list[str]:
+    merged: list[str] = []
+    seen: set[str] = set()
+
+    for keyword_group in keyword_groups:
+        for keyword in keyword_group:
+            clean_keyword = str(keyword).strip()
+            if len(clean_keyword) < 2:
+                continue
+            normalized = _normalize_keyword(clean_keyword)
+            if not normalized or normalized in seen:
+                continue
+            seen.add(normalized)
+            merged.append(clean_keyword)
+
+    return merged
+
+
 def _parse_supplemental_selections(
     supplemental_selections: dict[str, list[str]] | None,
 ) -> tuple[dict[str, list[str]], set[str]]:
@@ -258,7 +276,7 @@ def _build_weighted_scoring_terms(
         clean_keyword = str(keyword).strip()
         if len(clean_keyword) < 2:
             continue
-        weighted_terms.append({"keyword": clean_keyword, "source": "profile", "weight": PROFILE_TERM_WEIGHT})
+        weighted_terms.append({"keyword": clean_keyword, "source": "profile", "category": "profile", "weight": PROFILE_TERM_WEIGHT})
 
     weighted_terms.extend(supplemental_weighted_terms)
 
@@ -389,7 +407,7 @@ def _build_scoring_fragments(keyword: str) -> list[str]:
 
     def add(fragment: str) -> None:
         cleaned = fragment.strip()
-        if len(cleaned) < 3:
+        if len(cleaned) < 2:
             return
         normalized = _normalize_keyword(cleaned)
         if not normalized or normalized in seen:
@@ -581,6 +599,15 @@ def _score_index_entries_with_file_scores(
     def score_scope(file_scope: set[str]) -> list[tuple[int, float, str, str, list[str]]]:
         scored_scope: list[tuple[int, float, str, str, list[str]]] = []
 
+        category_keys: list[str] = []
+        seen_categories: set[str] = set()
+        for term in weighted_terms:
+            category_key = str(term.get("category") or term.get("source") or "profile").strip() or "profile"
+            if category_key in seen_categories:
+                continue
+            seen_categories.add(category_key)
+            category_keys.append(category_key)
+
         for file_name, entry in wiki_index.items():
             if file_scope and file_name not in file_scope:
                 continue
@@ -591,19 +618,17 @@ def _score_index_entries_with_file_scores(
             entry_keywords = [str(keyword).strip() for keyword in entry.get("keywords") or [] if str(keyword).strip()]
             entry_keywords_norm = [_normalize_keyword(keyword) for keyword in entry_keywords if _normalize_keyword(keyword)]
 
-            weighted_score = 0.0
-            max_possible_score = 0.0
+            matched_categories: set[str] = set()
             matched_keywords: list[str] = []
+            category_best_strength: dict[str, float] = {}
 
             for term in weighted_terms:
                 keyword = str(term.get("keyword") or "").strip()
-                source_weight = float(term.get("weight") or 0.0)
                 clean_keyword = _strip_brackets(keyword)
                 if not clean_keyword:
                     continue
 
-                if source_weight > 0:
-                    max_possible_score += source_weight
+                category_key = str(term.get("category") or term.get("source") or "profile").strip() or "profile"
 
                 match_strength = _match_strength_for_entry(
                     entry_keywords_norm,
@@ -615,15 +640,23 @@ def _score_index_entries_with_file_scores(
                 if match_strength <= 0:
                     continue
 
-                weighted_score += source_weight * match_strength
+                previous_strength = category_best_strength.get(category_key, 0.0)
+                if match_strength > previous_strength:
+                    category_best_strength[category_key] = match_strength
+                matched_categories.add(category_key)
                 matched_keywords.append(clean_keyword)
 
-            if max_possible_score <= 0:
+            if not category_keys:
                 continue
 
-            match_rate = int(round(min(weighted_score / max_possible_score, 1.0) * 100))
+            matched_category_count = len(matched_categories)
+            total_category_count = len(category_keys)
+            if matched_category_count <= 0 or total_category_count <= 0:
+                continue
+
+            match_rate = int(round(min(matched_category_count / total_category_count, 1.0) * 100))
             if match_rate > 0:
-                scored_scope.append((match_rate, weighted_score, file_name, _company_name(entry, file_name), matched_keywords))
+                scored_scope.append((match_rate, float(matched_category_count), file_name, _company_name(entry, file_name), matched_keywords))
 
         return scored_scope
 
@@ -784,38 +817,52 @@ def generate_report(
 
     normalized_phase = str(analysis_phase or "initial").strip() or "initial"
 
-    # Try LLM-powered keyword extraction first
+    if normalized_phase != "initial":
+        _log("final recommendation phase: python-only matching")
+        return build_fallback_report(
+            user_profile,
+            supplemental_selections=supplemental_selections,
+            analysis_phase=normalized_phase,
+        )
+
+    # Initial phase: use LLM keywords only to prepare follow-up questions.
+    llm_keywords: list[str] = []
     try:
         from .llm_client import extract_keywords as llm_extract
-        llm_keywords = llm_extract(user_profile)
+        extracted_keywords = llm_extract(user_profile)
+        if extracted_keywords:
+            llm_keywords = _extract_validated_keywords(extracted_keywords)
+            if not llm_keywords:
+                llm_keywords = [str(keyword).strip() for keyword in extracted_keywords if str(keyword).strip()]
+            _log(f"LLM extracted keywords: {extracted_keywords}")
         if llm_keywords:
-            _log(f"LLM extracted keywords: {llm_keywords}")
-            validated = _extract_validated_keywords(llm_keywords)
-            if not validated:
-                validated = [str(keyword).strip() for keyword in llm_keywords if str(keyword).strip()]
-
-            if validated:
-                _log(f"LLM path validated keywords: {validated}")
-                weighted_terms = _build_weighted_scoring_terms(validated, supplemental_weighted_terms)
-                wiki_tool = WikiReadOnlyTool()
-                search_query = ", ".join(_strip_brackets(str(term.get("keyword") or "")) for term in weighted_terms)
-                search_output = wiki_tool._run(search_query)
-                candidate_files = _extract_candidate_files(search_output)
-                report = _build_report_payload(
-                    user_profile,
-                    weighted_terms,
-                    candidate_files,
-                    include_follow_up_questions=not bool(supplemental_selections),
-                    analysis_phase=normalized_phase,
-                )
-                return report
+            _log(f"LLM validated keywords: {llm_keywords}")
     except Exception as exc:
         _log(f"LLM keyword path failed: {exc}")
 
-    # Fallback to pure local matching
-    _log("falling back to local matching")
-    return build_fallback_report(
+    candidate_keywords = _extract_candidate_keywords(user_profile)
+    validated_keywords = _extract_validated_keywords(candidate_keywords)
+    if not validated_keywords:
+        validated_keywords = candidate_keywords
+
+    validated_keywords = _merge_keywords(llm_keywords, validated_keywords)
+
+    _log(f"initial follow-up keywords: {validated_keywords}")
+
+    weighted_terms = _build_weighted_scoring_terms(validated_keywords, supplemental_weighted_terms)
+    wiki_tool = WikiReadOnlyTool()
+    search_query = ", ".join(_strip_brackets(str(term.get("keyword") or "")) for term in weighted_terms)
+    search_output = wiki_tool._run(search_query or user_profile)
+    candidate_files = _extract_candidate_files(search_output)
+    _log(f"initial candidate files: {candidate_files}")
+
+    report = _build_report_payload(
         user_profile,
-        supplemental_selections=supplemental_selections,
+        weighted_terms,
+        candidate_files,
+        include_follow_up_questions=not bool(supplemental_selections),
         analysis_phase=normalized_phase,
     )
+    report["recommended_institutions"] = []
+    report["match_message"] = "확정되지 않은 분류를 먼저 선택한 뒤 최종 추천을 제공합니다."
+    return report

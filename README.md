@@ -65,16 +65,16 @@ job_wiki/
 - `Facet_Index.json` 업데이트
 
 ### Step 3: 매칭 (job_career/pipeline.py)
-- **1순위**: LLM 키워드 추출 → facet 검증 → facet/raw 매칭
-- **2순위**: 로컬 regex + facet fallback
-- 1차 분석에서는 추천을 숨기고, 확정되지 않은 분류를 먼저 선택한 뒤 최종 추천을 반환
-- LLM이 키워드를 하나라도 반환하면 같은 요청에서 즉시 로컬 fallback으로 내려가지 않음
+- **1단계**: LLM 키워드 추출 → 확정되지 않은 분류 후보 생성
+- **2단계**: 사용자가 분류를 선택하면 Python 점수화로 최종 추천 생성
+- 1차 분석에서는 추천을 숨기고 follow-up 질문만 표시
+- LLM이 키워드를 하나라도 반환하면 초기 후보 생성에만 사용하고, 최종 판단은 Python이 담당
 
 ## 태그 기반 분류
 
 - 핵심 분류는 원문 필드를 그대로 사용합니다.
 - `ncsCdNmLst`, `hireTypeNmLst`, `recrutSeNm`, `acbgCondNmLst`, `workRgnNmLst`, `aplyQlfcCn`, `prefCondCn`, `prefCn`, `scrnprcdrMthdExpln`을 2차 분류 축으로 사용합니다.
-- `job_career`는 LLM 우선 경로를 사용하고, 추출 결과가 없을 때만 로컬 규칙 경로로 내려갑니다.
+- `job_career`는 LLM으로 초기 후보를 만들고, 최종 추천은 Python 규칙/점수화로만 산출합니다.
 
 ## 빠른 시작
 

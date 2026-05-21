@@ -183,6 +183,7 @@ function showError(msg) {
 function renderResults(report) {
     const institutions = Array.isArray(report?.recommended_institutions) ? report.recommended_institutions : [];
     const matchMessage = report?.match_message || '';
+    const isWaitingForFollowUp = Array.isArray(report?.follow_up_questions) && report.follow_up_questions.length > 0;
 
     resultGrid.innerHTML = '';
     matchCountEl.textContent = institutions.length;
@@ -194,8 +195,8 @@ function renderResults(report) {
             <div class="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-amber-500/10 text-amber-300">
                 <i data-lucide="search-x" class="w-7 h-7"></i>
             </div>
-            <h3 class="text-xl font-bold text-white mb-2">매칭되는 기업이 없습니다</h3>
-            <p class="text-slate-300">${matchMessage || '매칭률이 50%를 초과하는 기업이 없습니다.'}</p>
+            <h3 class="text-xl font-bold text-white mb-2">${isWaitingForFollowUp ? '분류 선택 후 추천을 제공합니다' : '매칭되는 기업이 없습니다'}</h3>
+            <p class="text-slate-300">${matchMessage || (isWaitingForFollowUp ? '확정되지 않은 분류를 먼저 선택해 주세요.' : '매칭률이 50%를 초과하는 기업이 없습니다.')}</p>
         `;
         resultGrid.appendChild(emptyCard);
         resultContainer.classList.remove('hidden');
