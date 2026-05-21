@@ -26,10 +26,30 @@ if __package__ in {None, ""}:
 from career_agent.pipeline import generate_report
 
 
-def run_batch(user_profile: str) -> str:
+def _parse_optional_json(raw_value: str | None) -> dict[str, list[str]] | None:
+    if not raw_value:
+        return None
+
+    try:
+        parsed = json.loads(raw_value)
+    except Exception:
+        return None
+
+    return parsed if isinstance(parsed, dict) else None
+
+
+def run_batch(
+    user_profile: str,
+    supplemental_selections: dict[str, list[str]] | None = None,
+    analysis_phase: str = "initial",
+) -> str:
     try:
         with redirect_stdout(sys.stderr):
-            report = generate_report(user_profile)
+            report = generate_report(
+                user_profile,
+                supplemental_selections=supplemental_selections,
+                analysis_phase=analysis_phase,
+            )
         return json.dumps(report, ensure_ascii=False)
     except Exception as exc:
         return json.dumps(
@@ -48,5 +68,7 @@ if __name__ == "__main__":
         sys.exit(1)
 
     profile = sys.argv[1]
-    output = run_batch(profile)
+    supplemental = _parse_optional_json(sys.argv[2] if len(sys.argv) > 2 else None)
+    analysis_phase = sys.argv[3] if len(sys.argv) > 3 else "initial"
+    output = run_batch(profile, supplemental, analysis_phase=analysis_phase)
     print(output)

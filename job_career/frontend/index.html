@@ -68,6 +68,20 @@
             <div id="resultGrid" class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <!-- Cards will be injected here -->
             </div>
+
+            <div id="followUpContainer" class="hidden mt-8 rounded-3xl border border-emerald-500/20 bg-emerald-500/5 p-5 md:p-6">
+                <div class="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between mb-5">
+                    <div>
+                        <p class="text-xs uppercase tracking-[0.35em] text-emerald-400 mb-2">보완 질문</p>
+                        <h3 class="text-xl font-bold text-white">아직 확정되지 않은 분류를 선택해 주세요</h3>
+                        <p id="followUpSummary" class="text-sm text-slate-400 mt-1">선택지를 고르면 추천을 다시 계산합니다.</p>
+                    </div>
+                    <button id="followUpSubmit" type="button" class="inline-flex items-center justify-center gap-2 rounded-xl bg-emerald-500 px-5 py-3 font-semibold text-white transition-colors hover:bg-emerald-400 disabled:cursor-not-allowed disabled:opacity-50">
+                        <i data-lucide="refresh-cw" class="w-4 h-4"></i> 선택 반영해 다시 분석
+                    </button>
+                </div>
+                <div id="followUpGrid" class="grid grid-cols-1 gap-4 lg:grid-cols-2"></div>
+            </div>
         </div>
 
         <!-- Archive Detail Modal -->

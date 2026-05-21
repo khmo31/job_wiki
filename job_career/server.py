@@ -75,7 +75,7 @@ def _log_env_state(prefix: str) -> None:
         f"GROQ_API_KEY={_mask_env_value(os.getenv('GROQ_API_KEY'))} "
         f"OPENAI_API_KEY={_mask_env_value(os.getenv('OPENAI_API_KEY'))} "
         f"NVIDIA_API_KEY={_mask_env_value(os.getenv('NVIDIA_API_KEY'))} "
-        f"OPENCODE_BASE_URL={os.getenv('OPENCODE_BASE_URL', 'https://opencode.ai/zen/go/v1')} "
+        f"OPENCODE_BASE_URL={os.getenv('OPENCODE_BASE_URL', 'https://opencode.ai/zen/go/v1/chat/completions')} "
         f"LLM_EXTRACT_MODEL={os.getenv('LLM_EXTRACT_MODEL', 'deepseek-v4-flash')}",
         file=sys.stderr,
     )
@@ -85,8 +85,8 @@ PY_EXEC = os.getenv("JOB_CAREER_PYTHON") or sys.executable
 
 # 프로젝트 루트 (job_career/)
 PROJECT_ROOT = Path(__file__).resolve().parent
-# 채용공고 Raw 데이터 경로 (job_wiki/00_Raw)
-RAW_ROOT = PROJECT_ROOT.parent / "job_wiki" / "00_Raw"
+# 채용공고 Raw 데이터 경로 (job_raw/00_Raw)
+RAW_ROOT = PROJECT_ROOT.parent / "job_raw" / "00_Raw"
 
 
 _log_env_state("startup")
@@ -108,14 +108,20 @@ def _parse_last_json_blob(text: str):
 
 
 def _analysis_serial_from_name(file_name: str) -> str | None:
-    match = re.search(r"_(\d+)\.md$", file_name.strip())
-    if not match:
-        return None
-    return match.group(1)
+    stem = Path(file_name.strip()).stem
+    parts = stem.split("_")
+    if len(parts) >= 2 and parts[1].isdigit():
+        return parts[1]
+
+    match = re.search(r"_(\d+)(?:_|$)", stem)
+    if match:
+        return match.group(1)
+
+    return None
 
 
 def _extract_raw_archive_section(text: str) -> str | None:
-    start_match = re.search(r"(?m)^## 원본 공고\(아카이브\)\s*$", text)
+    start_match = re.search(r"(?m)^## 원본 공고(?:\(아카이브\))?\s*$", text)
     if not start_match:
         return None
 
@@ -175,6 +181,12 @@ def analyze():
     try:
         data = request.get_json() or {}
         profile = (data.get("profile") or "").strip()
+        supplemental_selections = data.get("supplemental_selections") or {}
+        analysis_session_id = str(data.get("analysis_session_id") or "").strip()
+        analysis_phase = str(data.get("analysis_phase") or "initial").strip() or "initial"
+
+        if not isinstance(supplemental_selections, dict):
+            supplemental_selections = {}
 
         if not profile:
             return jsonify({"status": "error", "error": "프로필이 필요합니다"}), 400
@@ -182,14 +194,25 @@ def analyze():
         _log_env_state("analyze request")
 
         # subprocess 실행
-        cmd_list = [str(PY_EXEC), str(PROJECT_ROOT / "src" / "career_agent" / "main_batch.py"), profile]
+        cmd_list = [
+            str(PY_EXEC),
+            str(PROJECT_ROOT / "src" / "career_agent" / "main_batch.py"),
+            profile,
+            json.dumps(supplemental_selections, ensure_ascii=False),
+            analysis_phase,
+        ]
         env_copy = os.environ.copy()
         env_copy.setdefault("PYTHONIOENCODING", "utf-8")
         env_copy.setdefault("PYTHONUTF8", "1")
+        if analysis_session_id:
+            env_copy["ANALYSIS_SESSION_ID"] = analysis_session_id
+        env_copy["ANALYSIS_PHASE"] = analysis_phase
 
         print(
             f"[server] subprocess env OPENCODE_API_KEY={_mask_env_value(env_copy.get('OPENCODE_API_KEY'))} "
-            f"LLM_EXTRACT_MODEL={env_copy.get('LLM_EXTRACT_MODEL', 'deepseek-v4-flash')}",
+            f"LLM_EXTRACT_MODEL={env_copy.get('LLM_EXTRACT_MODEL', 'deepseek-v4-flash')} "
+            f"ANALYSIS_SESSION_ID={analysis_session_id or '<missing>'} "
+            f"ANALYSIS_PHASE={analysis_phase}",
             file=sys.stderr,
         )
 

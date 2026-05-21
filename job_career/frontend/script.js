@@ -9,6 +9,10 @@ const loadExampleBtn = document.getElementById('loadExample');
 const loadingEl = document.getElementById('loading');
 const resultContainer = document.getElementById('resultContainer');
 const resultGrid = document.getElementById('resultGrid');
+const followUpContainer = document.getElementById('followUpContainer');
+const followUpSummary = document.getElementById('followUpSummary');
+const followUpGrid = document.getElementById('followUpGrid');
+const followUpSubmit = document.getElementById('followUpSubmit');
 const matchCountEl = document.getElementById('matchCount');
 const errorAlert = document.getElementById('errorAlert');
 const errorMessage = document.getElementById('errorMessage');
@@ -17,6 +21,15 @@ const archiveModalTitle = document.getElementById('archiveModalTitle');
 const archiveModalMeta = document.getElementById('archiveModalMeta');
 const archiveModalBody = document.getElementById('archiveModalBody');
 const archiveModalClose = document.getElementById('archiveModalClose');
+
+let currentProfile = '';
+let followUpTimeoutId = null;
+let analysisSessionId = '';
+let analysisSessionState = 'idle';
+
+const FOLLOW_UP_NONE_LABEL = '상관없음';
+const FOLLOW_UP_NONE_VALUE = '__none__';
+const FOLLOW_UP_SESSION_TIMEOUT_MS = 5 * 60 * 1000;
 
 // 예시 텍스트 리스트
 const EXAMPLE_PROFILE = "저는 3년 동안 병원에서 원무과 행정 직원으로 일했습니다. 환자 데이터를 다루다 보니 의료 행정 지식과 의료정보 보호 정책 수립 쪽에 관심이 생겼고, 관련 경험도 쌓았습니다. 공공기관 쪽으로 이직하고 싶습니다.";
@@ -28,8 +41,7 @@ loadExampleBtn.addEventListener('click', () => {
 
 resetBtn.addEventListener('click', () => {
     profileEl.value = '';
-    resultContainer.classList.add('hidden');
-    errorAlert.classList.add('hidden');
+    resetAnalysisView();
 });
 
 archiveModalClose.addEventListener('click', closeArchiveModal);
@@ -56,30 +68,94 @@ resultGrid.addEventListener('click', async (event) => {
     await openArchiveModal(analysisFile, institution);
 });
 
+followUpGrid.addEventListener('click', (event) => {
+    const button = event.target.closest('button[data-followup-category]');
+    if (!button) {
+        return;
+    }
+
+    const category = button.dataset.followupCategory;
+    const multiSelect = button.dataset.multiSelect === 'true';
+    const isNoneOption = button.dataset.followupValue === FOLLOW_UP_NONE_VALUE;
+
+    if (isNoneOption) {
+        followUpGrid.querySelectorAll(`button[data-followup-category="${category}"]`).forEach((otherButton) => {
+            setFollowUpButtonState(otherButton, otherButton === button);
+        });
+        return;
+    }
+
+    if (!multiSelect) {
+        followUpGrid.querySelectorAll(`button[data-followup-category="${category}"]`).forEach((otherButton) => {
+            if (otherButton !== button) {
+                setFollowUpButtonState(otherButton, false);
+            }
+        });
+    } else {
+        const noneButton = followUpGrid.querySelector(`button[data-followup-category="${category}"][data-followup-value="${FOLLOW_UP_NONE_VALUE}"]`);
+        if (noneButton) {
+            setFollowUpButtonState(noneButton, false);
+        }
+    }
+
+    setFollowUpButtonState(button, !button.classList.contains('is-selected'));
+});
+
+followUpSubmit.addEventListener('click', async () => {
+    const supplementalSelections = collectSupplementalSelections();
+    if (!Object.keys(supplementalSelections).length) {
+        alert('보완 입력에서 하나 이상 선택해 주세요.');
+        return;
+    }
+
+    await requestAnalysis({ supplementalSelections, phase: 'followup' });
+});
+
 analyzeBtn.addEventListener('click', async () => {
+    beginNewAnalysisSession();
+    await requestAnalysis({ phase: 'initial' });
+});
+
+async function requestAnalysis({ supplementalSelections = {}, phase = 'initial' } = {}) {
     const profile = profileEl.value.trim();
-    
+
     if (!profile) {
         alert('프로필을 입력해주세요.');
         return;
     }
 
+    currentProfile = profile;
+    analysisSessionState = phase;
+
+    clearFollowUpTimeout();
+
     // UI 초기화 및 로딩 시작
     showLoading(true);
-    resultContainer.classList.add('hidden');
     errorAlert.classList.add('hidden');
 
     try {
         const response = await fetch(API_URL, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ profile })
+            body: JSON.stringify({
+                profile,
+                supplemental_selections: supplementalSelections,
+                analysis_session_id: analysisSessionId,
+                analysis_phase: phase,
+            })
         });
 
         const result = await response.json();
 
         if (result.status === 'success') {
-            renderResults(result.data.recommended_institutions);
+            const report = result.data || {};
+            renderResults(report);
+            if (Object.keys(supplementalSelections).length) {
+                hideFollowUpQuestions();
+                closeAnalysisSession();
+            } else {
+                renderFollowUpQuestions(report.follow_up_questions || []);
+            }
         } else {
             throw new Error(result.error || '분석 중 오류가 발생했습니다.');
         }
@@ -88,11 +164,12 @@ analyzeBtn.addEventListener('click', async () => {
     } finally {
         showLoading(false);
     }
-});
+}
 
 function showLoading(isLoading) {
     loadingEl.classList.toggle('hidden', !isLoading);
     analyzeBtn.disabled = isLoading;
+    followUpSubmit.disabled = isLoading;
     if (isLoading) analyzeBtn.innerHTML = `<i class="animate-spin w-5 h-5 border-2 border-white/20 border-t-white rounded-full"></i> 분석 중...`;
     else analyzeBtn.innerHTML = `<i data-lucide="zap" class="w-5 h-5"></i> 분석 시작하기`;
     lucide.createIcons();
@@ -103,10 +180,30 @@ function showError(msg) {
     errorAlert.classList.remove('hidden');
 }
 
-function renderResults(institutions) {
+function renderResults(report) {
+    const institutions = Array.isArray(report?.recommended_institutions) ? report.recommended_institutions : [];
+    const matchMessage = report?.match_message || '';
+
     resultGrid.innerHTML = '';
     matchCountEl.textContent = institutions.length;
-    
+
+    if (!institutions.length) {
+        const emptyCard = document.createElement('div');
+        emptyCard.className = 'md:col-span-2 rounded-3xl border border-amber-500/20 bg-amber-500/5 p-6 text-center';
+        emptyCard.innerHTML = `
+            <div class="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-amber-500/10 text-amber-300">
+                <i data-lucide="search-x" class="w-7 h-7"></i>
+            </div>
+            <h3 class="text-xl font-bold text-white mb-2">매칭되는 기업이 없습니다</h3>
+            <p class="text-slate-300">${matchMessage || '매칭률이 50%를 초과하는 기업이 없습니다.'}</p>
+        `;
+        resultGrid.appendChild(emptyCard);
+        resultContainer.classList.remove('hidden');
+        lucide.createIcons();
+        resultContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        return;
+    }
+
     institutions.forEach((item, index) => {
         const delay = index * 0.1; // 순차적 애니메이션
         const relatedFiles = Array.isArray(item.files) && item.files.length
@@ -131,9 +228,9 @@ function renderResults(institutions) {
             <div class="flex justify-between items-start mb-4">
                 <h3 class="text-xl font-bold text-white">${item.institution}</h3>
                 <div class="flex flex-col items-end">
-                    <span class="text-indigo-400 text-sm font-bold">${item.score}점</span>
+                    <span class="text-indigo-400 text-sm font-bold">${item.match_rate ?? item.score}%</span>
                     <div class="w-16 h-1 bg-slate-700 rounded-full mt-1 overflow-hidden">
-                        <div class="h-full bg-indigo-500" style="width: ${Math.min(item.score * 7, 100)}%"></div>
+                        <div class="h-full bg-indigo-500" style="width: ${Math.min(item.match_rate ?? item.score, 100)}%"></div>
                     </div>
                 </div>
             </div>
@@ -158,6 +255,163 @@ function renderResults(institutions) {
     
     // 결과창으로 부드럽게 스크롤
     resultContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function renderFollowUpQuestions(questions) {
+    followUpGrid.innerHTML = '';
+
+    if (!Array.isArray(questions) || questions.length === 0) {
+        hideFollowUpQuestions();
+        return;
+    }
+
+    startFollowUpTimeout();
+    questions.forEach((question) => {
+        const card = document.createElement('div');
+        card.className = 'rounded-2xl border border-slate-700/60 bg-slate-900/60 p-4';
+
+        const options = Array.isArray(question.options) ? question.options : [];
+        const optionButtons = options.map((option) => {
+            const value = typeof option === 'string' ? option : (option?.value || option?.label || '');
+            const label = typeof option === 'string' ? option : (option?.label || option?.value || '');
+            const count = typeof option === 'object' && option && Number.isFinite(option.count) ? option.count : null;
+            const countBadge = count !== null ? `<span class="ml-2 text-[11px] text-slate-400">${count}개</span>` : '';
+
+            return `
+                <button type="button" data-followup-category="${question.category}" data-followup-value="${value}" data-multi-select="${question.multi_select ? 'true' : 'false'}" class="followup-option inline-flex items-center rounded-full border border-slate-700 bg-slate-800/50 px-3 py-2 text-sm text-slate-200 transition-colors hover:border-slate-500 hover:bg-slate-800">
+                    <span>${label}</span>
+                    ${countBadge}
+                </button>
+            `;
+        }).join('');
+
+        card.innerHTML = `
+            <div class="mb-4">
+                <p class="text-xs uppercase tracking-[0.28em] text-emerald-400 mb-2">${question.title || question.category}</p>
+                <h4 class="text-lg font-semibold text-white">${question.prompt || '추가 조건을 선택해 주세요.'}</h4>
+            </div>
+            <div class="flex flex-wrap gap-2">${optionButtons}</div>
+        `;
+
+        followUpGrid.appendChild(card);
+    });
+
+    followUpContainer.classList.remove('hidden');
+    lucide.createIcons();
+    followUpContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function hideFollowUpQuestions() {
+    clearFollowUpTimeout();
+    followUpGrid.innerHTML = '';
+    followUpSummary.textContent = '선택지를 고르면 추천을 다시 계산합니다.';
+    followUpContainer.classList.add('hidden');
+}
+
+function resetAnalysisView(message = '') {
+    clearFollowUpTimeout();
+    currentProfile = '';
+    analysisSessionId = '';
+    analysisSessionState = 'idle';
+    resultGrid.innerHTML = '';
+    matchCountEl.textContent = '0';
+    resultContainer.classList.add('hidden');
+    followUpGrid.innerHTML = '';
+    followUpContainer.classList.add('hidden');
+    loadingEl.classList.add('hidden');
+    analyzeBtn.disabled = false;
+    followUpSubmit.disabled = false;
+    analyzeBtn.innerHTML = `<i data-lucide="zap" class="w-5 h-5"></i> 분석 시작하기`;
+    lucide.createIcons();
+    if (message) {
+        showError(message);
+    } else {
+        errorAlert.classList.add('hidden');
+    }
+}
+
+function beginNewAnalysisSession() {
+    analysisSessionId = createAnalysisSessionId();
+    analysisSessionState = 'initial';
+    clearFollowUpTimeout();
+    resultGrid.innerHTML = '';
+    matchCountEl.textContent = '0';
+    resultContainer.classList.add('hidden');
+    hideFollowUpQuestions();
+    errorAlert.classList.add('hidden');
+}
+
+function closeAnalysisSession() {
+    analysisSessionState = 'completed';
+    clearFollowUpTimeout();
+}
+
+function createAnalysisSessionId() {
+    if (window.crypto && typeof window.crypto.randomUUID === 'function') {
+        return window.crypto.randomUUID();
+    }
+    return `session-${Date.now()}-${Math.random().toString(16).slice(2)}`;
+}
+
+function startFollowUpTimeout() {
+    clearFollowUpTimeout();
+    followUpSummary.textContent = `선택한 항목을 반영해 더 구체적인 추천을 다시 계산합니다. 남은 시간: 05:00`;
+
+    const startedAt = Date.now();
+    const tick = () => {
+        const elapsed = Date.now() - startedAt;
+        const remaining = Math.max(FOLLOW_UP_SESSION_TIMEOUT_MS - elapsed, 0);
+        const minutes = String(Math.floor(remaining / 60000)).padStart(2, '0');
+        const seconds = String(Math.floor((remaining % 60000) / 1000)).padStart(2, '0');
+        followUpSummary.textContent = `선택한 항목을 반영해 더 구체적인 추천을 다시 계산합니다. 남은 시간: ${minutes}:${seconds}`;
+    };
+
+    tick();
+    followUpTimeoutId = window.setInterval(() => {
+        const elapsed = Date.now() - startedAt;
+        if (elapsed >= FOLLOW_UP_SESSION_TIMEOUT_MS) {
+            clearFollowUpTimeout();
+            resetAnalysisView('분류 선택 시간이 5분을 초과해 초기 상태로 돌아갔습니다. 다시 분석해 주세요.');
+            return;
+        }
+        tick();
+    }, 1000);
+}
+
+function clearFollowUpTimeout() {
+    if (followUpTimeoutId !== null) {
+        window.clearInterval(followUpTimeoutId);
+        followUpTimeoutId = null;
+    }
+}
+
+function setFollowUpButtonState(button, isSelected) {
+    button.classList.toggle('is-selected', isSelected);
+    button.classList.toggle('border-emerald-400/50', isSelected);
+    button.classList.toggle('bg-emerald-500/15', isSelected);
+    button.classList.toggle('text-emerald-100', isSelected);
+    button.classList.toggle('border-slate-700', !isSelected);
+    button.classList.toggle('bg-slate-800/50', !isSelected);
+    button.classList.toggle('text-slate-200', !isSelected);
+}
+
+function collectSupplementalSelections() {
+    const selections = {};
+
+    followUpGrid.querySelectorAll('button[data-followup-category].is-selected').forEach((button) => {
+        const category = button.dataset.followupCategory;
+        const value = button.dataset.followupValue;
+        if (!category || !value) {
+            return;
+        }
+
+        if (!selections[category]) {
+            selections[category] = [];
+        }
+        selections[category].push(value);
+    });
+
+    return selections;
 }
 
 function openArchiveModal(analysisFile, institution) {

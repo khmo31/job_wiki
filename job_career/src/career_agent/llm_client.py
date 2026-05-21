@@ -41,7 +41,7 @@ _FACET_CATEGORY_PRIORITY = [
 ]
 
 _LLM_EXTRACT_MAX_TOKENS = int(os.getenv("LLM_EXTRACT_MAX_TOKENS", "8192"))
-_LLM_REASONING_EFFORT = os.getenv("LLM_REASONING_EFFORT", "low").strip().lower()
+_LLM_REQUEST_TIMEOUT = int(os.getenv("LLM_REQUEST_TIMEOUT", "120"))
 
 
 @lru_cache(maxsize=1)
@@ -91,7 +91,7 @@ def _detect_provider() -> str:
 def _provider_config(provider: str) -> dict[str, Any]:
     configs = {
         "opencode-go": {
-            "base_url": os.getenv("OPENCODE_BASE_URL", "https://opencode.ai/zen/go/v1"),
+            "endpoint": os.getenv("OPENCODE_BASE_URL", "https://opencode.ai/zen/go/v1/chat/completions"),
             "api_key": os.getenv("OPENCODE_API_KEY", ""),
             "model": os.getenv("LLM_EXTRACT_MODEL", "deepseek-v4-flash"),
         },
@@ -118,7 +118,6 @@ def _call_llm(
     system_prompt: str,
     user_prompt: str,
     max_tokens: int = 256,
-    reasoning_effort: str | None = None,
 ) -> str | None:
     provider = _detect_provider()
     if not provider:
@@ -146,17 +145,14 @@ def _call_llm(
             "temperature": 0.0,
             "max_tokens": max_tokens,
         }
-        if provider == "opencode-go" and reasoning_effort:
-            normalized_effort = reasoning_effort.strip().lower()
-            if normalized_effort in {"low", "medium", "high"}:
-                payload["reasoning_effort"] = normalized_effort
         try:
             _rate_limit()
+            request_url = cfg["endpoint"] if provider == "opencode-go" else f"{cfg['base_url'].rstrip('/')}/chat/completions"
             resp = requests.post(
-                f"{cfg['base_url'].rstrip('/')}/chat/completions",
+                request_url,
                 headers={"Authorization": f"Bearer {cfg['api_key']}", "Content-Type": "application/json"},
                 json=payload,
-                timeout=30,
+                timeout=_LLM_REQUEST_TIMEOUT,
             )
             if resp.status_code == 429:
                 _log(f"Groq rate limit hit for {model_name}, trying next model...")
@@ -271,7 +267,6 @@ def extract_keywords(user_profile: str) -> list[str] | None:
         system,
         user_prompt,
         max_tokens=_LLM_EXTRACT_MAX_TOKENS,
-        reasoning_effort=_LLM_REASONING_EFFORT,
     )
     if not result:
         return None
@@ -345,7 +340,6 @@ def suggest_ontology_keywords(text: str, existing_skills: list[str]) -> list[str
         "You are a facet expansion assistant. Find new skill keywords that do NOT exist in the provided facet index pages.",
         full_prompt,
         max_tokens=_LLM_EXTRACT_MAX_TOKENS,
-        reasoning_effort=_LLM_REASONING_EFFORT,
     )
     if not result:
         return None
