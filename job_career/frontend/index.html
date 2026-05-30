@@ -3,121 +3,404 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Career Discovery AI | 커리어 판단 에이전트</title>
-    <!-- Tailwind CSS & Lucide Icons -->
+    <title>Job Wiki Career AI | 공공기관 커리어 매칭 플랫폼</title>
+
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <link rel="stylesheet" href="styles.css">
 </head>
-<body class="bg-[#0f172a] text-slate-200 min-h-screen font-sans antialiased">
 
-    <!-- Hero Section / Header -->
-    <div class="max-w-5xl mx-auto px-6 pt-12 pb-8 text-center">
-        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-500/10 border border-indigo-500/30 text-indigo-400 text-sm font-medium mb-4">
-            <i data-lucide="sparkles" class="w-4 h-4"></i> AI 기반 커리어 분석 서비스
-        </div>
-        <h1 class="text-4xl md:text-5xl font-bold text-white mb-4 tracking-tight">
-            당신의 전문성을 <span class="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-emerald-400">최적의 기관</span>에 매칭하세요
-        </h1>
-        <p class="text-slate-400 text-lg max-w-2xl mx-auto">
-            당신의 경력과 역량을 분석하여 가장 적합한 공공기관과 직무를 추천해 드립니다.
-        </p>
-    </div>
+<body class="min-h-screen bg-slate-50 text-slate-900 antialiased">
+    <header class="site-header">
+        <nav class="mx-auto flex max-w-7xl items-center justify-between px-6 py-5">
+            <button type="button" id="navHome" class="flex items-center gap-3 text-left">
+                <div class="brand-mark">
+                    <i data-lucide="briefcase-business" class="h-5 w-5"></i>
+                </div>
+                <div>
+                    <p class="text-xs font-semibold text-slate-500">Public Career Matching Platform</p>
+                    <h1 class="text-lg font-black text-slate-950">Job Wiki Career AI</h1>
+                </div>
+            </button>
 
-    <main class="max-w-5xl mx-auto px-6 pb-20">
-        <!-- Input Section -->
-        <section class="glass rounded-3xl p-6 md:p-8 mb-10 border border-slate-700/50">
-            <div class="flex items-center justify-between mb-4">
-                <label for="profile" class="text-white font-semibold flex items-center gap-2">
-                    <i data-lucide="user-round" class="w-5 h-5 text-indigo-400"></i> 커리어 프로필 입력
-                </label>
-                <button id="loadExample" class="text-xs text-slate-400 hover:text-indigo-400 transition-colors">
-                    예시 불러오기
-                </button>
+            <div class="hidden items-center gap-8 text-sm font-bold text-slate-600 md:flex">
+                <button type="button" data-page-link="home" class="hover:text-blue-700">서비스 소개</button>
+                <button type="button" data-page-link="analyze" class="hover:text-blue-700">커리어 분석</button>
+                <button type="button" data-page-link="result" class="hover:text-blue-700">추천 결과</button>
             </div>
-            
-            <textarea id="profile" 
-                class="w-full h-48 bg-slate-800/50 border border-slate-700 rounded-2xl p-5 text-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 transition-all resize-none placeholder-slate-500"
-                placeholder="어떤 일을 해오셨나요? 귀하의 상세한 경력, 보유 기술, 이직 희망 분야를 자유롭게 작성해 주세요. (예: 5년차 IT 운영 관리자...)"></textarea>
 
-            <div class="mt-6 flex flex-col md:flex-row gap-4">
-                <button id="analyzeBtn" class="flex-1 bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-4 px-8 rounded-xl disabled:opacity-50 disabled:cursor-not-allowed transition-all flex items-center justify-center gap-2 shadow-lg shadow-indigo-500/20">
-                    <i data-lucide="zap" class="w-5 h-5"></i> 분석 시작하기
-                </button>
-                <button id="resetBtn" class="px-6 py-4 rounded-xl border border-slate-700 font-medium hover:bg-slate-800 transition-colors flex items-center justify-center gap-2">
-                    <i data-lucide="rotate-ccw" class="w-5 h-5"></i> 초기화
-                </button>
+            <button type="button" data-page-link="analyze" class="hidden rounded-full bg-slate-950 px-5 py-2.5 text-sm font-black text-white transition hover:bg-blue-700 sm:inline-flex">
+                분석 시작
+            </button>
+        </nav>
+    </header>
+
+    <main class="mx-auto max-w-7xl px-6 pb-24">
+        <section id="viewHome" class="app-view">
+            <section class="hero-section">
+                <div class="hero-shape hero-shape-blue"></div>
+                <div class="hero-shape hero-shape-green"></div>
+
+                <div class="grid grid-cols-1 items-center gap-12 pb-16 pt-16 lg:grid-cols-[1.05fr_0.95fr]">
+                    <div>
+                        <div class="mb-6 inline-flex items-center gap-2 rounded-full border border-blue-100 bg-blue-50 px-4 py-2 text-sm font-black text-blue-700">
+                            <i data-lucide="sparkles" class="h-4 w-4"></i>
+                            AI 기반 공공기관 채용공고 매칭 서비스
+                        </div>
+
+                        <h2 class="mb-6 text-4xl font-black leading-tight tracking-tight text-slate-950 md:text-6xl">
+                            내 경력과 맞는<br>
+                            <span class="text-blue-700">공공기관 채용공고</span>를<br>
+                            더 쉽게 찾으세요
+                        </h2>
+
+                        <p class="mb-8 max-w-3xl text-lg leading-9 text-slate-600 md:text-xl">
+                            공공기관 채용공고 데이터를 Wiki 형태로 구조화하고,
+                            사용자의 전공·경력·희망 조건을 분석하여 가장 적합한 기관과 공고를 추천합니다.
+                        </p>
+
+                        <div class="flex flex-col gap-3 sm:flex-row">
+                            <button type="button" id="startAnalyzeBtn" class="hero-primary-btn">
+                                <i data-lucide="arrow-right" class="h-5 w-5"></i>
+                                커리어 분석 시작하기
+                            </button>
+                            <button id="heroExampleBtn" type="button" class="hero-secondary-btn">
+                                <i data-lucide="wand-sparkles" class="h-5 w-5"></i>
+                                예시로 체험하기
+                            </button>
+                        </div>
+
+                        <div class="mt-10 grid max-w-2xl grid-cols-3 gap-4">
+                            <div class="stat-card">
+                                <p class="text-2xl font-black text-slate-950">3단계</p>
+                                <p class="text-sm font-semibold text-slate-500">추천 흐름</p>
+                            </div>
+                            <div class="stat-card">
+                                <p class="text-2xl font-black text-slate-950">5개</p>
+                                <p class="text-sm font-semibold text-slate-500">최종 기관</p>
+                            </div>
+                            <div class="stat-card">
+                                <p class="text-2xl font-black text-slate-950">Wiki</p>
+                                <p class="text-sm font-semibold text-slate-500">공고 구조화</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="hero-preview">
+                        <div class="preview-window">
+                            <div class="preview-toolbar">
+                                <div class="flex gap-2">
+                                    <span class="dot bg-red-400"></span>
+                                    <span class="dot bg-amber-400"></span>
+                                    <span class="dot bg-emerald-400"></span>
+                                </div>
+                                <span class="text-xs font-bold text-slate-400">Job Wiki Career AI</span>
+                            </div>
+
+                            <div class="p-5">
+                                <div class="mb-5 flex items-center justify-between">
+                                    <div>
+                                        <p class="section-eyebrow">Preview Result</p>
+                                        <h3 class="mt-1 text-2xl font-black text-slate-950">추천 결과 미리보기</h3>
+                                    </div>
+                                    <div class="rounded-2xl bg-blue-50 p-3 text-blue-700">
+                                        <i data-lucide="bar-chart-3" class="h-6 w-6"></i>
+                                    </div>
+                                </div>
+
+                                <div class="animated-card card-one">
+                                    <div class="flex items-start justify-between gap-4">
+                                        <div>
+                                            <span class="rank-badge">TOP 1</span>
+                                            <h4 class="mt-3 text-xl font-black text-slate-950">국립암센터</h4>
+                                        </div>
+                                        <div class="text-right">
+                                            <p class="text-3xl font-black text-blue-700">96%</p>
+                                            <p class="text-xs font-bold text-slate-400">매칭률</p>
+                                        </div>
+                                    </div>
+                                    <div class="mt-4 h-2 overflow-hidden rounded-full bg-slate-100">
+                                        <div class="progress-fill"></div>
+                                    </div>
+                                    <div class="mt-4 flex flex-wrap gap-2">
+                                        <span class="keyword-tag"># 의료행정</span>
+                                        <span class="keyword-tag"># 보건</span>
+                                        <span class="keyword-tag"># 경력</span>
+                                    </div>
+                                </div>
+
+                                <div class="animated-card card-two">
+                                    <div class="flex items-center gap-3">
+                                        <div class="flex h-10 w-10 items-center justify-center rounded-2xl bg-emerald-50 text-emerald-700">
+                                            <i data-lucide="check" class="h-5 w-5"></i>
+                                        </div>
+                                        <div>
+                                            <p class="font-black text-slate-950">조건 보정 완료</p>
+                                            <p class="text-sm text-slate-500">정규직 · 서울 · 서류전형</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="animated-card card-three">
+                                    <p class="mb-3 text-sm font-black text-slate-700">추천 이유</p>
+                                    <ul class="space-y-2 text-sm text-slate-600">
+                                        <li>의료 행정 경험과 공고 태그가 연결됩니다.</li>
+                                        <li>보건 분야 공공기관 공고와 관련성이 높습니다.</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="workflow" class="workflow-section">
+                <div class="mb-8 text-center">
+                    <p class="section-eyebrow">System Workflow</p>
+                    <h2 class="mt-2 text-3xl font-black text-slate-950">프로젝트 동작 흐름</h2>
+                    <p class="mt-3 text-slate-500">
+                        백엔드 파이프라인을 사용자가 이해할 수 있도록 프론트엔드에서 시각화했습니다.
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 gap-4 md:grid-cols-3">
+                    <div class="step-item step-active" data-step="1">
+                        <div class="step-badge">1</div>
+                        <div>
+                            <h4>프로필 입력</h4>
+                            <p>사용자가 자신의 경력과 희망 조건을 자유롭게 작성합니다.</p>
+                        </div>
+                    </div>
+
+                    <div class="step-item" data-step="2">
+                        <div class="step-badge">2</div>
+                        <div>
+                            <h4>조건 보정</h4>
+                            <p>AI가 애매하게 판단한 조건을 사용자가 선택합니다.</p>
+                        </div>
+                    </div>
+
+                    <div class="step-item" data-step="3">
+                        <div class="step-badge">3</div>
+                        <div>
+                            <h4>최종 추천</h4>
+                            <p>매칭률, 추천 이유, 관련 공고를 확인합니다.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-6 grid grid-cols-1 gap-4 md:grid-cols-4">
+                    <div class="pipeline-card">
+                        <i data-lucide="database" class="h-6 w-6"></i>
+                        <h4>ALIO 수집</h4>
+                        <p>공공기관 채용공고 데이터 수집</p>
+                    </div>
+                    <div class="pipeline-card">
+                        <i data-lucide="folder-kanban" class="h-6 w-6"></i>
+                        <h4>Wiki 변환</h4>
+                        <p>공고를 Facet Wiki로 구조화</p>
+                    </div>
+                    <div class="pipeline-card">
+                        <i data-lucide="sliders-horizontal" class="h-6 w-6"></i>
+                        <h4>조건 선택</h4>
+                        <p>사용자가 추천 조건을 직접 보정</p>
+                    </div>
+                    <div class="pipeline-card">
+                        <i data-lucide="bar-chart-3" class="h-6 w-6"></i>
+                        <h4>결과 시각화</h4>
+                        <p>추천 카드와 비교표 제공</p>
+                    </div>
+                </div>
+            </section>
+        </section>
+
+        <section id="viewAnalyze" class="app-view hidden pt-10">
+            <section id="analysis" class="analysis-card">
+                <div class="mb-8 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+                    <div>
+                        <p class="section-eyebrow">Career Profile</p>
+                        <h2 class="mt-2 text-3xl font-black text-slate-950">커리어 프로필 입력</h2>
+                        <p class="mt-2 text-slate-500">
+                            전공, 경력, 관심 직무, 희망 조건을 자유롭게 작성해 주세요.
+                        </p>
+                    </div>
+
+                    <button id="loadExample" class="outline-mini-btn">
+                        <i data-lucide="file-plus-2" class="h-4 w-4"></i>
+                        예시 불러오기
+                    </button>
+                </div>
+
+                <div class="overflow-hidden rounded-[1.5rem] border border-blue-100 bg-white shadow-sm">
+                    <div class="flex items-center justify-between border-b border-slate-200 bg-gradient-to-r from-blue-50 to-white px-5 py-4">
+                        <div class="flex items-center gap-2 font-black text-slate-800">
+                            <i data-lucide="user-round" class="h-5 w-5 text-blue-700"></i>
+                            나의 경력과 희망 조건
+                        </div>
+                        <span class="text-sm font-bold text-slate-400">자유 입력</span>
+                    </div>
+
+                    <textarea id="profile"
+                        class="min-h-[280px] w-full resize-y border-0 bg-white p-5 text-base leading-8 text-slate-800 outline-none placeholder:text-slate-400 focus:ring-2 focus:ring-blue-100"
+                        placeholder="예: 저는 3년 동안 병원에서 원무과 행정 직원으로 일했습니다. 환자 데이터를 다루다 보니 의료 행정 지식과 의료정보 보호 정책 수립 쪽에 관심이 생겼고, 관련 경험도 쌓았습니다. 공공기관 쪽으로 이직하고 싶습니다."></textarea>
+                </div>
+
+                <div class="mt-6">
+                    <p class="mb-3 text-sm font-black text-slate-700">입력 도움 버튼</p>
+                    <div class="flex flex-wrap gap-2">
+                        <button type="button" data-prompt-chip="전공은 의공학이며 의료 데이터와 병원 행정 분야에 관심이 있습니다." class="prompt-chip">전공 추가</button>
+                        <button type="button" data-prompt-chip="병원 원무과 행정, 환자 데이터 관리, 문서 처리 경험이 있습니다." class="prompt-chip">경력 추가</button>
+                        <button type="button" data-prompt-chip="공공기관 보건, 의료행정, 의료정보보호 관련 직무를 희망합니다." class="prompt-chip">희망 직무 추가</button>
+                        <button type="button" data-prompt-chip="서울과 경기 지역을 우선적으로 고려하고 있으며 정규직을 희망합니다." class="prompt-chip">희망 조건 추가</button>
+                    </div>
+                </div>
+
+                <div class="mt-8 flex flex-col gap-4 md:flex-row">
+                    <button id="analyzeBtn" class="primary-btn flex-1">
+                        <i data-lucide="search-check" class="h-5 w-5"></i>
+                        분석 시작하기
+                    </button>
+
+                    <button id="resetBtn" class="secondary-btn">
+                        <i data-lucide="rotate-ccw" class="h-5 w-5"></i>
+                        초기화
+                    </button>
+
+                    <button type="button" data-page-link="home" class="secondary-btn">
+                        <i data-lucide="home" class="h-5 w-5"></i>
+                        처음으로
+                    </button>
+                </div>
+            </section>
+        </section>
+
+        <div id="loading" class="loading-card hidden">
+            <div class="loading-spinner"></div>
+            <p class="text-xl font-black text-slate-950">커리어 프로필을 분석하고 있습니다</p>
+            <p class="mt-2 text-slate-500">키워드 추출, 조건 후보 생성, 매칭 점수 계산을 진행합니다.</p>
+        </div>
+
+        <section id="viewFollowup" class="app-view hidden pt-10">
+            <div id="followUpContainer" class="followup-panel">
+                <div class="mb-6 flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
+                    <div>
+                        <p class="section-eyebrow">Condition Check</p>
+                        <h3 class="mt-2 text-2xl font-black text-slate-950">추천 조건을 세부 조정해 주세요</h3>
+                        <p id="followUpSummary" class="mt-2 text-slate-500">
+                            선택지를 고르면 추천을 다시 계산합니다.
+                        </p>
+                    </div>
+
+                    <button id="followUpSubmit" type="button" class="primary-btn">
+                        <i data-lucide="refresh-cw" class="h-4 w-4"></i>
+                        선택 반영해 다시 분석
+                    </button>
+                </div>
+
+                <div id="selectedSummaryCard" class="selected-summary-card hidden">
+                    <p class="mb-3 text-sm font-black text-slate-700">현재 선택한 조건</p>
+                    <div id="selectedSummaryList" class="flex flex-wrap gap-2 text-sm"></div>
+                </div>
+
+                <div id="followUpGrid" class="grid grid-cols-1 gap-4 lg:grid-cols-2"></div>
+
+                <div class="mt-8">
+                    <button type="button" data-page-link="analyze" class="secondary-btn">
+                        <i data-lucide="arrow-left" class="h-5 w-5"></i>
+                        입력 화면으로 돌아가기
+                    </button>
+                </div>
             </div>
         </section>
 
-        <!-- Loading State -->
-        <div id="loading" class="hidden text-center py-12">
-            <div class="inline-block animate-spin rounded-full h-12 w-12 border-4 border-indigo-500/20 border-t-indigo-500 mb-4"></div>
-            <p class="text-lg text-slate-300 font-medium animate-pulse">커리어 프로필을 정밀 분석 중입니다...</p>
-            <p class="text-slate-500 text-sm mt-2">최대 60초가 소요될 수 있습니다.</p>
-        </div>
+        <section id="viewResult" class="app-view hidden pt-10">
+            <div id="resultContainer">
+                <section id="resultSummary" class="mb-8"></section>
 
-        <!-- Result Section -->
-        <div id="resultContainer" class="hidden">
-            <div class="flex items-center gap-3 mb-8">
-                <div class="h-px flex-1 bg-slate-800"></div>
-                <h2 class="text-xl font-bold text-white whitespace-nowrap">분석 결과: 최적의 매칭 기관 <span id="matchCount">0</span>개</h2>
-                <div class="h-px flex-1 bg-slate-800"></div>
-            </div>
-            
-            <div id="resultGrid" class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <!-- Cards will be injected here -->
-            </div>
-
-            <div id="followUpContainer" class="hidden mt-8 rounded-3xl border border-emerald-500/20 bg-emerald-500/5 p-5 md:p-6">
-                <div class="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between mb-5">
+                <div class="mb-6 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
                     <div>
-                        <p class="text-xs uppercase tracking-[0.35em] text-emerald-400 mb-2">보완 질문</p>
-                        <h3 class="text-xl font-bold text-white">아직 확정되지 않은 분류를 선택해 주세요</h3>
-                        <p id="followUpSummary" class="text-sm text-slate-400 mt-1">선택지를 고르면 추천을 다시 계산합니다.</p>
+                        <p class="section-eyebrow">Matching Result</p>
+                        <h2 class="mt-2 text-3xl font-black text-slate-950">
+                            최적의 매칭 기관 <span id="matchCount" class="text-blue-700">0</span>개
+                        </h2>
                     </div>
-                    <button id="followUpSubmit" type="button" class="inline-flex items-center justify-center gap-2 rounded-xl bg-emerald-500 px-5 py-3 font-semibold text-white transition-colors hover:bg-emerald-400 disabled:cursor-not-allowed disabled:opacity-50">
-                        <i data-lucide="refresh-cw" class="w-4 h-4"></i> 선택 반영해 다시 분석
-                    </button>
-                </div>
-                <div id="followUpGrid" class="grid grid-cols-1 gap-4 lg:grid-cols-2"></div>
-            </div>
-        </div>
 
-        <!-- Archive Detail Modal -->
-        <div id="archiveModal" class="hidden fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md p-4 md:p-8">
-            <div class="h-full max-w-5xl mx-auto flex items-center">
-                <div class="w-full max-h-[90vh] bg-slate-900 border border-slate-700 rounded-3xl shadow-2xl overflow-hidden flex flex-col">
-                    <div class="flex items-start justify-between gap-4 p-5 md:p-6 border-b border-slate-800">
+                    <div class="flex flex-col gap-3 sm:flex-row">
+                        <button type="button" data-page-link="analyze" class="secondary-btn">
+                            <i data-lucide="rotate-ccw" class="h-5 w-5"></i>
+                            다시 분석하기
+                        </button>
+                        <button type="button" data-page-link="home" class="secondary-btn">
+                            <i data-lucide="home" class="h-5 w-5"></i>
+                            처음으로
+                        </button>
+                    </div>
+                </div>
+
+                <div id="resultGrid" class="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3"></div>
+
+                <section id="resultTableContainer" class="result-table-card mt-10 hidden">
+                    <div class="mb-6 flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
                         <div>
-                            <p class="text-xs uppercase tracking-[0.35em] text-indigo-400 mb-2">원본 공고(아카이브)</p>
-                            <h3 id="archiveModalTitle" class="text-xl md:text-2xl font-bold text-white">상세보기</h3>
-                            <p id="archiveModalMeta" class="text-sm text-slate-400 mt-1"></p>
+                            <p class="section-eyebrow">Comparison</p>
+                            <h3 class="mt-2 text-2xl font-black text-slate-950">추천 기관 비교표</h3>
                         </div>
-                        <button id="archiveModalClose" type="button" class="shrink-0 rounded-xl border border-slate-700 px-3 py-2 text-slate-300 hover:text-white hover:bg-slate-800 transition-colors">
+                        <span class="text-sm font-semibold text-slate-500">상위 추천 기관 기준</span>
+                    </div>
+
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-sm">
+                            <thead>
+                                <tr class="border-b border-slate-200 text-slate-500">
+                                    <th class="py-4 pr-4 text-left font-black">순위</th>
+                                    <th class="py-4 pr-4 text-left font-black">기관명</th>
+                                    <th class="py-4 pr-4 text-left font-black">매칭률</th>
+                                    <th class="py-4 pr-4 text-left font-black">관련 공고</th>
+                                    <th class="py-4 pr-4 text-left font-black">주요 키워드</th>
+                                </tr>
+                            </thead>
+                            <tbody id="resultTableBody"></tbody>
+                        </table>
+                    </div>
+                </section>
+            </div>
+        </section>
+
+        <div id="archiveModal" class="fixed inset-0 z-50 hidden bg-slate-950/50 p-4 backdrop-blur-sm md:p-8">
+            <div class="mx-auto flex h-full max-w-5xl items-center">
+                <div class="flex max-h-[90vh] w-full flex-col overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-2xl">
+                    <div class="flex items-start justify-between gap-4 border-b border-slate-200 bg-slate-50 p-5 md:p-6">
+                        <div>
+                            <p class="section-eyebrow">Original Archive</p>
+                            <h3 id="archiveModalTitle" class="mt-1 text-xl font-black text-slate-950 md:text-2xl">상세보기</h3>
+                            <p id="archiveModalMeta" class="mt-1 text-sm text-slate-500"></p>
+                        </div>
+
+                        <button id="archiveModalClose" type="button" class="rounded-xl border border-slate-200 bg-white px-4 py-2 font-black text-slate-600 transition hover:bg-slate-100">
                             닫기
                         </button>
                     </div>
+
                     <div class="flex-1 overflow-y-auto p-5 md:p-6">
-                        <pre id="archiveModalBody" class="whitespace-pre-wrap break-words text-sm leading-7 text-slate-200 bg-slate-950/60 border border-slate-800 rounded-2xl p-5 min-h-[280px]"></pre>
+                        <pre id="archiveModalBody" class="min-h-[280px] whitespace-pre-wrap break-words rounded-2xl border border-slate-200 bg-slate-50 p-5 text-sm leading-7 text-slate-700"></pre>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Error Alert -->
-        <div id="errorAlert" class="hidden bg-red-500/10 border border-red-500/50 text-red-200 p-4 rounded-2xl flex items-center gap-3 mt-6">
-            <i data-lucide="alert-circle" class="w-6 h-6 text-red-400"></i>
+        <div id="errorAlert" class="mt-8 hidden items-center gap-3 rounded-2xl border border-red-200 bg-red-50 p-5 text-red-700">
+            <i data-lucide="alert-circle" class="h-6 w-6 text-red-500"></i>
             <div>
-                <p id="errorMessage" class="font-medium"></p>
-                <button onclick="location.reload()" class="text-sm underline mt-1 opacity-80 hover:opacity-100">다시 시도</button>
+                <p id="errorMessage" class="font-black"></p>
+                <button onclick="location.reload()" class="mt-1 text-sm underline opacity-80 hover:opacity-100">
+                    다시 시도
+                </button>
             </div>
         </div>
     </main>
 
     <script src="script.js"></script>
     <script>
-        // Lucide 아이콘 렌더링
         lucide.createIcons();
     </script>
 </body>
