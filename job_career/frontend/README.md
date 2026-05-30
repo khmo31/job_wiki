@@ -4,8 +4,8 @@
 
 ```
 frontend/
-├── index.html          # 메인 HTML (UI 구조)
-├── styles.css          # 스타일시트
+├── index.html          # 메인 HTML (멀티뷰 SPA)
+├── styles.css          # 스타일시트 (라이트/다크 모드)
 ├── script.js           # JavaScript 로직
 └── README.md           # 이 파일
 ```
@@ -15,6 +15,7 @@ frontend/
 ### 1. 백엔드 서버 시작
 
 ```bash
+cd job_career
 python server.py
 ```
 
@@ -26,194 +27,144 @@ python server.py
 http://localhost:5000
 ```
 
-또는
-
-```
-http://localhost:5000/static/index.html
-```
-
 ---
 
 ## 🛠️ 기술 스택
 
-- **HTML5**: 구조 (시맨틱 요소)
-- **CSS3**: 반응형 그리드 레이아웃
+- **HTML5**: 멀티뷰 SPA 구조 (4개 뷰: home/analyze/followup/result)
+- **Tailwind CSS v3**: 유틸리티 클래스 (CDN)
+- **Lucide Icons**: SVG 아이콘 라이브러리 (CDN)
 - **Vanilla JavaScript**: Fetch API로 백엔드 통신
+- **CSS 커스텀 속성**: 라이트/다크 모드 대응
+
+---
+
+## 🎨 디자인 시스템
+
+### 색상 팔레트 (CSS 변수)
+
+```css
+--navy: #0f172a;       /* 진한 네이비 */
+--blue: #1d4ed8;       /* 주 포인트 */
+--line: #e2e8f0;       /* 테두리 */
+--muted: #64748b;      /* 보조 텍스트 */
+```
+
+### 다크 모드
+
+시스템 설정(`prefers-color-scheme: dark`)을 자동 감지하여 전체 UI가 어두운 테마로 전환됩니다. 별도 토글 불필요.
+
+### 접근성
+
+- `prefers-reduced-motion` 지원 — 모션 민감 사용자용 애니메이션 제거
+- 모달 ESC 닫기 지원
+- 스크롤 복원 (세션 스토리지 기반)
 
 ---
 
 ## 💡 JavaScript 주요 함수
 
+### 뷰 관리
+```javascript
+showPage(pageName)          // home/analyze/followup/result 전환
+beginNewAnalysisSession()   // 새 분석 세션 시작
+resetAnalysisView(msg)      // 분석 뷰 초기화
+```
+
 ### API 통신
 ```javascript
-handleAnalyze()  // "분석하기" 클릭 → POST /api/analyze 호출
+requestAnalysis({ phase, supplementalSelections })
+  // POST /api/analyze 호출 (AbortController로 60s 타임아웃)
+openArchiveModal(file, institution)
+  // POST /api/archive 호출 (원문 모달)
 ```
 
 ### UI 상태
 ```javascript
-showLoading()       // 로딩 상태 표시
-hideLoading()       // 로딩 상태 숨김
-showError(message)  // 오류 메시지 표시
-showResults(data)   // 결과 카드 렌더링
+showLoading(isLoading)      // 로딩 + 5단계 프로그레스 바
+showError(message)          // 오류 메시지 + 자동 스크롤
+setActiveStep(step)         // 워크플로우 1/2/3단계 표시
 ```
 
-### 입력 처리
+### 결과 렌더링
 ```javascript
-handleInput()       // 입력 길이 제한 (5000자)
-updateAnalyzeButtonState()  // 버튼 활성화/비활성화
+renderResults(report)               // 추천 카드 + 비교표 + 요약
+renderFollowUpQuestions(questions)  // follow-up 질문 카드
+updateSelectedSummary()             // 선택한 조건 실시간 요약
 ```
 
----
-
-## 🎨 스타일 커스터마이징
-
-### 색상 변수 (CSS 루트)
-```css
---primary-color: #007bff;       /* 주 색상 */
---success-color: #28a745;       /* 성공 (점수 배지) */
---danger-color: #dc3545;        /* 오류 */
---warning-color: #ffc107;       /* 경고 */
---light-bg: #f8f9fa;            /* 밝은 배경 */
+### 유틸리티
+```javascript
+escapeHtml(value)           // XSS 방지 HTML 이스케이프
+escapeAttr(value)           // 속성값 이스케이프
+getMatchRate(item)          // 매칭률 정규화 (0-100)
+buildRecommendationReasons() // 추천 이유 자동 생성
 ```
-
-### 반응형 브레이크포인트
-- 데스크톱: 1200px+
-- 태블릿: 768px - 1199px
-- 모바일: < 768px
 
 ---
 
 ## 🔌 API 연결
 
-### 기본 경로 (localhost)
-```javascript
-const API_URL = '/api/analyze';
+| 엔드포인트 | 메서드 | 설명 |
+|-----------|--------|------|
+| `/api/analyze` | POST | 분석 실행 (프로필 + 선택 조건) |
+| `/api/archive` | POST | 원문 공고 불러오기 |
+
+### 요청 예시
+```json
+POST /api/analyze
+{
+  "profile": "저는 병원 직원입니다...",
+  "supplemental_selections": { "region": ["서울"] },
+  "analysis_session_id": "uuid",
+  "analysis_phase": "initial"
+}
 ```
 
-### 원격 서버 연결 (필요 시)
-```javascript
-const API_URL = 'https://your-domain.com/api/analyze';
+### 응답 예시
+```json
+{
+  "status": "success",
+  "data": {
+    "recommended_institutions": [
+      { "institution": "국립암센터", "match_rate": 96, "matched_keywords": [...], "files": [...] }
+    ],
+    "follow_up_questions": [
+      { "category": "region", "prompt": "...", "options": [...] }
+    ]
+  }
+}
 ```
 
 ---
 
-## 🧪 테스트
+## 📱 반응형 디자인
 
-### 1. 입력 유효성 테스트
-- 빈 입력 → "분석하기" 버튼 비활성화
-- 5000자 초과 입력 → 자동 제한
-
-### 2. API 호출 테스트 (curl)
-```bash
-curl -X POST http://localhost:5000/api/analyze \
-  -H "Content-Type: application/json" \
-  -d '{"profile": "저는 병원 직원입니다."}'
-```
-
-### 3. 결과 표시 테스트
-- 결과 카드 5개 표시 확인
-- 키워드 태그 표시 확인
-- 점수 배지 표시 확인
-
----
-
-## 📱 반응형 테스트
-
-### 데스크톱 (F12 → Toggle device toolbar)
-```
-화면 너비: 1200px+
-예상: 2열 그리드 (입력/결과 나란히)
-```
-
-### 태블릿
-```
-화면 너비: 768px - 1199px
-예상: 1열 스택 (입력 위, 결과 아래)
-```
-
-### 모바일
-```
-화면 너비: < 768px
-예상: 1열 스택, 버튼 세로 정렬
-```
+| 브레이크포인트 | 대상 | 레이아웃 |
+|--------------|------|---------|
+| < 640px | 모바일 | 1열, 버튼 전체 너비 |
+| 640-1023px | 태블릿 | 1-2열 혼합 |
+| 1024px+ | 데스크톱 | 2-3열 그리드 |
 
 ---
 
 ## 🔒 보안
 
-### XSS 방지
-```javascript
-escapeHtml(text)  // HTML 특수문자 이스케이프
-```
-
-모든 동적 콘텐츠는 이 함수로 처리됨.
-
-### CORS
-Flask 서버에서 `flask-cors` 사용하여 모든 도메인 허용 (개발 용도).
-배포 시 도메인 제한 필요.
+- 모든 동적 콘텐츠 `escapeHtml()` 처리 (XSS 방지)
+- 모달 외부 클릭/ESC 닫기
+- 네트워크 요청 60초 타임아웃 (AbortController)
+- Follow-up 세션 5분 자동 타임아웃
 
 ---
 
-## 🐛 디버깅 팁
+## 🧪 테스트
 
-### 브라우저 콘솔 열기
+```bash
+# API 단일 테스트
+curl -X POST http://localhost:5000/api/analyze \
+  -H "Content-Type: application/json" \
+  -d '{"profile": "저는 병원 직원입니다.", "analysis_phase": "initial"}'
 ```
-F12 또는 Ctrl+Shift+I
-```
-
-### API 응답 확인
-```javascript
-// script.js의 fetch() 부분에 console.log 추가
-console.log('응답:', data);
-```
-
-### 네트워크 탭
-```
-F12 → Network → "분석하기" 클릭
-→ POST /api/analyze 확인
-```
-
----
-
-## 📝 예시 프로필
-
-```
-저는 3년 동안 병원에서 원무과 행정 직원으로 일했습니다. 환자 데이터를 다루다 보니 의료 행정 지식과 의료정보 보호 정책 수립 쪽에 관심이 생겼고, 관련 경험도 쌓았습니다. 공공기관 쪽으로 이직하고 싶습니다.
-```
-
----
-
-## 🚀 프로덕션 배포
-
-### 1. Flask 정적 파일 위치 확인
-```
-frontend/index.html
-frontend/styles.css
-frontend/script.js
-```
-
-모두 `frontend/` 디렉토리에 있어야 함.
-
-### 2. CORS 설정
-```python
-# server.py
-CORS(app, resources={
-    r"/api/*": {"origins": ["https://your-domain.com"]}
-})
-```
-
-### 3. 환경 변수
-```python
-API_URL = os.getenv('API_URL', '/api/analyze')
-```
-
----
-
-## 📚 참고 자료
-
-- [API 스펙](../API_SPEC.md)
-- [Flask 문서](https://flask.palletsprojects.com/)
-- [MDN Web Docs](https://developer.mozilla.org/)
 
 ---
 
