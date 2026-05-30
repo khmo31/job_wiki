@@ -617,3 +617,191 @@ body {
         margin-right: 0;
     }
 }
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+    :root {
+        --navy: #f8fafc;
+        --blue: #60a5fa;
+        --line: #334155;
+        --muted: #94a3b8;
+    }
+
+    body {
+        background:
+            radial-gradient(circle at top left, rgba(30, 41, 59, 0.95), transparent 34rem),
+            radial-gradient(circle at top right, rgba(15, 23, 42, 0.85), transparent 32rem),
+            linear-gradient(180deg, #0f172a 0%, #1e293b 42%, #0f172a 100%) !important;
+    }
+
+    .site-header {
+        border-bottom: 1px solid rgba(51, 65, 85, 0.8);
+        background: rgba(15, 23, 42, 0.84);
+    }
+
+    .stat-card,
+    .preview-window,
+    .analysis-card,
+    .workflow-section,
+    .loading-card,
+    .result-table-card,
+    .followup-panel,
+    .summary-panel {
+        background: rgba(30, 41, 59, 0.9);
+        border-color: rgba(51, 65, 85, 0.92);
+    }
+
+    .result-card,
+    .pipeline-card,
+    .animated-card,
+    .step-item,
+    .reason-box {
+        background: #1e293b;
+        border-color: #334155;
+    }
+
+    .result-card h3,
+    .pipeline-card h4,
+    .step-item h4,
+    .animated-card h4,
+    .brand-mark + div h1 {
+        color: #f1f5f9;
+    }
+
+    .step-item p,
+    .pipeline-card p,
+    .result-card .text-slate-500,
+    .text-slate-600 {
+        color: #94a3b8;
+    }
+
+    .rank-badge,
+    .prompt-chip,
+    .file-button,
+    .followup-option {
+        background: rgba(30, 41, 59, 0.9);
+        border-color: #334155;
+        color: #60a5fa;
+    }
+
+    .followup-option:hover {
+        background: rgba(30, 41, 59, 0.95);
+        border-color: #3b82f6;
+    }
+
+    .followup-option.is-selected {
+        background: rgba(59, 130, 246, 0.15) !important;
+        border-color: #3b82f6 !important;
+    }
+
+    .summary-metric,
+    .preview-toolbar,
+    .reason-box {
+        background: #1e293b;
+        border-color: #334155;
+    }
+
+    .keyword-tag {
+        background: rgba(22, 163, 74, 0.1);
+        border-color: rgba(22, 163, 74, 0.3);
+        color: #4ade80;
+    }
+
+    .summary-pill,
+    .selected-summary-card {
+        background: rgba(59, 130, 246, 0.1);
+        border-color: rgba(59, 130, 246, 0.3);
+    }
+
+    .hero-shape-blue {
+        background: rgba(59, 130, 246, 0.15);
+    }
+
+    .hero-shape-green {
+        background: rgba(52, 211, 153, 0.12);
+    }
+
+    .hero-primary-btn,
+    .primary-btn {
+        background: linear-gradient(135deg, #1e40af, #3b82f6);
+    }
+
+    .hero-secondary-btn,
+    .secondary-btn {
+        background: transparent;
+        border-color: #334155;
+        color: #e2e8f0;
+    }
+
+    .hero-secondary-btn:hover,
+    .secondary-btn:hover {
+        background: rgba(59, 130, 246, 0.1);
+        border-color: #3b82f6;
+        color: #60a5fa;
+    }
+
+    .loading-spinner {
+        border-color: rgba(59, 130, 246, 0.2);
+        border-top-color: #3b82f6;
+    }
+
+    #errorAlert {
+        background: rgba(127, 29, 29, 0.9);
+        border-color: rgba(239, 68, 68, 0.3);
+        color: #fca5a5;
+    }
+
+    .reason-list li {
+        color: #94a3b8;
+    }
+
+    .reason-list li::before {
+        background: #3b82f6;
+    }
+
+    ::-webkit-scrollbar-track {
+        background: #1e293b;
+    }
+
+    ::-webkit-scrollbar-thumb {
+        background: #475569;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+        background: #64748b;
+    }
+}
+
+/* Respect user motion preferences */
+@media (prefers-reduced-motion: reduce) {
+    .animated-card,
+    .card-one,
+    .card-two,
+    .card-three,
+    .progress-fill,
+    .fade-in-up,
+    .loading-spinner,
+    .btn-spinner {
+        animation: none !important;
+    }
+
+    .fade-in-up {
+        opacity: 1 !important;
+    }
+
+    .progress-fill {
+        width: 96% !important;
+    }
+
+    .result-card:hover,
+    .hero-primary-btn:hover,
+    .hero-secondary-btn:hover,
+    .primary-btn:hover,
+    .secondary-btn:hover {
+        transform: none !important;
+    }
+
+    html {
+        scroll-behavior: auto;
+    }
+}

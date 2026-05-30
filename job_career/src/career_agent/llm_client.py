@@ -311,6 +311,9 @@ def extract_keyword_plan(user_profile: str) -> dict[str, list[str]] | None:
     system = (
         "You are a career keyword extraction assistant.\n"
         "Given a user's career profile, extract keyword groups from the facet index pages below.\n"
+        "First, determine if the profile is related to job/career/employment at all.\n"
+        "If the profile is NOT related to any career, job, or employment context, "
+        'return {"core_keywords":[],"support_keywords":[],"follow_up_keywords":[]}\n'
         "Use only labels that appear in the facet pages; do not invent new labels.\n"
         "core_keywords must contain the single most important destination/domain labels.\n"
         "support_keywords must contain background or supporting labels that help refine the intent.\n"

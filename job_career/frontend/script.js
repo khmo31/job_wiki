@@ -48,6 +48,16 @@ let analysisSessionId = '';
 let analysisSessionState = 'idle';
 
 const FOLLOW_UP_SESSION_TIMEOUT_MS = 5 * 60 * 1000;
+const REQUEST_TIMEOUT_MS = 60000; // 60s network timeout
+
+// Loading stage progression
+const LOADING_STAGES = [
+    { pct: 15, label: '프로필 분석 중...' },
+    { pct: 35, label: '키워드 추출 중...' },
+    { pct: 55, label: 'Facet Wiki 매칭 중...' },
+    { pct: 75, label: '점수 계산 중...' },
+    { pct: 90, label: '결과 생성 중...' },
+];
 
 const EXAMPLE_PROFILE = '저는 3년 동안 병원에서 원무과 행정 직원으로 일했습니다. 환자 데이터를 다루다 보니 의료 행정 지식과 의료정보 보호 정책 수립 쪽에 관심이 생겼고, 관련 경험도 쌓았습니다. 공공기관 쪽으로 이직하고 싶습니다.';
 
@@ -62,6 +72,11 @@ function showPage(pageName) {
 
     window.scrollTo({ top: 0, behavior: 'smooth' });
     lucide.createIcons();
+
+    // Save current scroll position for back navigation
+    if (pageName !== 'home') {
+        sessionStorage.setItem(`scrollPos_${pageName}`, '0');
+    }
 }
 
 document.querySelectorAll('[data-page-link]').forEach((button) => {
@@ -194,6 +209,9 @@ async function requestAnalysis({ supplementalSelections = {}, phase = 'initial' 
     errorAlert.classList.add('hidden');
 
     try {
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS);
+
         const response = await fetch(API_URL, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -202,8 +220,11 @@ async function requestAnalysis({ supplementalSelections = {}, phase = 'initial' 
                 supplemental_selections: supplementalSelections,
                 analysis_session_id: analysisSessionId,
                 analysis_phase: phase,
-            })
+            }),
+            signal: controller.signal
         });
+
+        clearTimeout(timeoutId);
 
         const result = await response.json();
 
@@ -241,8 +262,35 @@ function showLoading(isLoading) {
 
     if (isLoading) {
         analyzeBtn.innerHTML = '<span class="btn-spinner"></span> 분석 중...';
+        // Start loading stage animation
+        let stageIndex = 0;
+        const loadingStage = document.getElementById('loadingStage');
+        const loadingBar = document.getElementById('loadingBar');
+        if (loadingStage && loadingBar) {
+            loadingStage.textContent = LOADING_STAGES[0].label;
+            loadingBar.style.width = '0%';
+            const interval = setInterval(() => {
+                stageIndex++;
+                if (stageIndex >= LOADING_STAGES.length) {
+                    clearInterval(interval);
+                    return;
+                }
+                loadingStage.textContent = LOADING_STAGES[stageIndex].label;
+                loadingBar.style.width = `${LOADING_STAGES[stageIndex].pct}%`;
+            }, 8000);
+            // Store interval ID to clean up on hide
+            loadingEl._stageInterval = interval;
+        }
     } else {
         analyzeBtn.innerHTML = '<i data-lucide="search-check" class="h-5 w-5"></i> 분석 시작하기';
+        // Clean up stage animation
+        if (loadingEl._stageInterval) {
+            clearInterval(loadingEl._stageInterval);
+            loadingEl._stageInterval = null;
+        }
+        // Fill loading bar
+        const loadingBar = document.getElementById('loadingBar');
+        if (loadingBar) loadingBar.style.width = '100%';
     }
 
     lucide.createIcons();
@@ -251,6 +299,9 @@ function showLoading(isLoading) {
 function showError(msg) {
     errorMessage.textContent = msg;
     errorAlert.classList.remove('hidden');
+
+    // Scroll to error
+    errorAlert.scrollIntoView({ behavior: 'smooth', block: 'center' });
 }
 
 function renderResults(report) {

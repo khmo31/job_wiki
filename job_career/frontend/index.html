@@ -4,8 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Job Wiki Career AI | 공공기관 커리어 매칭 플랫폼</title>
+    <meta name="description" content="내 경력에 맞는 공공기관 채용공고를 AI가 분석하고 매칭해드립니다. ALIO 기반 444+ 채용공고, Facet Wiki 매칭 엔진.">
+    <meta property="og:title" content="Job Wiki Career AI">
+    <meta property="og:description" content="AI 기반 공공기관 채용공고 맞춤 매칭 서비스">
+    <meta property="og:type" content="website">
+    <meta name="color-scheme" content="light dark">
 
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class'
+        }
+    </script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <link rel="stylesheet" href="styles.css">
 </head>
@@ -277,7 +287,17 @@
         <div id="loading" class="loading-card hidden">
             <div class="loading-spinner"></div>
             <p class="text-xl font-black text-slate-950">커리어 프로필을 분석하고 있습니다</p>
-            <p class="mt-2 text-slate-500">키워드 추출, 조건 후보 생성, 매칭 점수 계산을 진행합니다.</p>
+            <p id="loadingStage" class="mt-2 text-slate-500">키워드 추출 중...</p>
+            <div class="mt-6 mx-auto max-w-md">
+                <div class="h-1.5 w-full overflow-hidden rounded-full bg-slate-200">
+                    <div id="loadingBar" class="h-full rounded-full bg-gradient-to-r from-blue-700 to-sky-400" style="width: 0%; transition: width 0.6s ease;"></div>
+                </div>
+                <div class="mt-2 flex justify-between text-xs font-semibold text-slate-400">
+                    <span>키워드 추출</span>
+                    <span>매칭 계산</span>
+                    <span>결과 생성</span>
+                </div>
+            </div>
         </div>
 
         <section id="viewFollowup" class="app-view hidden pt-10">

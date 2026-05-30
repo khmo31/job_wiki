@@ -1088,8 +1088,8 @@ def generate_report(
     analysis_phase: str = "initial",
 ) -> dict[str, Any]:
     """사용자 프로필 기반 추천 기관 보고서 생성.
-    
-    1순위: LLM 키워드 추출 → facet 검증 → facet 스코어링
+
+    1순위: LLM 키워드 추출 -> facet 검증 -> facet 스코어링
     2순위: 순수 로컬 (regex + facet + facet 스코어링)
     """
     supplemental_terms_by_category, neutral_categories = _parse_supplemental_selections(supplemental_selections)
