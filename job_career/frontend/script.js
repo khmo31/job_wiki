@@ -196,7 +196,7 @@ function renderResults(report) {
                 <i data-lucide="search-x" class="w-7 h-7"></i>
             </div>
             <h3 class="text-xl font-bold text-white mb-2">${isWaitingForFollowUp ? '분류 선택 후 추천을 제공합니다' : '매칭되는 기업이 없습니다'}</h3>
-            <p class="text-slate-300">${matchMessage || (isWaitingForFollowUp ? '확정되지 않은 분류를 먼저 선택해 주세요.' : '매칭률이 50%를 초과하는 기업이 없습니다.')}</p>
+            <p class="text-slate-300">${matchMessage || (isWaitingForFollowUp ? '조금 더 조건을 정리해 주시면 추천을 다시 계산할 수 있어요.' : '조건에 맞는 추천 공고를 아직 찾지 못했습니다. 핵심 조건을 조금 넓혀 다시 시도해 주세요.')}</p>
         `;
         resultGrid.appendChild(emptyCard);
         resultContainer.classList.remove('hidden');
@@ -224,15 +224,15 @@ function renderResults(report) {
         const tags = item.matched_keywords.map(kw => 
             `<span class="px-2 py-1 bg-emerald-500/10 text-emerald-400 text-xs rounded-lg border border-emerald-500/20"># ${kw}</span>`
         ).join('');
+        const rankLabel = Number.isFinite(Number(item.rank)) && Number(item.rank) > 0 ? `${item.rank}순위` : `${index + 1}순위`;
+        const rawScoreLabel = Number.isFinite(Number(item.raw_score)) ? `가중 점수 ${Number(item.raw_score).toFixed(2)}` : '';
 
         card.innerHTML = `
             <div class="flex justify-between items-start mb-4">
                 <h3 class="text-xl font-bold text-white">${item.institution}</h3>
                 <div class="flex flex-col items-end">
-                    <span class="text-indigo-400 text-sm font-bold">${item.match_rate ?? item.score}%</span>
-                    <div class="w-16 h-1 bg-slate-700 rounded-full mt-1 overflow-hidden">
-                        <div class="h-full bg-indigo-500" style="width: ${Math.min(item.match_rate ?? item.score, 100)}%"></div>
-                    </div>
+                    <span class="text-indigo-400 text-sm font-bold">${rankLabel}</span>
+                    ${rawScoreLabel ? `<span class="text-xs text-slate-400 mt-1">${rawScoreLabel}</span>` : ''}
                 </div>
             </div>
             <div class="flex flex-wrap gap-2 mb-6">

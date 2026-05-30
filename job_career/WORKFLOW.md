@@ -9,7 +9,7 @@
     │   ├── LLM 경로 (1순위)
     │   │   ├── Facet index md를 컨텍스트로 제공
     │   │   ├── Groq (llama-3.3-70b) → fallback 5개 모델
-    │   │   └── JSON array로 응답 강제 (temperature=0, max_tokens=256)
+    │   │   └── JSON object(core/support/follow_up)로 응답 강제 (temperature=0, max_tokens=256)
     │   │
     │   └── Fallback 경로 (2순위)
     │       ├── regex: [가-힣A-Za-z0-9]{2,} 토큰 추출
@@ -21,8 +21,9 @@
     │   └── "그룹" 키워드 필터링 제외
     │
     ├── Step 3: Facet/raw 검색 (WikiReadOnlyTool)
-    │   ├── Facet_Index.json의 company/title/keywords 필드 검색
-    │   └── 점수화 (keywords 정확 매칭 +5, title/company 부분 +4, summary +1)
+    │   ├── 1차 프로필 키워드로 후보 기관 선별
+    │   ├── follow-up 선택 후 후보 기관 내 재점수화
+    │   └── 점수화 (core 6배, support 3배, follow-up 1배, 정확/부분 매칭 강도 반영)
     │
     └── Step 4: 기관 추천 (상위 5개)
         ├── 동일 기관 중복 제거
@@ -39,11 +40,12 @@ Groq 무료 티어: 30 RPM
 
 ## 스코어링 상세
 
-| 조건 | 점수 | 예시 |
+| 조건 | 반영 방식 | 예시 |
 |------|------|------|
-| 키워드가 entries.keywords에 정확 매칭 | +5 | `의료정보 보호` == `의료정보 보호` |
-| 키워드가 title/company에 포함 | +4 | `정보보호` in `정보보호 전문가 채용` |
-| 위 + summary에도 추가 포함 | +1 | summary에도 `정보보호` |
+| core 키워드 | term weight 6.0 적용 | 사용자의 최종 의도에 가장 가까운 facet 라벨 |
+| support 키워드 | term weight 3.0 적용 | 핵심 의도를 보강하는 facet 라벨 |
+| follow-up 키워드 | term weight 1.0 적용 | 2차 선택에서 고른 분류 키워드 |
+| 매칭 강도 | exact/title/company/summary 강도로 곱산 | exact=1.0, title/company=0.8, summary=0.4 |
 
 ## 캐싱
 

@@ -131,6 +131,28 @@
 - `job_career/frontend/script.js`
 - `job_career/src/career_agent/pipeline.py`
 
+## 2026-05-30 - 핵심 의도 가중치와 순위 표시 정리
+
+- `job_career/src/career_agent/llm_client.py`에서 LLM 추출 결과를 `core_keywords`, `support_keywords`, `follow_up_keywords`로 나누는 구조를 추가했습니다.
+- `job_career/src/career_agent/pipeline.py`는 core 6배, support 3배, follow-up 1배로 가중치를 반영하고, 정렬 기준은 `raw_score` 중심으로 바꿨습니다.
+- `job_career/src/career_agent/pipeline.py`의 추천 흐름을 core → support → follow_up 3단계 후보 좁힘으로 바꿨습니다.
+- 1차/2차 분류에서 후보가 0개면 전체 기업으로 확장하지 않고, 맞춤 기업 없음 메시지로 종료하도록 정리했습니다.
+- 0개 종료 문구를 더 사용자 친화적으로 다듬고, 핵심 조건을 조금 넓혀 다시 시도하도록 안내했습니다.
+- 1차+2차 분류 결과가 1~5개면 follow 단계 없이 바로 공고를 보여주고, 6개 이상일 때만 3차 follow 필터로 넘어가도록 바꿨습니다.
+- stage별 후보 파일 제한이 실제 점수화에 반영되도록 수정해서, 필터링된 공고만 추천되도록 바로잡았습니다.
+- 초기 단계에서는 기존대로 추천 기관을 숨기고 follow-up 질문만 보여주는 흐름은 유지했습니다.
+- `job_career/frontend/script.js`는 퍼센트 중심 표시 대신 `1순위`, `2순위` 같은 순위 중심 표시로 바꿨습니다.
+- `job_career/server.py`로 실행되는 터미널 로그에는 핵심/보조/후속 키워드와 최종 추천 순위를 함께 남기도록 정리했습니다.
+- 디버그 확인용으로만 쓰이던 프론트엔드 패널은 제거하고, 확인 경로를 백엔드 로그로 통일했습니다.
+
+영향 파일:
+- `job_career/src/career_agent/llm_client.py`
+- `job_career/src/career_agent/pipeline.py`
+- `job_career/frontend/script.js`
+- `job_career/frontend/index.html`
+- `job_career/README.md`
+- `job_career/WORKFLOW.md`
+
 ## 2026-05-21 de0a3d8 - Document job career dependencies
 
 - `job_career` 실행에 필요한 런타임 패키지를 `pyproject.toml`에 명시했습니다.

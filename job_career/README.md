@@ -23,10 +23,11 @@ python server.py
 2-Track 매칭: **LLM 초기 후보 생성 → Python 최종 추천**
 
 - LLM 키워드 추출 (Facet index md를 프롬프트 컨텍스트로 사용)
-- Facet_Index.json 기반 후보 라우팅
+- LLM core/support/follow-up 키워드 계획 추출
+- 1차 프로필 키워드로 후보 기관 선별
 - 1차 분석에서는 follow-up 질문만 보여주고 추천은 숨김
-- follow-up 선택 이후에는 Python 점수화로만 최종 추천 생성
-- facet/raw 검색 + 점수화 (정확/부분 매칭)
+- follow-up 선택 이후에는 후보 기관 내에서 Python 점수화로 최종 추천 생성
+- facet/raw 검색 + 후보군 제한 점수화 (core 6배, support 3배, follow-up 1배)
 - 상위 5개 기관 추천
 - 매칭 점수는 100% 기준으로 환산하며, 프로필 입력 기반 단서는 보완 선택보다 3배 높은 가중치를 적용하고 50% 초과만 노출
 - follow-up 세션은 1회만 허용하고, 선택 시간이 5분을 넘으면 초기 상태로 복귀

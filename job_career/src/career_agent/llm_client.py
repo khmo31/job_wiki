@@ -241,22 +241,83 @@ def _load_facet_context(query: str) -> str:
         return ""
 
 
-def extract_keywords(user_profile: str) -> list[str] | None:
-    """LLM으로 사용자 프로필에서 wiki 키워드 추출.
+def _deduplicate_preserve_order(values: list[str]) -> list[str]:
+    ordered: list[str] = []
+    seen: set[str] = set()
+
+    for value in values:
+        cleaned = str(value).strip()
+        if not cleaned:
+            continue
+        normalized = cleaned.casefold()
+        if normalized in seen:
+            continue
+        seen.add(normalized)
+        ordered.append(cleaned)
+
+    return ordered
+
+
+def _parse_keyword_plan(result: str) -> dict[str, list[str]] | None:
+    def _normalize_list(values: Any) -> list[str]:
+        if isinstance(values, str):
+            values = [values]
+        if not isinstance(values, list):
+            return []
+        return _deduplicate_preserve_order([str(item).strip() for item in values if str(item).strip()])
+
+    try:
+        parsed = json.loads(result)
+        if isinstance(parsed, dict):
+            return {
+                "core_keywords": _normalize_list(parsed.get("core_keywords")),
+                "support_keywords": _normalize_list(parsed.get("support_keywords")),
+                "follow_up_keywords": _normalize_list(parsed.get("follow_up_keywords")),
+            }
+        if isinstance(parsed, list):
+            return {
+                "core_keywords": [],
+                "support_keywords": _normalize_list(parsed),
+                "follow_up_keywords": [],
+            }
+    except json.JSONDecodeError:
+        pass
+
+    core_matches = re.findall(r'"core_keywords"\s*:\s*\[(.*?)\]', result, flags=re.DOTALL)
+    support_matches = re.findall(r'"support_keywords"\s*:\s*\[(.*?)\]', result, flags=re.DOTALL)
+    follow_up_matches = re.findall(r'"follow_up_keywords"\s*:\s*\[(.*?)\]', result, flags=re.DOTALL)
+    if not (core_matches or support_matches or follow_up_matches):
+        return None
+
+    def _extract_list(raw_text: str) -> list[str]:
+        return _deduplicate_preserve_order(re.findall(r'"([^"]+)"', raw_text))
+
+    return {
+        "core_keywords": _extract_list(core_matches[0]) if core_matches else [],
+        "support_keywords": _extract_list(support_matches[0]) if support_matches else [],
+        "follow_up_keywords": _extract_list(follow_up_matches[0]) if follow_up_matches else [],
+    }
+
+
+def extract_keyword_plan(user_profile: str) -> dict[str, list[str]] | None:
+    """LLM으로 사용자 프로필의 핵심/보조 키워드 계획을 추출한다.
 
     Facet index md 파일들을 프롬프트에 포함시켜
-    LLM이 원문 facet 라벨과 가깝게 매칭하도록 유도.
+    기존 facet 라벨 안에서만 핵심 의도와 보조 신호를 나누도록 유도한다.
     실패 시 None 반환.
     """
     facet_context = _load_facet_context(user_profile)
 
     system = (
         "You are a career keyword extraction assistant.\n"
-        "Given a user's career profile, extract the most relevant skill/domain keywords.\n"
-        "PRIORITIZE matching against the facet index pages below.\n"
-        "Prefer concise keywords that appear in the facet pages, and avoid redundant variants.\n"
-        "Output ONLY a JSON array of keyword strings, no other text.\n"
-        'Example: ["경력", "학력무관", "서울"]'
+        "Given a user's career profile, extract keyword groups from the facet index pages below.\n"
+        "Use only labels that appear in the facet pages; do not invent new labels.\n"
+        "core_keywords must contain the single most important destination/domain labels.\n"
+        "support_keywords must contain background or supporting labels that help refine the intent.\n"
+        "follow_up_keywords must contain weaker contextual labels that should not dominate scoring.\n"
+        "Prefer the most specific matching labels, avoid redundant variants, and keep the groups small.\n"
+        "Output ONLY valid JSON with keys core_keywords, support_keywords, follow_up_keywords.\n"
+        'Example: {"core_keywords":["보건.의료"],"support_keywords":["경영.회계.사무","경력"],"follow_up_keywords":["공공기관"]}'
     )
 
     user_prompt = f"User profile:\n{user_profile.strip()}"
@@ -271,18 +332,21 @@ def extract_keywords(user_profile: str) -> list[str] | None:
     if not result:
         return None
 
-    try:
-        parsed = json.loads(result)
-        if isinstance(parsed, list):
-            return [str(k).strip() for k in parsed if k]
-    except json.JSONDecodeError:
-        pass
+    return _parse_keyword_plan(result)
 
-    matches = re.findall(r'"([^"]+)"', result)
-    if matches:
-        return [m.strip() for m in matches if m.strip()]
 
-    return None
+def extract_keywords(user_profile: str) -> list[str] | None:
+    """LLM으로 사용자 프로필에서 wiki 키워드 추출.
+
+    호환성을 위해 핵심/보조/후속 키워드 계획을 병합한 리스트를 반환한다.
+    실패 시 None 반환.
+    """
+    plan = extract_keyword_plan(user_profile)
+    if not plan:
+        return None
+
+    merged = [*plan.get("core_keywords", []), *plan.get("support_keywords", []), *plan.get("follow_up_keywords", [])]
+    return _deduplicate_preserve_order(merged)
 
 
 CLASSIFY_SYSTEM = """You are a job classification assistant.

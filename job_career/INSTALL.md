@@ -11,7 +11,6 @@
 - `flask`
 - `flask-cors`
 - `python-dotenv`
-- `crewai`
 - `pydantic`
 - `requests`
 

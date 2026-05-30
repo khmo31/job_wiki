@@ -2,6 +2,8 @@
 
 공공기관 채용공고를 ALIO API로 자동 수집하고, 원문 태그를 바탕으로 Facet Wiki로 구조화하며, 사용자 프로필과 단계형 분류 선택을 거쳐 최종 매칭하는 파이프라인입니다.
 
+`job_career` 매칭 엔진은 단일 LLM으로 핵심 의도 키워드를 추출한 뒤, 나머지 후보 수집·가중치 계산·정렬·최종 추천은 전부 Python 코드로 처리합니다. 현재 구조에서는 `crewai`가 필요하지 않습니다.
+
 ## 디렉토리 구조
 
 ```
@@ -32,11 +34,11 @@ job_wiki/
 │   ├── server.py               # 웹 서버
 │   ├── frontend/               # HTML/JS/CSS 대시보드
 │   └── src/career_agent/
-│       ├── pipeline.py         # 매칭 파이프라인
-│       ├── llm_client.py       # 경량 LLM 클라이언트
+│       ├── pipeline.py         # 단계형 매칭 파이프라인
+│       ├── llm_client.py       # LLM 키워드 추출 클라이언트
 │       ├── main_batch.py       # 배치 실행
 │       └── tools/
-│           └── custom_tool.py  # WikiSearch
+│           └── custom_tool.py  # Wiki/raw 조회 도구
 │
 └── .github/workflows/
     └── harvest.yml             # CI/CD: 주간 자동 수집 + 정리 + Wiki 변환
@@ -65,16 +67,17 @@ job_wiki/
 - `Facet_Index.json` 업데이트
 
 ### Step 3: 매칭 (job_career/pipeline.py)
-- **1단계**: LLM 키워드 추출 → 확정되지 않은 분류 후보 생성
-- **2단계**: 사용자가 분류를 선택하면 Python 점수화로 최종 추천 생성
+- **1단계**: LLM이 `core_keywords`, `support_keywords`, `follow_up_keywords`를 분리해 추출
+- **2단계**: core 6배, support 3배, follow-up 1배로 가중치를 반영해 후보 기관을 좁힘
+- **3단계**: 1~5개 후보면 follow-up 없이 바로 추천하고, 6개 이상일 때만 추가 분류를 적용
 - 1차 분석에서는 추천을 숨기고 follow-up 질문만 표시
-- LLM이 키워드를 하나라도 반환하면 초기 후보 생성에만 사용하고, 최종 판단은 Python이 담당
+- 최종 판단과 정렬은 Python이 담당하며, raw weighted score 기준으로 상위 5개만 보여줌
 
 ## 태그 기반 분류
 
 - 핵심 분류는 원문 필드를 그대로 사용합니다.
 - `ncsCdNmLst`, `hireTypeNmLst`, `recrutSeNm`, `acbgCondNmLst`, `workRgnNmLst`, `aplyQlfcCn`, `prefCondCn`, `prefCn`, `scrnprcdrMthdExpln`을 2차 분류 축으로 사용합니다.
-- `job_career`는 LLM으로 초기 후보를 만들고, 최종 추천은 Python 규칙/점수화로만 산출합니다.
+- `job_career`는 LLM으로 핵심 의도 키워드를 추출하고, 최종 추천은 Python 규칙/점수화로만 산출합니다.
 
 ## 빠른 시작
 
@@ -105,6 +108,7 @@ python job_career/server.py
 - 루트 `requirements.txt`는 공용 수집용 패키지(`requests`)를 담고 있습니다.
 - `job_raw/requirements.txt`는 수집기 실행용 패키지를 담고 있습니다.
 - `job_career/pyproject.toml`은 웹 UI와 매칭 엔진의 런타임 의존성을 담고 있습니다.
+- 현재 `job_career` 런타임 의존성에는 `crewai`가 포함되지 않습니다. 도구 클래스는 로컬 최소 구현으로 동작합니다.
 
 ## GitHub Actions (CI/CD)
 

@@ -21,7 +21,7 @@ def _ensure_utf8_stdio() -> None:
 _ensure_utf8_stdio()
 
 if __package__ in {None, ""}:
-    sys.path.append(str(Path(__file__).resolve().parents[1]))
+    sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from career_agent.pipeline import generate_report
 

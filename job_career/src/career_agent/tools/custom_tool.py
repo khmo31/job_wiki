@@ -10,8 +10,27 @@ from functools import lru_cache
 from pathlib import Path
 from typing import Type
 
-from crewai.tools import BaseTool
 from pydantic import BaseModel, Field
+
+
+class BaseTool:
+    name: str = ""
+    description: str = ""
+    args_schema: Type[BaseModel] | None = None
+
+    def run(self, **kwargs):
+        if self.args_schema is not None:
+            parsed_args = self.args_schema(**kwargs)
+            if hasattr(parsed_args, "model_dump"):
+                return self._run(**parsed_args.model_dump())
+            return self._run(**parsed_args.dict())
+        return self._run(**kwargs)
+
+    def __call__(self, **kwargs):
+        return self.run(**kwargs)
+
+    def _run(self, **kwargs):
+        raise NotImplementedError
 
 
 PROJECT_ROOT = Path(__file__).resolve().parents[3]
