@@ -16,33 +16,6 @@ from .tools.custom_tool import (
     _normalize_keyword,
 )
 
-# 최소 입력 길이: 너무 짧으면 의미 있는 분석 불가
-_MIN_PROFILE_LENGTH = 15
-# 경력 관련 키워드 (하나라도 포함되면 career-related로 판단)
-_CAREER_KEYWORDS = [
-    "경력", "전공", "직무", "희망", "근무", "경험", "일했", "재직",
-    "퇴사", "이직", "취업", "채용", "지원", "인턴", "프로젝트",
-    "대학", "학과", "자격증", "어학", "병원", "회사", "기관",
-    "행정", "개발", "연구", "분석", "관리", "운영", "설계",
-    "education", "career", "experience", "job", "work", "major",
-    "skill", "project", "intern", "degree",
-]
-
-
-def _is_career_related(profile: str) -> bool:
-    text = profile.strip()
-    if not text:
-        return False
-    # 너무 짧으면 관련 없음
-    if len(text) < _MIN_PROFILE_LENGTH:
-        return False
-    # 경력 키워드 하나라도 포함?
-    text_lower = text.casefold()
-    for kw in _CAREER_KEYWORDS:
-        if kw in text_lower:
-            return True
-    return False
-
 
 FACET_INDEX_FILE = Path(__file__).resolve().parents[3] / "job_wiki" / "20_Meta" / "Facet_Index.json"
 FOLLOW_UP_CATEGORY_ORDER = [
@@ -1119,19 +1092,6 @@ def generate_report(
     1순위: LLM 키워드 추출 -> facet 검증 -> facet 스코어링
     2순위: 순수 로컬 (regex + facet + facet 스코어링)
     """
-    # Pre-check: is this profile actually career-related?
-    if not _is_career_related(user_profile):
-        _log(f"profile rejected: not career-related (len={len(user_profile.strip())})")
-        return {
-            "recommended_institutions": [],
-            "detected_keywords": [],
-            "detected_categories": [],
-            "missing_categories": [],
-            "follow_up_questions": [],
-            "match_message": "입력하신 내용이 채용/직무/경력과 관련이 없는 것으로 판단됩니다. 자신의 전공, 경력, 희망 직무 등을 구체적으로 입력해 주세요.",
-            "match_threshold": MATCH_RATE_THRESHOLD,
-        }
-
     supplemental_terms_by_category, neutral_categories = _parse_supplemental_selections(supplemental_selections)
     supplemental_weighted_terms = _build_supplemental_weighted_terms(supplemental_terms_by_category, neutral_categories)
     if supplemental_weighted_terms:
