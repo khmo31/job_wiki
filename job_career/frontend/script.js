@@ -2,6 +2,11 @@ const API_BASE = window.location.origin;
 const API_URL = `${API_BASE}/api/analyze`;
 const ARCHIVE_API_URL = `${API_BASE}/api/archive`;
 
+const introScreen = document.getElementById('introScreen');
+const introStartBtn = document.getElementById('introStartBtn');
+const siteHeader = document.getElementById('siteHeader');
+const appMain = document.getElementById('appMain');
+
 const views = {
     home: document.getElementById('viewHome'),
     analyze: document.getElementById('viewAnalyze'),
@@ -48,18 +53,31 @@ let analysisSessionId = '';
 let analysisSessionState = 'idle';
 
 const FOLLOW_UP_SESSION_TIMEOUT_MS = 5 * 60 * 1000;
-const REQUEST_TIMEOUT_MS = 60000; // 60s network timeout
-
-// Loading stage progression
-const LOADING_STAGES = [
-    { pct: 15, label: '프로필 분석 중...' },
-    { pct: 35, label: '키워드 추출 중...' },
-    { pct: 55, label: 'Facet Wiki 매칭 중...' },
-    { pct: 75, label: '점수 계산 중...' },
-    { pct: 90, label: '결과 생성 중...' },
-];
 
 const EXAMPLE_PROFILE = '저는 3년 동안 병원에서 원무과 행정 직원으로 일했습니다. 환자 데이터를 다루다 보니 의료 행정 지식과 의료정보 보호 정책 수립 쪽에 관심이 생겼고, 관련 경험도 쌓았습니다. 공공기관 쪽으로 이직하고 싶습니다.';
+
+function refreshIcons() {
+    if (window.lucide && typeof window.lucide.createIcons === 'function') {
+        window.lucide.createIcons();
+    }
+}
+
+function enterApplication() {
+    if (introScreen) {
+        introScreen.classList.add('is-hidden');
+
+        window.setTimeout(() => {
+            introScreen.style.display = 'none';
+        }, 580);
+    }
+
+    siteHeader?.classList.remove('app-shell-hidden');
+    appMain?.classList.remove('app-shell-hidden');
+
+    showPage('home');
+}
+
+introStartBtn?.addEventListener('click', enterApplication);
 
 function showPage(pageName) {
     Object.entries(views).forEach(([name, element]) => {
@@ -67,16 +85,28 @@ function showPage(pageName) {
         element.classList.toggle('hidden', name !== pageName);
     });
 
-    loadingEl.classList.add('hidden');
-    errorAlert.classList.add('hidden');
+    if (loadingEl) {
+        loadingEl.classList.add('hidden');
+    }
+
+    if (errorAlert) {
+        errorAlert.classList.add('hidden');
+    }
+
+    if (siteHeader) {
+        if (pageName === 'followup' || pageName === 'result') {
+            siteHeader.classList.add('app-shell-hidden');
+        } else {
+            siteHeader.classList.remove('app-shell-hidden');
+        }
+    }
+
+    if (views.result) {
+        views.result.classList.toggle('result-page-active', pageName === 'result');
+    }
 
     window.scrollTo({ top: 0, behavior: 'smooth' });
-    lucide.createIcons();
-
-    // Save current scroll position for back navigation
-    if (pageName !== 'home') {
-        sessionStorage.setItem(`scrollPos_${pageName}`, '0');
-    }
+    refreshIcons();
 }
 
 document.querySelectorAll('[data-page-link]').forEach((button) => {
@@ -92,11 +122,16 @@ document.querySelectorAll('[data-page-link]').forEach((button) => {
     });
 });
 
-navHome.addEventListener('click', () => showPage('home'));
-startAnalyzeBtn.addEventListener('click', () => showPage('analyze'));
+navHome?.addEventListener('click', () => showPage('home'));
+startAnalyzeBtn?.addEventListener('click', () => showPage('analyze'));
 
 function fillExample() {
     profileEl.value = EXAMPLE_PROFILE;
+
+    if (siteHeader?.classList.contains('app-shell-hidden')) {
+        enterApplication();
+    }
+
     showPage('analyze');
 
     window.setTimeout(() => {
@@ -104,7 +139,7 @@ function fillExample() {
     }, 120);
 }
 
-loadExampleBtn.addEventListener('click', fillExample);
+loadExampleBtn?.addEventListener('click', fillExample);
 
 if (heroExampleBtn) {
     heroExampleBtn.addEventListener('click', fillExample);
@@ -120,15 +155,15 @@ promptChips.forEach((chip) => {
     });
 });
 
-resetBtn.addEventListener('click', () => {
+resetBtn?.addEventListener('click', () => {
     profileEl.value = '';
     resetAnalysisView();
     setActiveStep(1);
 });
 
-archiveModalClose.addEventListener('click', closeArchiveModal);
+archiveModalClose?.addEventListener('click', closeArchiveModal);
 
-archiveModal.addEventListener('click', (event) => {
+archiveModal?.addEventListener('click', (event) => {
     if (event.target === archiveModal) {
         closeArchiveModal();
     }
@@ -140,7 +175,7 @@ document.addEventListener('keydown', (event) => {
     }
 });
 
-resultGrid.addEventListener('click', async (event) => {
+resultGrid?.addEventListener('click', async (event) => {
     const button = event.target.closest('button[data-analysis-file]');
 
     if (!button) {
@@ -153,7 +188,7 @@ resultGrid.addEventListener('click', async (event) => {
     await openArchiveModal(analysisFile, institution);
 });
 
-followUpGrid.addEventListener('click', (event) => {
+followUpGrid?.addEventListener('click', (event) => {
     const button = event.target.closest('button[data-followup-category]');
 
     if (!button) {
@@ -162,23 +197,40 @@ followUpGrid.addEventListener('click', (event) => {
 
     const category = button.dataset.followupCategory;
     const multiSelect = button.dataset.multiSelect === 'true';
+    const value = button.dataset.followupValue;
 
     const sameCategoryButtons = Array.from(followUpGrid.querySelectorAll('button[data-followup-category]'))
         .filter((item) => item.dataset.followupCategory === category);
 
     if (!multiSelect) {
         sameCategoryButtons.forEach((otherButton) => {
-            if (otherButton !== button) {
-                setFollowUpButtonState(otherButton, false);
-            }
+            setFollowUpButtonState(otherButton, otherButton === button);
         });
+
+        updateSelectedSummary();
+        return;
     }
+
+    if (value === '__none__') {
+        sameCategoryButtons.forEach((otherButton) => {
+            setFollowUpButtonState(otherButton, otherButton === button);
+        });
+
+        updateSelectedSummary();
+        return;
+    }
+
+    sameCategoryButtons.forEach((otherButton) => {
+        if (otherButton.dataset.followupValue === '__none__') {
+            setFollowUpButtonState(otherButton, false);
+        }
+    });
 
     setFollowUpButtonState(button, !button.classList.contains('is-selected'));
     updateSelectedSummary();
 });
 
-followUpSubmit.addEventListener('click', async () => {
+followUpSubmit?.addEventListener('click', async () => {
     const supplementalSelections = collectSupplementalSelections();
 
     if (!Object.keys(supplementalSelections).length) {
@@ -189,7 +241,7 @@ followUpSubmit.addEventListener('click', async () => {
     await requestAnalysis({ supplementalSelections, phase: 'followup' });
 });
 
-analyzeBtn.addEventListener('click', async () => {
+analyzeBtn?.addEventListener('click', async () => {
     beginNewAnalysisSession();
     await requestAnalysis({ phase: 'initial' });
 });
@@ -209,9 +261,6 @@ async function requestAnalysis({ supplementalSelections = {}, phase = 'initial' 
     errorAlert.classList.add('hidden');
 
     try {
-        const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS);
-
         const response = await fetch(API_URL, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -220,11 +269,8 @@ async function requestAnalysis({ supplementalSelections = {}, phase = 'initial' 
                 supplemental_selections: supplementalSelections,
                 analysis_session_id: analysisSessionId,
                 analysis_phase: phase,
-            }),
-            signal: controller.signal
+            })
         });
-
-        clearTimeout(timeoutId);
 
         const result = await response.json();
 
@@ -262,46 +308,16 @@ function showLoading(isLoading) {
 
     if (isLoading) {
         analyzeBtn.innerHTML = '<span class="btn-spinner"></span> 분석 중...';
-        // Start loading stage animation
-        let stageIndex = 0;
-        const loadingStage = document.getElementById('loadingStage');
-        const loadingBar = document.getElementById('loadingBar');
-        if (loadingStage && loadingBar) {
-            loadingStage.textContent = LOADING_STAGES[0].label;
-            loadingBar.style.width = '0%';
-            const interval = setInterval(() => {
-                stageIndex++;
-                if (stageIndex >= LOADING_STAGES.length) {
-                    clearInterval(interval);
-                    return;
-                }
-                loadingStage.textContent = LOADING_STAGES[stageIndex].label;
-                loadingBar.style.width = `${LOADING_STAGES[stageIndex].pct}%`;
-            }, 8000);
-            // Store interval ID to clean up on hide
-            loadingEl._stageInterval = interval;
-        }
     } else {
         analyzeBtn.innerHTML = '<i data-lucide="search-check" class="h-5 w-5"></i> 분석 시작하기';
-        // Clean up stage animation
-        if (loadingEl._stageInterval) {
-            clearInterval(loadingEl._stageInterval);
-            loadingEl._stageInterval = null;
-        }
-        // Fill loading bar
-        const loadingBar = document.getElementById('loadingBar');
-        if (loadingBar) loadingBar.style.width = '100%';
     }
 
-    lucide.createIcons();
+    refreshIcons();
 }
 
 function showError(msg) {
     errorMessage.textContent = msg;
     errorAlert.classList.remove('hidden');
-
-    // Scroll to error
-    errorAlert.scrollIntoView({ behavior: 'smooth', block: 'center' });
 }
 
 function renderResults(report) {
@@ -312,6 +328,7 @@ function renderResults(report) {
     resultTableBody.innerHTML = '';
     resultSummary.innerHTML = '';
     matchCountEl.textContent = institutions.length;
+    resultGrid.className = 'result-stitch-list';
     resultTableContainer.classList.add('hidden');
 
     if (!institutions.length) {
@@ -322,17 +339,17 @@ function renderResults(report) {
         });
 
         const emptyCard = document.createElement('div');
-        emptyCard.className = 'md:col-span-2 xl:col-span-3 rounded-3xl border border-amber-200 bg-amber-50 p-8 text-center fade-in-up';
+        emptyCard.className = 'result-stitch-empty fade-in-up';
         emptyCard.innerHTML = `
-            <div class="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl border border-amber-200 bg-white text-amber-600">
+            <div class="result-stitch-empty-icon">
                 <i data-lucide="search-x" class="h-7 w-7"></i>
             </div>
-            <h3 class="mb-2 text-xl font-black text-slate-950">매칭되는 기관이 없습니다</h3>
-            <p class="text-slate-600">${escapeHtml(matchMessage || '매칭률이 50%를 초과하는 기관이 없습니다.')}</p>
+            <h3>매칭되는 기관이 없습니다</h3>
+            <p>${escapeHtml(matchMessage || '매칭률이 50%를 초과하는 기관이 없습니다.')}</p>
         `;
 
         resultGrid.appendChild(emptyCard);
-        lucide.createIcons();
+        refreshIcons();
         return;
     }
 
@@ -341,111 +358,148 @@ function renderResults(report) {
     const topKeywords = collectTopKeywords(institutions);
 
     resultSummary.innerHTML = `
-        <div class="summary-panel">
-            <div class="grid grid-cols-1 gap-6 lg:grid-cols-[1.2fr_0.8fr] lg:items-center">
+        <section class="result-stitch-glass result-stitch-summary">
+            <div class="result-stitch-summary-line"></div>
+
+            <div class="result-stitch-summary-main">
                 <div>
-                    <p class="section-eyebrow">Analysis Summary</p>
-                    <h3 class="mt-2 mb-3 text-3xl font-black text-slate-950">맞춤형 추천 결과가 생성되었습니다</h3>
-                    <p class="leading-8 text-slate-600">
-                        입력한 프로필과 선택 조건을 기준으로 공공기관 채용공고 Wiki를 비교하여
-                        상위 매칭 기관을 정리했습니다.
-                    </p>
+                    <p class="result-stitch-summary-label">ANALYSIS SUMMARY</p>
+                    <h3>맞춤형 추천 결과가 생성되었습니다</h3>
                 </div>
 
-                <div class="grid grid-cols-3 gap-3">
-                    <div class="summary-metric">
-                        <p class="text-2xl font-black text-slate-950">${institutions.length}</p>
-                        <p class="mt-1 text-xs text-slate-500">추천 기관</p>
+                <p>
+                    입력한 프로필과 선택 조건을 기준으로 공공기관 채용공고 Wiki를 비교하여
+                    상위 매칭 기관을 정리했습니다.
+                </p>
+
+                ${topKeywords.length ? `
+                    <div class="result-stitch-keywords">
+                        <p>주요 매칭 키워드</p>
+                        <div>
+                            ${topKeywords.slice(0, 8).map((keyword) => `
+                                <span># ${escapeHtml(keyword)}</span>
+                            `).join('')}
+                        </div>
                     </div>
-                    <div class="summary-metric">
-                        <p class="text-2xl font-black text-blue-700">${topScore}%</p>
-                        <p class="mt-1 text-xs text-slate-500">최고 매칭률</p>
-                    </div>
-                    <div class="summary-metric">
-                        <p class="text-2xl font-black text-slate-950">${totalFiles}</p>
-                        <p class="mt-1 text-xs text-slate-500">관련 공고</p>
-                    </div>
-                </div>
+                ` : ''}
             </div>
 
-            ${topKeywords.length ? `
-                <div class="mt-6 border-t border-slate-200 pt-6">
-                    <p class="mb-3 text-sm font-black text-slate-700">주요 매칭 키워드</p>
-                    <div class="flex flex-wrap gap-2">
-                        ${topKeywords.map((keyword) => `<span class="keyword-tag"># ${escapeHtml(keyword)}</span>`).join('')}
-                    </div>
+            <div class="result-stitch-metrics">
+                <div class="result-stitch-metric">
+                    <strong>${institutions.length}</strong>
+                    <span>추천 기관</span>
                 </div>
-            ` : ''}
-        </div>
+
+                <div class="result-stitch-metric is-primary">
+                    <strong>${topScore}%</strong>
+                    <span>최고 매칭률</span>
+                </div>
+
+                <div class="result-stitch-metric">
+                    <strong>${totalFiles}</strong>
+                    <span>관련 공고</span>
+                </div>
+            </div>
+        </section>
     `;
 
     institutions.forEach((item, index) => {
-        const delay = index * 0.08;
         const relatedFiles = getRelatedFiles(item);
         const keywords = getKeywords(item);
         const matchRate = getMatchRate(item);
         const reasons = buildRecommendationReasons(item, relatedFiles, keywords);
         const institutionName = item.institution || '기관명 없음';
+        const primaryFile = relatedFiles[0] || '';
 
-        const fileButtons = relatedFiles.map((fileName) => `
+        const visibleFiles = relatedFiles.slice(0, 2);
+        const hiddenCount = Math.max(relatedFiles.length - visibleFiles.length, 0);
+
+        const keywordHtml = keywords.length
+            ? keywords.slice(0, 7).map((keyword) => `
+                <span class="result-stitch-tag"># ${escapeHtml(keyword)}</span>
+            `).join('')
+            : '<span class="result-stitch-no-keyword">표시할 키워드가 없습니다.</span>';
+
+        const fileHtml = visibleFiles.map((fileName) => `
             <button type="button"
                 data-analysis-file="${escapeAttr(fileName)}"
                 data-institution="${escapeAttr(institutionName)}"
-                class="file-button">
-                <i data-lucide="file-text" class="h-3.5 w-3.5 shrink-0"></i>
-                <span class="text-left">${escapeHtml(fileName)}</span>
+                class="result-stitch-file-chip"
+                title="${escapeAttr(fileName)}">
+                ${escapeHtml(shortenFileName(fileName))}
             </button>
         `).join('');
 
-        const tags = keywords.length
-            ? keywords.map((keyword) => `<span class="keyword-tag"># ${escapeHtml(keyword)}</span>`).join('')
-            : '<span class="text-sm text-slate-400">표시할 키워드가 없습니다.</span>';
+        const moreHtml = hiddenCount > 0
+            ? `
+                <button type="button"
+                    ${primaryFile ? `data-analysis-file="${escapeAttr(primaryFile)}" data-institution="${escapeAttr(institutionName)}"` : ''}
+                    class="result-stitch-file-more">
+                    + 더보기
+                </button>
+            `
+            : '';
 
         const card = document.createElement('article');
-        card.className = 'result-card fade-in-up';
-        card.style.animationDelay = `${delay}s`;
+        card.className = index === 0
+            ? 'result-stitch-card result-stitch-top-card top1-glow animate-entrance'
+            : 'result-stitch-card animate-entrance';
+
+        card.style.animationDelay = `${index * 0.06}s`;
 
         card.innerHTML = `
-            <div class="mb-5 flex items-start justify-between gap-4">
+            ${index === 0 ? `
+                <div class="result-stitch-best-badge">
+                    <span class="material-symbols-outlined animate-sparkle">stars</span>
+                    BEST MATCH
+                </div>
+            ` : ''}
+
+            <div class="result-stitch-card-left">
+                <span class="result-stitch-rank ${index === 0 ? 'is-top' : ''}">
+                    ${index === 0 ? `
+                        <span class="material-symbols-outlined result-stitch-star">star</span>
+                        <span class="material-symbols-outlined">emoji_events</span>
+                    ` : `
+                        <span class="material-symbols-outlined">military_tech</span>
+                    `}
+                    TOP ${index + 1}
+                </span>
+
+                <h3>${escapeHtml(institutionName)}</h3>
+            </div>
+
+            <div class="result-stitch-card-middle">
+                <div class="result-stitch-tags">
+                    ${keywordHtml}
+                </div>
+
+                <div class="result-stitch-reason">
+                    <strong>추천 이유:</strong>
+                    ${escapeHtml(reasons.join(' '))}
+                </div>
+
+                <div class="result-stitch-files">
+                    <span>관련 공고 (${relatedFiles.length}개)</span>
+
+                    <div>
+                        ${fileHtml || '<em>연결된 공고가 없습니다.</em>'}
+                        ${moreHtml}
+                    </div>
+                </div>
+            </div>
+
+            <div class="result-stitch-card-score">
                 <div>
-                    <span class="rank-badge">
-                        <i data-lucide="award" class="h-3.5 w-3.5"></i>
-                        TOP ${index + 1}
-                    </span>
-                    <h3 class="mt-3 text-xl font-black text-slate-950">${escapeHtml(institutionName)}</h3>
+                    <strong>${matchRate}<span>%</span></strong>
+                    <p>매칭률</p>
                 </div>
 
-                <div class="text-right">
-                    <p class="text-3xl font-black text-blue-700">${matchRate}%</p>
-                    <p class="text-xs font-bold text-slate-400">매칭률</p>
-                </div>
-            </div>
-
-            <div class="mb-5 h-2 w-full overflow-hidden rounded-full bg-slate-100">
-                <div class="h-full rounded-full bg-gradient-to-r from-blue-700 to-sky-400" style="width: ${Math.min(matchRate, 100)}%"></div>
-            </div>
-
-            <div class="mb-5">
-                <p class="mb-3 text-xs font-black uppercase tracking-[0.18em] text-slate-400">Matched Keywords</p>
-                <div class="flex flex-wrap gap-2">${tags}</div>
-            </div>
-
-            <div class="reason-box mb-5">
-                <p class="mb-3 text-xs font-black uppercase tracking-[0.18em] text-blue-700">추천 이유</p>
-                <ul class="reason-list">
-                    ${reasons.map((reason) => `<li>${escapeHtml(reason)}</li>`).join('')}
-                </ul>
-            </div>
-
-            <div class="mt-auto border-t border-slate-200 pt-4">
-                <div class="mb-3 flex items-center justify-between gap-3">
-                    <span class="text-xs font-black uppercase tracking-[0.18em] text-slate-400">관련 공고</span>
-                    <span class="text-xs font-bold text-slate-500">${relatedFiles.length}개</span>
-                </div>
-
-                <div class="flex flex-wrap gap-2">
-                    ${fileButtons || '<span class="text-sm text-slate-400">연결된 공고가 없습니다.</span>'}
-                </div>
+                <button type="button"
+                    ${primaryFile ? `data-analysis-file="${escapeAttr(primaryFile)}" data-institution="${escapeAttr(institutionName)}"` : ''}
+                    class="result-stitch-detail-btn">
+                    상세보기
+                </button>
             </div>
         `;
 
@@ -453,8 +507,17 @@ function renderResults(report) {
         appendComparisonRow(item, index, relatedFiles, keywords, matchRate);
     });
 
-    resultTableContainer.classList.remove('hidden');
-    lucide.createIcons();
+    refreshIcons();
+}
+
+function shortenFileName(fileName) {
+    const value = String(fileName || '');
+
+    if (value.length <= 20) {
+        return value;
+    }
+
+    return `${value.slice(0, 17)}...`;
 }
 
 function renderFollowUpQuestions(questions) {
@@ -469,40 +532,46 @@ function renderFollowUpQuestions(questions) {
 
     questions.forEach((question) => {
         const card = document.createElement('div');
-        card.className = 'rounded-3xl border border-slate-200 bg-white p-5 fade-in-up';
+        card.className = 'bg-surface/80 backdrop-blur-sm border border-outline-variant/50 rounded-xl p-md shadow-sm hover:shadow-md transition-shadow fade-in-up';
 
+        const title = question.title || question.category || '조건';
         const options = Array.isArray(question.options) ? question.options : [];
+
         const optionButtons = options.map((option) => {
             const value = typeof option === 'string' ? option : (option?.value || option?.label || '');
             const label = typeof option === 'string' ? option : (option?.label || option?.value || '');
             const count = typeof option === 'object' && option && Number.isFinite(option.count) ? option.count : null;
-            const countBadge = count !== null ? `<span class="ml-2 text-[11px] text-slate-400">${count}개</span>` : '';
+            const isSelected = typeof option === 'object' && option && option.selected === true;
+
+            const countBadge = count !== null
+                ? `<span class="font-label-sm text-label-sm ${isSelected ? 'text-primary' : 'text-on-surface-variant'}">${count}개</span>`
+                : '';
 
             return `
                 <button type="button"
-                    data-followup-category="${escapeAttr(question.category)}"
+                    data-followup-category="${escapeAttr(question.category || title)}"
                     data-followup-value="${escapeAttr(value)}"
                     data-followup-label="${escapeAttr(label)}"
                     data-multi-select="${question.multi_select ? 'true' : 'false'}"
-                    class="followup-option">
-                    <span>${escapeHtml(label)}</span>
+                    class="followup-option px-4 py-2 rounded-full border border-outline-variant text-on-surface hover:bg-surface-variant transition-colors flex items-center gap-2 ${isSelected ? 'is-selected chip-selected' : ''}">
+                    <span class="font-label-md text-label-md">${escapeHtml(label)}</span>
                     ${countBadge}
                 </button>
             `;
         }).join('');
 
         card.innerHTML = `
-            <div class="mb-4">
-                <p class="section-eyebrow">${escapeHtml(question.title || question.category || '조건 선택')}</p>
-                <h4 class="mt-2 text-xl font-black text-slate-950">
-                    ${escapeHtml(question.prompt || '추가 조건을 선택해 주세요.')}
-                </h4>
-                <p class="mt-2 text-sm text-slate-500">
-                    ${question.multi_select ? '여러 개 선택할 수 있습니다.' : '하나만 선택할 수 있습니다.'}
-                </p>
-            </div>
+            <p class="text-primary font-label-sm text-label-sm mb-1 font-bold">${escapeHtml(title)}</p>
 
-            <div class="flex flex-wrap gap-2">
+            <h3 class="font-headline-md text-headline-md text-on-surface mb-4 text-3xl">
+                <span class="font-extrabold text-primary">${escapeHtml(title)}</span> 정보를 선택해 주세요.
+            </h3>
+
+            <p class="text-on-surface-variant font-body-sm text-sm mb-4">
+                ${question.multi_select ? '여러 개 선택할 수 있습니다.' : '하나만 선택할 수 있습니다.'}
+            </p>
+
+            <div class="flex flex-wrap gap-3">
                 ${optionButtons}
             </div>
         `;
@@ -511,7 +580,7 @@ function renderFollowUpQuestions(questions) {
     });
 
     updateSelectedSummary();
-    lucide.createIcons();
+    refreshIcons();
 }
 
 function hideFollowUpQuestions() {
@@ -543,7 +612,7 @@ function resetAnalysisView(message = '') {
     followUpSubmit.disabled = false;
     analyzeBtn.innerHTML = '<i data-lucide="search-check" class="h-5 w-5"></i> 분석 시작하기';
 
-    lucide.createIcons();
+    refreshIcons();
 
     if (message) {
         showError(message);
@@ -624,6 +693,14 @@ function clearFollowUpTimeout() {
 
 function setFollowUpButtonState(button, isSelected) {
     button.classList.toggle('is-selected', isSelected);
+    button.classList.toggle('chip-selected', isSelected);
+
+    const countSpan = button.querySelectorAll('span')[1];
+
+    if (countSpan) {
+        countSpan.classList.toggle('text-primary', isSelected);
+        countSpan.classList.toggle('text-on-surface-variant', !isSelected);
+    }
 }
 
 function collectSupplementalSelections() {
@@ -734,13 +811,17 @@ function getKeywords(item) {
 
 function getMatchRate(item) {
     const rawScore = item.match_rate ?? item.score ?? 0;
-    const score = Number(rawScore);
+    const score = Number(rawRawScoreToSafeNumber(rawScore));
 
     if (!Number.isFinite(score)) {
         return 0;
     }
 
     return Math.max(0, Math.min(Math.round(score), 100));
+}
+
+function rawRawScoreToSafeNumber(rawScore) {
+    return Number(rawScore);
 }
 
 function buildRecommendationReasons(item, relatedFiles, keywords) {

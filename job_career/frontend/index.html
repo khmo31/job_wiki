@@ -1,27 +1,334 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Job Wiki Career AI | 공공기관 커리어 매칭 플랫폼</title>
-    <meta name="description" content="내 경력에 맞는 공공기관 채용공고를 AI가 분석하고 매칭해드립니다. ALIO 기반 444+ 채용공고, Facet Wiki 매칭 엔진.">
-    <meta property="og:title" content="Job Wiki Career AI">
-    <meta property="og:description" content="AI 기반 공공기관 채용공고 맞춤 매칭 서비스">
-    <meta property="og:type" content="website">
-    <meta name="color-scheme" content="light dark">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Career AI - 공공기관 채용</title>
 
-    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+
     <script>
         tailwind.config = {
-            darkMode: 'class'
-        }
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "surface-tint": "#1353d8",
+                        "inverse-primary": "#b5c4ff",
+                        "surface-container-highest": "#e1e3e4",
+                        "on-tertiary": "#ffffff",
+                        "inverse-surface": "#2e3132",
+                        "outline-variant": "#c3c5d7",
+                        "on-error": "#ffffff",
+                        "on-tertiary-fixed": "#002113",
+                        "secondary-fixed": "#d9e3f4",
+                        "surface-dim": "#d9dadb",
+                        "surface-bright": "#f8f9fa",
+                        "error": "#ba1a1a",
+                        "on-tertiary-fixed-variant": "#005236",
+                        "tertiary-fixed-dim": "#4edea3",
+                        "outline": "#737686",
+                        "on-secondary-container": "#596372",
+                        "primary": "#003fb1",
+                        "surface-container-low": "#f3f4f5",
+                        "on-secondary": "#ffffff",
+                        "on-surface-variant": "#434654",
+                        "surface-container-high": "#e7e8e9",
+                        "on-secondary-fixed": "#121c28",
+                        "error-container": "#ffdad6",
+                        "surface-container": "#edeeef",
+                        "on-secondary-fixed-variant": "#3e4755",
+                        "primary-container": "#1a56db",
+                        "secondary-container": "#d6e0f1",
+                        "surface": "#f8f9fa",
+                        "surface-container-lowest": "#ffffff",
+                        "on-primary-fixed": "#00174d",
+                        "on-error-container": "#93000a",
+                        "tertiary-fixed": "#6ffbbe",
+                        "on-surface": "#191c1d",
+                        "on-primary-fixed-variant": "#003dab",
+                        "background": "#f8f9fa",
+                        "secondary": "#555f6d",
+                        "on-primary": "#ffffff",
+                        "tertiary-container": "#006f4b",
+                        "on-primary-container": "#d4dcff",
+                        "inverse-on-surface": "#f0f1f2",
+                        "primary-fixed": "#dbe1ff",
+                        "tertiary": "#005438",
+                        "primary-fixed-dim": "#b5c4ff",
+                        "on-background": "#191c1d",
+                        "on-tertiary-container": "#68f5b8",
+                        "secondary-fixed-dim": "#bdc7d8",
+                        "surface-variant": "#e1e3e4"
+                    },
+                    borderRadius: {
+                        DEFAULT: "0.25rem",
+                        lg: "0.5rem",
+                        xl: "0.75rem",
+                        full: "9999px",
+                        "2xl": "1rem",
+                        "3xl": "1.5rem",
+                        "4xl": "2rem"
+                    },
+                    spacing: {
+                        base: "8px",
+                        xs: "4px",
+                        xl: "80px",
+                        gutter: "24px",
+                        "container-max": "1280px",
+                        lg: "48px",
+                        md: "24px",
+                        sm: "12px"
+                    },
+                    fontFamily: {
+                        "display-lg": ["Inter"],
+                        "body-md": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "headline-lg": ["Inter"],
+                        "label-sm": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "label-md": ["Inter"],
+                        "headline-lg-mobile": ["Inter"],
+                        mono: ["JetBrains Mono", "monospace"]
+                    },
+                    fontSize: {
+                        "display-lg": ["64px", { lineHeight: "1.1", letterSpacing: "-0.03em", fontWeight: "800" }],
+                        "body-md": ["16px", { lineHeight: "1.5", fontWeight: "400" }],
+                        "headline-md": ["24px", { lineHeight: "1.4", fontWeight: "600" }],
+                        "headline-lg": ["40px", { lineHeight: "1.2", letterSpacing: "-0.02em", fontWeight: "700" }],
+                        "label-sm": ["12px", { lineHeight: "1.4", letterSpacing: "0.02em", fontWeight: "500" }],
+                        "body-lg": ["20px", { lineHeight: "1.6", fontWeight: "400" }],
+                        "label-md": ["15px", { lineHeight: "1.4", fontWeight: "500" }],
+                        "headline-lg-mobile": ["36px", { lineHeight: "1.2", fontWeight: "800" }]
+                    }
+                }
+            }
+        };
     </script>
+
     <script src="https://unpkg.com/lucide@latest"></script>
-    <link rel="stylesheet" href="styles.css">
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
+
+    <link rel="stylesheet" href="styles.css" />
 </head>
 
-<body class="min-h-screen bg-slate-50 text-slate-900 antialiased">
-    <header class="site-header">
+<body class="text-on-surface antialiased relative min-h-screen flex flex-col bg-surface">
+    <!-- Intro Screen -->
+    <section id="introScreen" class="intro-screen stitch-intro">
+        <div class="mesh-gradient"></div>
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+
+        <nav class="stitch-intro-nav">
+            <div class="stitch-logo">Career AI</div>
+
+            <div class="stitch-nav-links">
+                <a href="#">Programs</a>
+                <a href="#">Institutions</a>
+                <a href="#">Career Guides</a>
+                <a href="#">Support</a>
+            </div>
+
+            <div class="stitch-nav-actions">
+                <button type="button" class="stitch-login-btn">Login</button>
+                <button type="button" class="stitch-signup-btn shimmer-effect">Sign Up</button>
+            </div>
+        </nav>
+
+        <main class="stitch-hero">
+            <div class="stitch-hero-grid">
+                <section class="stitch-hero-copy animate-fade-up">
+                    <h1>
+                        Career AI,<br />
+                        <span>공공기관 채용</span>
+                    </h1>
+
+                    <p class="delay-100 animate-fade-up">
+                        사용자의 전공, 경력, 희망 조건을 분석하여 가장 적합한 공공기관 채용공고를 추천합니다.
+                    </p>
+
+                    <div class="delay-200 animate-fade-up">
+                        <button id="introStartBtn" type="button" class="stitch-main-cta shimmer-effect">
+                            프로그램 시작하기
+                            <span class="material-symbols-outlined">arrow_forward</span>
+                        </button>
+                    </div>
+                </section>
+
+                <section class="stitch-visual" aria-hidden="true">
+                    <svg class="stitch-connectors" viewBox="0 0 600 600">
+                        <defs>
+                            <linearGradient id="lineGrad1" x1="0%" x2="100%" y1="0%" y2="100%">
+                                <stop offset="0%" stop-color="#1a56db" stop-opacity="0.15"></stop>
+                                <stop offset="100%" stop-color="#1a56db" stop-opacity="0.6"></stop>
+                            </linearGradient>
+                            <linearGradient id="lineGrad2" x1="0%" x2="100%" y1="0%" y2="100%">
+                                <stop offset="0%" stop-color="#1a56db" stop-opacity="0.4"></stop>
+                                <stop offset="100%" stop-color="#68f5b8" stop-opacity="0.7"></stop>
+                            </linearGradient>
+                        </defs>
+
+                        <path class="animated-path" d="M150,180 C300,180 250,320 400,320" fill="none" stroke="url(#lineGrad1)" stroke-linecap="round" stroke-width="2"></path>
+                        <path class="animated-path delay-path" d="M160,480 C300,480 350,320 450,320" fill="none" stroke="url(#lineGrad2)" stroke-linecap="round" stroke-width="2"></path>
+                    </svg>
+
+                    <article class="glass-card stitch-profile-card float-card-1">
+                        <div class="glow-bg"></div>
+
+                        <div class="stitch-card-header">
+                            <div class="stitch-card-icon">
+                                <span class="material-symbols-outlined">person</span>
+                            </div>
+
+                            <div>
+                                <h3>프로필 분석</h3>
+                                <p>Data Extracted</p>
+                            </div>
+                        </div>
+
+                        <div class="stitch-profile-list">
+                            <div>
+                                <span>Major</span>
+                                <strong>
+                                    <span class="material-symbols-outlined">school</span>
+                                    의공학과 전공
+                                </strong>
+                            </div>
+
+                            <div>
+                                <span>Experience</span>
+                                <strong>
+                                    <span class="material-symbols-outlined">work</span>
+                                    의료기기 인허가 2년
+                                </strong>
+                            </div>
+
+                            <div>
+                                <span>Preferences</span>
+                                <strong>
+                                    <span class="material-symbols-outlined">tune</span>
+                                    수도권, 정규직
+                                </strong>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="glass-card stitch-matching-card float-card-2">
+                        <div class="glow-bg"></div>
+
+                        <div class="stitch-matching-top">
+                            <div class="stitch-ring-wrap">
+                                <svg class="stitch-ring-bg" viewBox="0 0 100 100">
+                                    <circle cx="50" cy="50" r="45" fill="none" stroke="currentColor" stroke-width="8"></circle>
+                                </svg>
+                                <svg class="stitch-ring-progress" viewBox="0 0 100 100">
+                                    <circle cx="50" cy="50" r="45" fill="none" stroke="currentColor" stroke-dasharray="283" stroke-dashoffset="100" stroke-width="8"></circle>
+                                </svg>
+                                <span class="material-symbols-outlined">memory</span>
+                            </div>
+
+                            <div>
+                                <h3>매칭 분석 중</h3>
+                                <p>SYS.SCAN_ACTIVE</p>
+                            </div>
+
+                            <b>65%</b>
+                        </div>
+
+                        <div class="stitch-scan-box">
+                            <div class="scanline"></div>
+                            <span>PROCESSING_DATA...</span>
+                            <div class="stitch-dots">
+                                <i></i>
+                                <i></i>
+                                <i></i>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="glass-card stitch-result-card float-card-3">
+                        <div class="glow-bg"></div>
+
+                        <div class="stitch-result-head">
+                            <div>
+                                <h3>매칭 결과</h3>
+                                <p>Top 5 recommended institutions</p>
+                            </div>
+
+                            <span>
+                                <span class="material-symbols-outlined">verified</span>
+                                Top 96%
+                            </span>
+                        </div>
+
+                        <div class="stitch-result-list">
+                            <div class="stitch-result-item stitch-result-primary">
+                                <div>
+                                    <strong>한국의료기기안전정보원</strong>
+                                    <p>의료기기 인허가 · 정규직</p>
+                                </div>
+
+                                <div class="stitch-score">
+                                    <span>96</span>
+                                    <svg viewBox="0 0 36 36">
+                                        <path class="score-bg" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" stroke-width="3"></path>
+                                        <path class="score-line" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" stroke-dasharray="96, 100" stroke-width="3"></path>
+                                    </svg>
+                                </div>
+
+                                <div class="stitch-tags">
+                                    <span>수도권</span>
+                                    <span>의료기기</span>
+                                </div>
+                            </div>
+
+                            <div class="stitch-result-item stitch-result-secondary">
+                                <div>
+                                    <strong>국립중앙의료원</strong>
+                                    <p>의료행정 · 무기계약직</p>
+                                </div>
+
+                                <div class="stitch-score stitch-score-green">
+                                    <span>89</span>
+                                    <svg viewBox="0 0 36 36">
+                                        <path class="score-bg" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" stroke-width="3"></path>
+                                        <path class="score-line" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" stroke-dasharray="89, 100" stroke-width="3"></path>
+                                    </svg>
+                                </div>
+
+                                <div class="stitch-tags">
+                                    <span>공공기관</span>
+                                    <span>행정</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <button type="button" class="stitch-view-all">
+                            View All Matches
+                            <span class="material-symbols-outlined">arrow_forward</span>
+                        </button>
+                    </article>
+                </section>
+            </div>
+        </main>
+
+        <footer class="stitch-footer">
+            <div>Career AI</div>
+
+            <div class="stitch-footer-links">
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms of Service</a>
+                <a href="#">Institutional Partnership</a>
+                <a href="#">Contact Us</a>
+            </div>
+
+            <p>© 2024 Career AI Public Institution Matching Service. All rights reserved.</p>
+        </footer>
+    </section>
+
+    <header id="siteHeader" class="site-header app-shell-hidden">
         <nav class="mx-auto flex max-w-7xl items-center justify-between px-6 py-5">
             <button type="button" id="navHome" class="flex items-center gap-3 text-left">
                 <div class="brand-mark">
@@ -29,7 +336,7 @@
                 </div>
                 <div>
                     <p class="text-xs font-semibold text-slate-500">Public Career Matching Platform</p>
-                    <h1 class="text-lg font-black text-slate-950">Job Wiki Career AI</h1>
+                    <h1 class="text-lg font-black text-slate-950">Career Ai</h1>
                 </div>
             </button>
 
@@ -45,275 +352,557 @@
         </nav>
     </header>
 
-    <main class="mx-auto max-w-7xl px-6 pb-24">
-        <section id="viewHome" class="app-view">
-            <section class="hero-section">
-                <div class="hero-shape hero-shape-blue"></div>
-                <div class="hero-shape hero-shape-green"></div>
+    <main id="appMain" class="app-shell-hidden">
+        <section id="viewHome" class="app-view stitch-home-page">
+            <div class="mesh-gradient"></div>
+            <div class="bg-grid"></div>
+            <div class="orb orb-1"></div>
+            <div class="orb orb-2"></div>
 
-                <div class="grid grid-cols-1 items-center gap-12 pb-16 pt-16 lg:grid-cols-[1.05fr_0.95fr]">
-                    <div>
-                        <div class="mb-6 inline-flex items-center gap-2 rounded-full border border-blue-100 bg-blue-50 px-4 py-2 text-sm font-black text-blue-700">
-                            <i data-lucide="sparkles" class="h-4 w-4"></i>
-                            AI 기반 공공기관 채용공고 매칭 서비스
-                        </div>
+            <nav class="fixed top-0 w-full z-50 flex justify-between items-center px-gutter py-5 max-w-container-max mx-auto bg-surface/40 dark:bg-surface-dim/40 backdrop-blur-2xl border-b border-white/20 shadow-sm left-1/2 -translate-x-1/2">
+                <div class="font-display-lg text-[28px] tracking-tight text-primary dark:text-inverse-primary font-bold">Career AI</div>
 
-                        <h2 class="mb-6 text-4xl font-black leading-tight tracking-tight text-slate-950 md:text-6xl">
-                            내 경력과 맞는<br>
-                            <span class="text-blue-700">공공기관 채용공고</span>를<br>
-                            더 쉽게 찾으세요
-                        </h2>
+                <div class="hidden md:flex space-x-lg">
+                    <a class="text-secondary dark:text-secondary-fixed-dim hover:text-primary transition-colors font-label-md text-label-md hover:text-primary-container dark:hover:text-primary-fixed transition-all" href="#">Programs</a>
+                    <a class="text-secondary dark:text-secondary-fixed-dim hover:text-primary transition-colors font-label-md text-label-md hover:text-primary-container dark:hover:text-primary-fixed transition-all" href="#">Institutions</a>
+                    <a class="text-secondary dark:text-secondary-fixed-dim hover:text-primary transition-colors font-label-md text-label-md hover:text-primary-container dark:hover:text-primary-fixed transition-all" href="#">Career Guides</a>
+                    <a class="text-secondary dark:text-secondary-fixed-dim hover:text-primary transition-colors font-label-md text-label-md hover:text-primary-container dark:hover:text-primary-fixed transition-all" href="#">Support</a>
+                </div>
 
-                        <p class="mb-8 max-w-3xl text-lg leading-9 text-slate-600 md:text-xl">
-                            공공기관 채용공고 데이터를 Wiki 형태로 구조화하고,
-                            사용자의 전공·경력·희망 조건을 분석하여 가장 적합한 기관과 공고를 추천합니다.
+                <div class="flex items-center space-x-md">
+                    <button type="button" class="font-label-md text-label-md text-primary dark:text-inverse-primary hover:text-primary-container transition-all">Login</button>
+                    <button type="button" class="font-label-md text-label-md bg-primary-container text-on-primary-container px-7 py-3 rounded-full hover:shadow-lg hover:shadow-primary-container/30 transition-all shimmer-effect shadow-md">Sign Up</button>
+                </div>
+            </nav>
+
+            <div class="flex-grow flex flex-col pt-40 pb-32 relative z-10 w-full max-w-container-max mx-auto px-gutter min-h-[90vh] gap-40">
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-xl w-full items-center min-h-[75vh]">
+                    <div class="lg:col-span-5 flex flex-col items-start space-y-10 animate-fade-up z-20">
+                        <h1 class="font-display-lg text-display-lg text-on-surface leading-[1.05] drop-shadow-md">
+                            Career AI,<br />
+                            <span class="text-gradient">공공기관 채용</span>
+                        </h1>
+
+                        <p class="font-body-lg text-body-lg text-on-surface-variant max-w-lg delay-100 animate-fade-up leading-relaxed">
+                            사용자의 전공, 경력, 희망 조건을 분석하여 가장 적합한 공공기관 채용공고를 추천합니다.
                         </p>
 
-                        <div class="flex flex-col gap-3 sm:flex-row">
-                            <button type="button" id="startAnalyzeBtn" class="hero-primary-btn">
-                                <i data-lucide="arrow-right" class="h-5 w-5"></i>
+                        <div class="delay-200 animate-fade-up pt-6 flex flex-col sm:flex-row gap-4 w-full">
+                            <button id="startAnalyzeBtn" type="button" class="bg-primary-container text-on-primary-container font-label-md text-[16px] px-8 py-4 rounded-full shadow-[0_12px_30px_-8px_rgba(26,86,219,0.6)] hover:shadow-[0_20px_40px_-10px_rgba(26,86,219,0.7)] hover:-translate-y-1.5 transition-all duration-400 flex items-center justify-center group shimmer-effect font-semibold flex-1">
                                 커리어 분석 시작하기
+                                <span class="material-symbols-outlined ml-3 group-hover:translate-x-2 transition-transform">arrow_forward</span>
                             </button>
-                            <button id="heroExampleBtn" type="button" class="hero-secondary-btn">
-                                <i data-lucide="wand-sparkles" class="h-5 w-5"></i>
+
+                            <button id="heroExampleBtn" type="button" class="btn-glass font-label-md text-[16px] px-8 py-4 rounded-full font-semibold hover:-translate-y-1.5 transition-all duration-400 flex items-center justify-center flex-1">
                                 예시로 체험하기
                             </button>
                         </div>
-
-                        <div class="mt-10 grid max-w-2xl grid-cols-3 gap-4">
-                            <div class="stat-card">
-                                <p class="text-2xl font-black text-slate-950">3단계</p>
-                                <p class="text-sm font-semibold text-slate-500">추천 흐름</p>
-                            </div>
-                            <div class="stat-card">
-                                <p class="text-2xl font-black text-slate-950">5개</p>
-                                <p class="text-sm font-semibold text-slate-500">최종 기관</p>
-                            </div>
-                            <div class="stat-card">
-                                <p class="text-2xl font-black text-slate-950">Wiki</p>
-                                <p class="text-sm font-semibold text-slate-500">공고 구조화</p>
-                            </div>
-                        </div>
                     </div>
 
-                    <div class="hero-preview">
-                        <div class="preview-window">
-                            <div class="preview-toolbar">
-                                <div class="flex gap-2">
-                                    <span class="dot bg-red-400"></span>
-                                    <span class="dot bg-amber-400"></span>
-                                    <span class="dot bg-emerald-400"></span>
-                                </div>
-                                <span class="text-xs font-bold text-slate-400">Job Wiki Career AI</span>
-                            </div>
+                    <div class="lg:col-span-7 relative h-[700px] w-full hidden lg:block perspective-[1000px]">
+                        <svg class="absolute top-0 left-0 w-full h-full pointer-events-none z-0" style="overflow: visible;" viewBox="0 0 600 600">
+                            <defs>
+                                <linearGradient id="homeLineGrad1" x1="0%" x2="100%" y1="0%" y2="100%">
+                                    <stop offset="0%" stop-color="#1a56db" stop-opacity="0.2"></stop>
+                                    <stop offset="100%" stop-color="#1a56db" stop-opacity="0.8"></stop>
+                                </linearGradient>
 
-                            <div class="p-5">
-                                <div class="mb-5 flex items-center justify-between">
+                                <linearGradient id="homeLineGrad2" x1="0%" x2="100%" y1="0%" y2="100%">
+                                    <stop offset="0%" stop-color="#1a56db" stop-opacity="0.5"></stop>
+                                    <stop offset="100%" stop-color="#68f5b8" stop-opacity="0.8"></stop>
+                                </linearGradient>
+
+                                <filter id="homeGlow">
+                                    <feGaussianBlur result="coloredBlur" stdDeviation="3"></feGaussianBlur>
+                                    <feMerge>
+                                        <feMergeNode in="coloredBlur"></feMergeNode>
+                                        <feMergeNode in="SourceGraphic"></feMergeNode>
+                                    </feMerge>
+                                </filter>
+                            </defs>
+
+                            <path class="animated-path" d="M120,200 C280,180 250,340 420,340" fill="none" filter="url(#homeGlow)" stroke="url(#homeLineGrad1)" stroke-linecap="round" stroke-width="2.5"></path>
+                            <path class="animated-path" d="M140,520 C320,500 360,340 460,340" fill="none" filter="url(#homeGlow)" stroke="url(#homeLineGrad2)" stroke-linecap="round" stroke-width="2.5" style="animation-delay: 1.8s;"></path>
+                        </svg>
+
+                        <div class="absolute top-[2%] left-[2%] glass-card depth-1 rounded-3xl p-6 w-[340px] group float-card-1">
+                            <div class="glow-bg"></div>
+
+                            <div class="flex items-center justify-between mb-5">
+                                <div class="flex items-center space-x-3">
+                                    <div class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary">
+                                        <span class="material-symbols-outlined text-[20px]">person_search</span>
+                                    </div>
+
                                     <div>
-                                        <p class="section-eyebrow">Preview Result</p>
-                                        <h3 class="mt-1 text-2xl font-black text-slate-950">추천 결과 미리보기</h3>
-                                    </div>
-                                    <div class="rounded-2xl bg-blue-50 p-3 text-blue-700">
-                                        <i data-lucide="bar-chart-3" class="h-6 w-6"></i>
+                                        <h3 class="font-headline-md text-[16px] text-on-surface font-bold leading-tight">역량 프로필 분석</h3>
+                                        <p class="font-label-sm text-[12px] text-primary font-semibold mt-0.5">데이터 추출 완료</p>
                                     </div>
                                 </div>
 
-                                <div class="animated-card card-one">
-                                    <div class="flex items-start justify-between gap-4">
-                                        <div>
-                                            <span class="rank-badge">TOP 1</span>
-                                            <h4 class="mt-3 text-xl font-black text-slate-950">국립암센터</h4>
-                                        </div>
-                                        <div class="text-right">
-                                            <p class="text-3xl font-black text-blue-700">96%</p>
-                                            <p class="text-xs font-bold text-slate-400">매칭률</p>
-                                        </div>
-                                    </div>
-                                    <div class="mt-4 h-2 overflow-hidden rounded-full bg-slate-100">
-                                        <div class="progress-fill"></div>
-                                    </div>
-                                    <div class="mt-4 flex flex-wrap gap-2">
-                                        <span class="keyword-tag"># 의료행정</span>
-                                        <span class="keyword-tag"># 보건</span>
-                                        <span class="keyword-tag"># 경력</span>
+                                <div class="relative w-12 h-12 flex items-center justify-center">
+                                    <svg class="w-full h-full text-outline-variant/30 absolute inset-0" viewBox="0 0 36 36">
+                                        <circle cx="18" cy="18" fill="none" r="16" stroke="currentColor" stroke-width="3"></circle>
+                                    </svg>
+
+                                    <svg class="w-full h-full text-primary absolute inset-0 drop-shadow-[0_0_3px_rgba(26,86,219,0.5)]" viewBox="0 0 36 36">
+                                        <circle class="progress-ring__circle" cx="18" cy="18" fill="none" r="16" stroke="currentColor" stroke-dasharray="100 100" stroke-dashoffset="0" stroke-width="3"></circle>
+                                    </svg>
+
+                                    <span class="font-mono text-[12px] font-extrabold text-on-surface absolute">100%</span>
+                                </div>
+                            </div>
+
+                            <div class="space-y-4">
+                                <div>
+                                    <span class="font-label-sm text-[11px] text-outline-variant uppercase tracking-wider font-bold block mb-2">Key Competencies</span>
+
+                                    <div class="flex flex-wrap gap-2">
+                                        <span class="px-2.5 py-1.5 rounded-lg bg-white/70 border border-white text-on-surface font-label-md text-[13px] shadow-sm flex items-center">
+                                            <span class="w-1.5 h-1.5 rounded-full bg-primary mr-1.5"></span>
+                                            의공학 전공
+                                        </span>
+
+                                        <span class="px-2.5 py-1.5 rounded-lg bg-white/70 border border-white text-on-surface font-label-md text-[13px] shadow-sm flex items-center">
+                                            <span class="w-1.5 h-1.5 rounded-full bg-tertiary-container mr-1.5"></span>
+                                            의료기기 인허가
+                                        </span>
+
+                                        <span class="px-2.5 py-1.5 rounded-lg bg-white/70 border border-white text-on-surface font-label-md text-[13px] shadow-sm flex items-center">
+                                            <span class="w-1.5 h-1.5 rounded-full bg-secondary mr-1.5"></span>
+                                            문서 작성 능력
+                                        </span>
+
+                                        <span class="px-2.5 py-1.5 rounded-lg bg-white/70 border border-white text-on-surface font-label-md text-[13px] shadow-sm flex items-center">
+                                            <span class="w-1.5 h-1.5 rounded-full bg-error mr-1.5"></span>
+                                            RA 전문가
+                                        </span>
                                     </div>
                                 </div>
 
-                                <div class="animated-card card-two">
-                                    <div class="flex items-center gap-3">
-                                        <div class="flex h-10 w-10 items-center justify-center rounded-2xl bg-emerald-50 text-emerald-700">
-                                            <i data-lucide="check" class="h-5 w-5"></i>
-                                        </div>
-                                        <div>
-                                            <p class="font-black text-slate-950">조건 보정 완료</p>
-                                            <p class="text-sm text-slate-500">정규직 · 서울 · 서류전형</p>
-                                        </div>
+                                <div class="pt-3 border-t border-white/40">
+                                    <span class="font-label-sm text-[11px] text-outline-variant uppercase tracking-wider font-bold block mb-2">Target Preferences</span>
+
+                                    <div class="flex items-center space-x-2">
+                                        <span class="px-2.5 py-1 rounded-md bg-surface-container-high/60 text-on-surface-variant font-label-sm text-[12px] font-semibold">수도권</span>
+                                        <span class="px-2.5 py-1 rounded-md bg-surface-container-high/60 text-on-surface-variant font-label-sm text-[12px] font-semibold">정규직</span>
+                                        <span class="px-2.5 py-1 rounded-md bg-surface-container-high/60 text-on-surface-variant font-label-sm text-[12px] font-semibold">의료분야</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="absolute bottom-[5%] left-[12%] glass-card depth-2 rounded-3xl p-6 w-[320px] float-card-2">
+                            <div class="glow-bg"></div>
+
+                            <div class="flex items-center justify-between mb-4">
+                                <h3 class="font-label-md text-[15px] text-on-surface font-bold flex items-center">
+                                    <span class="material-symbols-outlined text-tertiary-container text-[18px] mr-2 animate-spin-slow">graphic_eq</span>
+                                    실시간 AI 매칭 엔진
+                                </h3>
+
+                                <span class="px-2 py-0.5 rounded-full bg-tertiary-container/10 text-tertiary-container border border-tertiary-container/20 font-mono text-[10px] font-bold animate-pulse">ACTIVE</span>
+                            </div>
+
+                            <div class="space-y-3">
+                                <div class="relative bg-white/50 rounded-xl p-3 border border-white/60 overflow-hidden group">
+                                    <div class="absolute inset-0 bg-gradient-to-r from-transparent via-primary/5 to-transparent -translate-x-full group-hover:animate-[shimmer_1.5s_infinite]"></div>
+
+                                    <div class="flex justify-between items-center relative z-10">
+                                        <span class="font-mono text-[11px] text-on-surface-variant font-medium flex items-center">
+                                            <span class="material-symbols-outlined text-[14px] mr-1.5 text-primary">data_object</span>
+                                            Semantic Analysis
+                                        </span>
+
+                                        <span class="text-[10px] text-primary font-bold">100%</span>
+                                    </div>
+
+                                    <div class="w-full bg-outline-variant/30 h-1 rounded-full mt-2 overflow-hidden">
+                                        <div class="bg-primary h-full w-full rounded-full"></div>
                                     </div>
                                 </div>
 
-                                <div class="animated-card card-three">
-                                    <p class="mb-3 text-sm font-black text-slate-700">추천 이유</p>
-                                    <ul class="space-y-2 text-sm text-slate-600">
-                                        <li>의료 행정 경험과 공고 태그가 연결됩니다.</li>
-                                        <li>보건 분야 공공기관 공고와 관련성이 높습니다.</li>
-                                    </ul>
+                                <div class="relative bg-white/50 rounded-xl p-3 border border-white/60 overflow-hidden">
+                                    <div class="absolute inset-0 bg-gradient-to-r from-transparent via-tertiary-container/5 to-transparent -translate-x-full animate-[shimmer_2s_infinite]"></div>
+
+                                    <div class="flex justify-between items-center relative z-10">
+                                        <span class="font-mono text-[11px] text-on-surface-variant font-medium flex items-center">
+                                            <span class="material-symbols-outlined text-[14px] mr-1.5 text-tertiary-container">hub</span>
+                                            Context Matching
+                                        </span>
+
+                                        <span class="flex space-x-1">
+                                            <span class="w-1 h-1 bg-tertiary-container rounded-full animate-bounce"></span>
+                                            <span class="w-1 h-1 bg-tertiary-container rounded-full animate-bounce delay-75"></span>
+                                            <span class="w-1 h-1 bg-tertiary-container rounded-full animate-bounce delay-150"></span>
+                                        </span>
+                                    </div>
+
+                                    <div class="w-full bg-outline-variant/30 h-1 rounded-full mt-2 overflow-hidden relative">
+                                        <div class="absolute top-0 left-0 bottom-0 bg-gradient-to-r from-tertiary-container/50 to-tertiary-container w-2/3 rounded-full" style="animation: scanline 2s linear infinite;"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="absolute top-[10%] right-[0%] glass-card depth-3 rounded-[32px] p-7 w-[420px] float-card-3">
+                            <div class="glow-bg"></div>
+
+                            <div class="flex justify-between items-center mb-6">
+                                <div>
+                                    <div class="flex items-center space-x-2 mb-1">
+                                        <span class="px-2 py-0.5 rounded-md bg-primary/10 text-primary font-label-sm text-[11px] font-extrabold uppercase tracking-wider">Top Match</span>
+                                    </div>
+
+                                    <h3 class="font-headline-md text-[22px] text-on-surface font-extrabold tracking-tight">AI 추천 기관</h3>
+                                </div>
+                            </div>
+
+                            <div class="relative bg-white/90 rounded-2xl border border-white shadow-lg overflow-hidden group/card hover:shadow-xl transition-all duration-300">
+                                <div class="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-primary via-primary-container to-tertiary-container"></div>
+
+                                <div class="p-6">
+                                    <div class="flex justify-between items-start mb-5">
+                                        <div class="flex items-center space-x-4">
+                                            <div class="w-12 h-12 rounded-xl bg-surface-container flex items-center justify-center border border-outline-variant/20 shadow-inner">
+                                                <span class="material-symbols-outlined text-[24px] text-primary">account_balance</span>
+                                            </div>
+
+                                            <div>
+                                                <h4 class="font-headline-md text-[18px] text-on-surface font-extrabold group-hover/card:text-primary transition-colors">한국의료기기안전정보원</h4>
+                                                <p class="font-label-sm text-[13px] text-on-surface-variant mt-0.5">원무행정 · 정규직</p>
+                                            </div>
+                                        </div>
+
+                                        <div class="relative w-14 h-14 flex items-center justify-center">
+                                            <svg class="w-full h-full -rotate-90 drop-shadow-[0_2px_4px_rgba(26,86,219,0.3)]" viewBox="0 0 36 36">
+                                                <path class="text-surface-container-high" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" stroke-width="4"></path>
+                                                <path class="text-primary" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" stroke-dasharray="96, 100" stroke-linecap="round" stroke-width="4"></path>
+                                            </svg>
+
+                                            <div class="absolute flex flex-col items-center justify-center">
+                                                <span class="font-mono text-[14px] font-extrabold text-primary leading-none">96</span>
+                                                <span class="text-[8px] text-primary/70 font-bold">%</span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="space-y-3">
+                                        <span class="font-label-sm text-[11px] text-outline-variant uppercase tracking-wider font-bold block">Matching Keywords</span>
+
+                                        <div class="flex flex-wrap gap-2">
+                                            <span class="px-2.5 py-1.5 rounded-lg bg-primary/5 border border-primary/20 text-primary font-label-md text-[12px] font-semibold flex items-center">
+                                                <span class="material-symbols-outlined text-[14px] mr-1">check_circle</span>
+                                                의료기기 인허가
+                                            </span>
+
+                                            <span class="px-2.5 py-1.5 rounded-lg bg-tertiary-container/5 border border-tertiary-container/20 text-tertiary-container font-label-md text-[12px] font-semibold flex items-center">
+                                                <span class="material-symbols-outlined text-[14px] mr-1">check_circle</span>
+                                                수도권 근무
+                                            </span>
+
+                                            <span class="px-2.5 py-1.5 rounded-lg bg-surface-container-high border border-outline-variant/20 text-on-surface-variant font-label-md text-[12px] font-medium">
+                                                의공학 전공
+                                            </span>
+                                        </div>
+                                    </div>
+
+                                    <button type="button" class="w-full mt-6 py-3 rounded-xl bg-primary/5 hover:bg-primary text-primary hover:text-white font-label-md text-[14px] font-bold transition-all flex items-center justify-center group/btn border border-primary/20">
+                                        상세 매칭 리포트 보기
+                                        <span class="material-symbols-outlined text-[18px] ml-2 group-hover/btn:translate-x-1 transition-transform">arrow_forward</span>
+                                    </button>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </section>
 
-            <section id="workflow" class="workflow-section">
-                <div class="mb-8 text-center">
-                    <p class="section-eyebrow">System Workflow</p>
-                    <h2 class="mt-2 text-3xl font-black text-slate-950">프로젝트 동작 흐름</h2>
-                    <p class="mt-3 text-slate-500">
-                        백엔드 파이프라인을 사용자가 이해할 수 있도록 프론트엔드에서 시각화했습니다.
-                    </p>
-                </div>
+                <section class="w-full flex flex-col items-center animate-fade-up z-20 relative mt-20">
+                    <div class="text-center mb-16">
+                        <span class="font-label-sm text-primary uppercase tracking-widest font-extrabold mb-3 block">System Workflow</span>
+                        <h2 class="font-headline-lg text-headline-lg text-on-surface font-extrabold mb-5">프로젝트 동작 흐름</h2>
+                        <p class="font-body-md text-[18px] text-on-surface-variant max-w-2xl mx-auto">백엔드 파이프라인을 사용자가 이해할 수 있도록 프론트엔드에서 시각화했습니다.</p>
+                    </div>
 
-                <div class="grid grid-cols-1 gap-4 md:grid-cols-3">
-                    <div class="step-item step-active" data-step="1">
-                        <div class="step-badge">1</div>
-                        <div>
-                            <h4>프로필 입력</h4>
-                            <p>사용자가 자신의 경력과 희망 조건을 자유롭게 작성합니다.</p>
+                    <div class="w-full glass-card rounded-[40px] p-10 md:p-14 relative">
+                        <div class="glow-bg"></div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-10 relative">
+                            <div class="hidden md:block absolute top-10 left-16 right-16 h-1 bg-gradient-to-r from-primary/20 via-tertiary-container/20 to-primary/20 z-0 rounded-full"></div>
+
+                            <div class="bg-white/70 backdrop-blur-md rounded-3xl p-8 border border-white shadow-sm hover:shadow-xl hover:-translate-y-2 hover:border-primary/50 transition-all duration-300 group z-10 relative">
+                                <div class="w-12 h-12 rounded-2xl bg-primary text-white flex items-center justify-center font-bold text-xl mb-6 shadow-[0_8px_16px_-4px_rgba(26,86,219,0.4)]">1</div>
+                                <h3 class="font-headline-md text-[20px] text-on-surface font-extrabold mb-3">프로필 입력</h3>
+                                <p class="font-body-md text-[15px] text-on-surface-variant leading-relaxed">사용자가 자신의 경력과 희망 조건을 자유롭게 작성합니다.</p>
+                            </div>
+
+                            <div class="bg-white/70 backdrop-blur-md rounded-3xl p-8 border border-white shadow-sm hover:shadow-xl hover:-translate-y-2 hover:border-primary/50 transition-all duration-300 group z-10 relative">
+                                <div class="w-12 h-12 rounded-2xl bg-white border-2 border-outline-variant/30 text-on-surface-variant flex items-center justify-center font-bold text-xl mb-6 group-hover:bg-primary group-hover:text-white group-hover:border-primary transition-colors shadow-sm group-hover:shadow-[0_8px_16px_-4px_rgba(26,86,219,0.4)]">2</div>
+                                <h3 class="font-headline-md text-[20px] text-on-surface font-extrabold mb-3">조건 보정</h3>
+                                <p class="font-body-md text-[15px] text-on-surface-variant leading-relaxed">AI가 애매하게 판단한 조건을 사용자가 선택합니다.</p>
+                            </div>
+
+                            <div class="bg-white/70 backdrop-blur-md rounded-3xl p-8 border border-white shadow-sm hover:shadow-xl hover:-translate-y-2 hover:border-primary/50 transition-all duration-300 group z-10 relative">
+                                <div class="w-12 h-12 rounded-2xl bg-white border-2 border-outline-variant/30 text-on-surface-variant flex items-center justify-center font-bold text-xl mb-6 group-hover:bg-primary group-hover:text-white group-hover:border-primary transition-colors shadow-sm group-hover:shadow-[0_8px_16px_-4px_rgba(26,86,219,0.4)]">3</div>
+                                <h3 class="font-headline-md text-[20px] text-on-surface font-extrabold mb-3">최종 추천</h3>
+                                <p class="font-body-md text-[15px] text-on-surface-variant leading-relaxed">매칭률, 추천 이유, 관련 공고를 확인합니다.</p>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+                            <div class="bg-white/50 backdrop-blur-sm rounded-2xl p-7 border border-white hover:bg-white/90 hover:border-primary/40 hover:shadow-lg transition-all duration-300 group flex flex-col justify-center">
+                                <div class="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                                    <span class="material-symbols-outlined text-primary text-[24px]">database</span>
+                                </div>
+                                <h4 class="font-label-md text-[17px] text-on-surface font-extrabold mb-2">ALIO 수집</h4>
+                                <p class="font-body-md text-[14px] text-on-surface-variant">공공기관 채용공고 데이터 수집</p>
+                            </div>
+
+                            <div class="bg-white/50 backdrop-blur-sm rounded-2xl p-7 border border-white hover:bg-white/90 hover:border-primary/40 hover:shadow-lg transition-all duration-300 group flex flex-col justify-center">
+                                <div class="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                                    <span class="material-symbols-outlined text-primary text-[24px]">auto_stories</span>
+                                </div>
+                                <h4 class="font-label-md text-[17px] text-on-surface font-extrabold mb-2">Wiki 변환</h4>
+                                <p class="font-body-md text-[14px] text-on-surface-variant">공고를 Fact 기반 데이터로 변환</p>
+                            </div>
+
+                            <div class="bg-white/50 backdrop-blur-sm rounded-2xl p-7 border border-white hover:bg-white/90 hover:border-primary/40 hover:shadow-lg transition-all duration-300 group flex flex-col justify-center">
+                                <div class="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                                    <span class="material-symbols-outlined text-primary text-[24px]">tune</span>
+                                </div>
+                                <h4 class="font-label-md text-[17px] text-on-surface font-extrabold mb-2">조건 선택</h4>
+                                <p class="font-body-md text-[14px] text-on-surface-variant">사용자가 추천 조건을 직접 보정</p>
+                            </div>
+
+                            <div class="bg-white/50 backdrop-blur-sm rounded-2xl p-7 border border-white hover:bg-white/90 hover:border-primary/40 hover:shadow-lg transition-all duration-300 group flex flex-col justify-center">
+                                <div class="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                                    <span class="material-symbols-outlined text-primary text-[24px]">bar_chart</span>
+                                </div>
+                                <h4 class="font-label-md text-[17px] text-on-surface font-extrabold mb-2">결과 시각화</h4>
+                                <p class="font-body-md text-[14px] text-on-surface-variant">추천 카드와 비교표 제공</p>
+                            </div>
                         </div>
                     </div>
-
-                    <div class="step-item" data-step="2">
-                        <div class="step-badge">2</div>
-                        <div>
-                            <h4>조건 보정</h4>
-                            <p>AI가 애매하게 판단한 조건을 사용자가 선택합니다.</p>
-                        </div>
-                    </div>
-
-                    <div class="step-item" data-step="3">
-                        <div class="step-badge">3</div>
-                        <div>
-                            <h4>최종 추천</h4>
-                            <p>매칭률, 추천 이유, 관련 공고를 확인합니다.</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="mt-6 grid grid-cols-1 gap-4 md:grid-cols-4">
-                    <div class="pipeline-card">
-                        <i data-lucide="database" class="h-6 w-6"></i>
-                        <h4>ALIO 수집</h4>
-                        <p>공공기관 채용공고 데이터 수집</p>
-                    </div>
-                    <div class="pipeline-card">
-                        <i data-lucide="folder-kanban" class="h-6 w-6"></i>
-                        <h4>Wiki 변환</h4>
-                        <p>공고를 Facet Wiki로 구조화</p>
-                    </div>
-                    <div class="pipeline-card">
-                        <i data-lucide="sliders-horizontal" class="h-6 w-6"></i>
-                        <h4>조건 선택</h4>
-                        <p>사용자가 추천 조건을 직접 보정</p>
-                    </div>
-                    <div class="pipeline-card">
-                        <i data-lucide="bar-chart-3" class="h-6 w-6"></i>
-                        <h4>결과 시각화</h4>
-                        <p>추천 카드와 비교표 제공</p>
-                    </div>
-                </div>
-            </section>
+                </section>
+            </div>
         </section>
 
-        <section id="viewAnalyze" class="app-view hidden pt-10">
-            <section id="analysis" class="analysis-card">
-                <div class="mb-8 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
-                    <div>
-                        <p class="section-eyebrow">Career Profile</p>
-                        <h2 class="mt-2 text-3xl font-black text-slate-950">커리어 프로필 입력</h2>
-                        <p class="mt-2 text-slate-500">
-                            전공, 경력, 관심 직무, 희망 조건을 자유롭게 작성해 주세요.
-                        </p>
+        <section id="viewAnalyze" class="app-view hidden profile-page text-on-surface antialiased relative min-h-screen flex flex-col">
+            <div class="profile-mesh-gradient"></div>
+
+            <nav class="fixed top-0 w-full z-50 flex justify-center items-center px-gutter py-4 transition-all duration-300">
+                <div class="w-full max-w-container-max flex justify-between items-center bg-white/60 backdrop-blur-2xl border border-white/60 rounded-full px-8 py-3 shadow-sm">
+                    <div class="font-display-lg text-[22px] tracking-tight text-primary font-extrabold flex items-center gap-1">
+                        Career AI
                     </div>
 
-                    <button id="loadExample" class="outline-mini-btn">
-                        <i data-lucide="file-plus-2" class="h-4 w-4"></i>
-                        예시 불러오기
-                    </button>
-                </div>
+                    <div class="hidden md:flex space-x-8 items-center">
+                        <button type="button" data-page-link="home" class="text-on-surface-variant hover:text-primary transition-all font-label-md text-[14px]">Programs</button>
+                        <button type="button" data-page-link="home" class="text-on-surface-variant hover:text-primary transition-all font-label-md text-[14px]">Institutions</button>
+                        <button type="button" data-page-link="home" class="text-on-surface-variant hover:text-primary transition-all font-label-md text-[14px]">Career Guides</button>
+                        <button type="button" data-page-link="home" class="text-on-surface-variant hover:text-primary transition-all font-label-md text-[14px]">Support</button>
+                    </div>
 
-                <div class="overflow-hidden rounded-[1.5rem] border border-blue-100 bg-white shadow-sm">
-                    <div class="flex items-center justify-between border-b border-slate-200 bg-gradient-to-r from-blue-50 to-white px-5 py-4">
-                        <div class="flex items-center gap-2 font-black text-slate-800">
-                            <i data-lucide="user-round" class="h-5 w-5 text-blue-700"></i>
-                            나의 경력과 희망 조건
+                    <div class="flex items-center space-x-4">
+                        <button type="button" class="font-label-md text-[14px] text-primary hover:bg-primary/5 px-4 py-2 rounded-full transition-colors">Login</button>
+                        <button type="button" class="font-label-md text-[14px] bg-primary text-white px-6 py-2.5 rounded-full hover:bg-primary-container transition-all shadow-md shadow-primary/20">Sign Up</button>
+                    </div>
+                </div>
+            </nav>
+
+            <main class="flex-grow pt-32 pb-xl px-gutter max-w-[1000px] mx-auto w-full relative z-10 flex flex-col justify-center min-h-[calc(100vh-100px)]">
+                <div id="analysis" class="glass-card-premium p-10 md:p-14 relative overflow-hidden">
+                    <header class="relative z-10 mb-10">
+                        <span class="text-primary font-bold tracking-[0.15em] text-[13px] uppercase mb-3 flex items-center gap-2">
+                            <svg class="w-5 h-5 text-primary" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                <path d="M13 10V3L4 14h7v7l9-11h-7z" stroke-linecap="round" stroke-linejoin="round"></path>
+                            </svg>
+                            Career Profile
+                        </span>
+
+                        <h1 class="font-headline-lg text-[44px] text-on-surface mb-3 font-extrabold tracking-tight">커리어 프로필 입력</h1>
+                        <p class="font-body-md text-[18px] text-on-surface-variant leading-relaxed">전공, 경력, 관심 직무, 희망 조건을 자유롭게 작성해 주세요.</p>
+                    </header>
+
+                    <div class="relative z-10">
+                        <div class="flex flex-wrap justify-between items-center mb-4 gap-4">
+                            <div class="flex items-center gap-3 text-primary font-semibold">
+                                <div class="w-10 h-10 rounded-full bg-gradient-to-br from-blue-100 to-blue-50 border border-blue-200 flex items-center justify-center shadow-sm">
+                                    <svg class="w-5 h-5 text-primary" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                        <path d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" stroke-linecap="round" stroke-linejoin="round"></path>
+                                    </svg>
+                                </div>
+                                <span class="font-label-md text-[16px]">나의 경력과 희망 조건</span>
+                            </div>
+
+                            <button id="loadExample" type="button" class="flex items-center gap-1.5 px-4 py-2 bg-white text-primary border border-primary/20 rounded-full hover:bg-blue-50 transition-colors font-label-sm text-[13px] font-bold shadow-sm">
+                                <svg class="w-4 h-4 text-primary" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                    <path d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" stroke-linecap="round" stroke-linejoin="round"></path>
+                                </svg>
+                                예시 불러오기
+                            </button>
                         </div>
-                        <span class="text-sm font-bold text-slate-400">자유 입력</span>
+
+                        <div class="relative group">
+                            <textarea id="profile" class="w-full min-h-[280px] input-glass border-white/80 focus:border-primary focus:ring-4 focus:ring-primary/10 rounded-2xl p-8 font-body-md text-[16px] text-on-surface placeholder:text-on-surface-variant/40 resize-none transition-all custom-scrollbar" placeholder="예: 저는 3년 동안 병원에서 원무과 행정 직원으로 일했습니다. 환자 데이터를 다루다 보니 의료 행정 지식과 의료정보 보호 정책 수립 쪽에 관심이 생겼고, 관련 경험도 쌓았습니다. 공공기관 쪽으로 이직하고 싶습니다."></textarea>
+
+                            <div class="absolute bottom-6 right-6 flex items-center gap-1 text-on-surface-variant/30 pointer-events-none">
+                                <span class="material-symbols-outlined text-[20px]">drag_handle</span>
+                            </div>
+                        </div>
+
+                        <div class="mt-6 flex flex-wrap gap-3">
+                            <span class="w-full block font-label-sm text-[13px] font-semibold text-on-surface-variant/70 mb-2 uppercase tracking-wide">입력 도움 버튼</span>
+
+                            <button type="button" data-prompt-chip="전공은 의공학이며 의료 데이터와 병원 행정 분야에 관심이 있습니다." class="profile-chip px-5 py-2.5 bg-white/90 text-primary border border-blue-100 rounded-full hover:bg-white hover:shadow-md hover:-translate-y-0.5 transition-all font-label-sm text-[14px] font-medium flex items-center gap-2 shadow-sm">
+                                <div class="w-6 h-6 rounded-full bg-blue-50 flex items-center justify-center">
+                                    <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                                        <path d="M12 4v16m8-8H4" stroke-linecap="round" stroke-linejoin="round"></path>
+                                    </svg>
+                                </div>
+                                전공 추가
+                            </button>
+
+                            <button type="button" data-prompt-chip="병원 원무과 행정, 환자 데이터 관리, 문서 처리 경험이 있습니다." class="profile-chip px-5 py-2.5 bg-white/90 text-primary border border-indigo-100 rounded-full hover:bg-white hover:shadow-md hover:-translate-y-0.5 transition-all font-label-sm text-[14px] font-medium flex items-center gap-2 shadow-sm">
+                                <div class="w-6 h-6 rounded-full bg-indigo-50 flex items-center justify-center">
+                                    <svg class="w-4 h-4 text-indigo-600" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                                        <path d="M12 4v16m8-8H4" stroke-linecap="round" stroke-linejoin="round"></path>
+                                    </svg>
+                                </div>
+                                경력 추가
+                            </button>
+
+                            <button type="button" data-prompt-chip="공공기관 보건, 의료행정, 의료정보보호 관련 직무를 희망합니다." class="profile-chip px-5 py-2.5 bg-white/90 text-primary border border-purple-100 rounded-full hover:bg-white hover:shadow-md hover:-translate-y-0.5 transition-all font-label-sm text-[14px] font-medium flex items-center gap-2 shadow-sm">
+                                <div class="w-6 h-6 rounded-full bg-purple-50 flex items-center justify-center">
+                                    <svg class="w-4 h-4 text-purple-600" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                                        <path d="M12 4v16m8-8H4" stroke-linecap="round" stroke-linejoin="round"></path>
+                                    </svg>
+                                </div>
+                                희망 직무 추가
+                            </button>
+
+                            <button type="button" data-prompt-chip="서울과 경기 지역을 우선적으로 고려하고 있으며 정규직을 희망합니다." class="profile-chip px-5 py-2.5 bg-white/90 text-primary border border-teal-100 rounded-full hover:bg-white hover:shadow-md hover:-translate-y-0.5 transition-all font-label-sm text-[14px] font-medium flex items-center gap-2 shadow-sm">
+                                <div class="w-6 h-6 rounded-full bg-teal-50 flex items-center justify-center">
+                                    <svg class="w-4 h-4 text-teal-600" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                                        <path d="M12 4v16m8-8H4" stroke-linecap="round" stroke-linejoin="round"></path>
+                                    </svg>
+                                </div>
+                                희망 조건 추가
+                            </button>
+                        </div>
+
+                        <div class="mt-12 pt-8 border-t border-black/5 flex flex-col sm:flex-row items-center justify-between gap-6">
+                            <div class="flex gap-3 w-full sm:w-auto">
+                                <button id="resetBtn" type="button" class="flex-1 sm:flex-none flex items-center justify-center gap-2 px-6 py-3.5 bg-white border border-gray-100 text-secondary rounded-2xl hover:bg-gray-50 transition-all shadow-sm active:scale-95 font-semibold">
+                                    <span class="material-symbols-outlined text-[20px]">refresh</span>
+                                    <span class="text-[15px]">초기화</span>
+                                </button>
+
+                                <button type="button" data-page-link="home" class="flex-1 sm:flex-none flex items-center justify-center gap-2 px-6 py-3.5 bg-white border border-gray-100 text-secondary rounded-2xl hover:bg-gray-50 transition-all shadow-sm active:scale-95 font-semibold">
+                                    <span class="material-symbols-outlined text-[20px]">home</span>
+                                    <span class="text-[15px]">처음으로</span>
+                                </button>
+                            </div>
+
+                            <button id="analyzeBtn" type="button" class="w-full sm:w-auto flex items-center justify-center gap-2 px-10 py-4 btn-glow-premium rounded-2xl group">
+                                <span class="font-bold text-[16px] tracking-wide">분석 시작하기</span>
+                                <svg class="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                                    <path d="M14 5l7 7m0 0l-7 7m7-7H3" stroke-linecap="round" stroke-linejoin="round"></path>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-12 grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="glass-card-subtle p-7 flex flex-col items-start hover:-translate-y-2 transition-transform duration-300 group">
+                        <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-blue-50 to-white flex items-center justify-center mb-5 shadow-sm border border-blue-100 group-hover:shadow-md transition-shadow">
+                            <svg class="w-7 h-7 text-blue-600" fill="none" viewBox="0 0 24 24">
+                                <path d="M9 12l2 2 4-4" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+                                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+                            </svg>
+                        </div>
+
+                        <h4 class="font-bold text-[16px] text-on-surface mb-2">신뢰할 수 있는 데이터</h4>
+                        <p class="text-[14px] text-on-surface-variant leading-relaxed">공공기관의 채용 공고 데이터를 기반으로 분석합니다.</p>
                     </div>
 
-                    <textarea id="profile"
-                        class="min-h-[280px] w-full resize-y border-0 bg-white p-5 text-base leading-8 text-slate-800 outline-none placeholder:text-slate-400 focus:ring-2 focus:ring-blue-100"
-                        placeholder="예: 저는 3년 동안 병원에서 원무과 행정 직원으로 일했습니다. 환자 데이터를 다루다 보니 의료 행정 지식과 의료정보 보호 정책 수립 쪽에 관심이 생겼고, 관련 경험도 쌓았습니다. 공공기관 쪽으로 이직하고 싶습니다."></textarea>
-                </div>
+                    <div class="glass-card-subtle p-7 flex flex-col items-start hover:-translate-y-2 transition-transform duration-300 group">
+                        <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-indigo-50 to-white flex items-center justify-center mb-5 shadow-sm border border-indigo-100 group-hover:shadow-md transition-shadow">
+                            <svg class="w-7 h-7 text-indigo-600" fill="none" viewBox="0 0 24 24">
+                                <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+                                <circle cx="12" cy="12" fill="currentColor" fill-opacity="0.2" r="8"></circle>
+                            </svg>
+                        </div>
 
-                <div class="mt-6">
-                    <p class="mb-3 text-sm font-black text-slate-700">입력 도움 버튼</p>
-                    <div class="flex flex-wrap gap-2">
-                        <button type="button" data-prompt-chip="전공은 의공학이며 의료 데이터와 병원 행정 분야에 관심이 있습니다." class="prompt-chip">전공 추가</button>
-                        <button type="button" data-prompt-chip="병원 원무과 행정, 환자 데이터 관리, 문서 처리 경험이 있습니다." class="prompt-chip">경력 추가</button>
-                        <button type="button" data-prompt-chip="공공기관 보건, 의료행정, 의료정보보호 관련 직무를 희망합니다." class="prompt-chip">희망 직무 추가</button>
-                        <button type="button" data-prompt-chip="서울과 경기 지역을 우선적으로 고려하고 있으며 정규직을 희망합니다." class="prompt-chip">희망 조건 추가</button>
+                        <h4 class="font-bold text-[16px] text-on-surface mb-2">AI 맞춤형 매칭</h4>
+                        <p class="text-[14px] text-on-surface-variant leading-relaxed">사용자의 역량을 다각도로 분석하여 최적의 경로를 제시합니다.</p>
+                    </div>
+
+                    <div class="glass-card-subtle p-7 flex flex-col items-start hover:-translate-y-2 transition-transform duration-300 group">
+                        <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-teal-50 to-white flex items-center justify-center mb-5 shadow-sm border border-teal-100 group-hover:shadow-md transition-shadow">
+                            <svg class="w-7 h-7 text-teal-600" fill="none" viewBox="0 0 24 24">
+                                <path d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+                                <rect fill="currentColor" fill-opacity="0.2" height="10" rx="2" width="16" x="4" y="11"></rect>
+                            </svg>
+                        </div>
+
+                        <h4 class="font-bold text-[16px] text-on-surface mb-2">철저한 개인정보 보호</h4>
+                        <p class="text-[14px] text-on-surface-variant leading-relaxed">입력하신 정보는 분석 목적 이외에 절대 사용되지 않습니다.</p>
                     </div>
                 </div>
 
-                <div class="mt-8 flex flex-col gap-4 md:flex-row">
-                    <button id="analyzeBtn" class="primary-btn flex-1">
-                        <i data-lucide="search-check" class="h-5 w-5"></i>
-                        분석 시작하기
-                    </button>
+                <footer class="py-8 relative z-10 w-full flex justify-between items-center px-8 md:px-16 text-center md:text-left mt-12 border-t border-black/5 bg-white/20 backdrop-blur-sm">
+                    <div class="font-display-lg text-[18px] text-on-surface font-bold tracking-tight">Career AI</div>
 
-                    <button id="resetBtn" class="secondary-btn">
-                        <i data-lucide="rotate-ccw" class="h-5 w-5"></i>
-                        초기화
-                    </button>
+                    <div class="hidden md:flex gap-6 text-[13px] text-on-surface-variant/70 font-medium">
+                        <a class="hover:text-primary transition-colors" href="#">Privacy Policy</a>
+                        <a class="hover:text-primary transition-colors" href="#">Terms of Service</a>
+                        <a class="hover:text-primary transition-colors" href="#">Institutional Partnership</a>
+                        <a class="hover:text-primary transition-colors" href="#">Contact Us</a>
+                    </div>
 
-                    <button type="button" data-page-link="home" class="secondary-btn">
-                        <i data-lucide="home" class="h-5 w-5"></i>
-                        처음으로
-                    </button>
-                </div>
-            </section>
+                    <p class="text-[12px] text-on-surface-variant/60 font-medium">© 2024 Career AI. All rights reserved.</p>
+                </footer>
+            </main>
         </section>
 
-        <div id="loading" class="loading-card hidden">
+        <div id="loading" class="loading-card hidden mx-auto max-w-7xl px-6">
             <div class="loading-spinner"></div>
             <p class="text-xl font-black text-slate-950">커리어 프로필을 분석하고 있습니다</p>
-            <p id="loadingStage" class="mt-2 text-slate-500">키워드 추출 중...</p>
-            <div class="mt-6 mx-auto max-w-md">
-                <div class="h-1.5 w-full overflow-hidden rounded-full bg-slate-200">
-                    <div id="loadingBar" class="h-full rounded-full bg-gradient-to-r from-blue-700 to-sky-400" style="width: 0%; transition: width 0.6s ease;"></div>
-                </div>
-                <div class="mt-2 flex justify-between text-xs font-semibold text-slate-400">
-                    <span>키워드 추출</span>
-                    <span>매칭 계산</span>
-                    <span>결과 생성</span>
-                </div>
-            </div>
+            <p class="mt-2 text-slate-500">키워드 추출, 조건 후보 생성, 매칭 점수 계산을 진행합니다.</p>
         </div>
 
-        <section id="viewFollowup" class="app-view hidden pt-10">
-            <div id="followUpContainer" class="followup-panel">
-                <div class="mb-6 flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
+        <section id="viewFollowup" class="app-view hidden condition-page mesh-bg min-h-screen flex flex-col text-on-background font-body-md">
+            <nav class="bg-surface/80 dark:bg-surface-dim/80 backdrop-blur-md border-b border-outline-variant/30 dark:border-outline/20 fixed top-0 w-full z-50 flex justify-between items-center px-gutter py-4 max-w-container-max mx-auto left-0 right-0">
+                <div class="font-display-lg text-display-lg tracking-tight text-primary dark:text-inverse-primary">Career AI</div>
+
+                <div class="hidden md:flex gap-6 items-center">
+                    <button type="button" data-page-link="home" class="text-secondary dark:text-secondary-fixed-dim hover:text-primary transition-colors font-label-md text-label-md">Programs</button>
+                    <button type="button" data-page-link="home" class="text-secondary dark:text-secondary-fixed-dim hover:text-primary transition-colors font-label-md text-label-md">Institutions</button>
+                    <button type="button" data-page-link="home" class="text-secondary dark:text-secondary-fixed-dim hover:text-primary transition-colors font-label-md text-label-md">Career Guides</button>
+                    <button type="button" data-page-link="home" class="text-secondary dark:text-secondary-fixed-dim hover:text-primary transition-colors font-label-md text-label-md">Support</button>
+                </div>
+
+                <div class="flex gap-4">
+                    <button type="button" class="text-primary dark:text-inverse-primary hover:text-primary-container dark:hover:text-primary-fixed transition-all font-label-md text-label-md">Login</button>
+                    <button type="button" class="bg-primary text-on-primary px-4 py-2 rounded-full hover:opacity-90 transition-opacity font-label-md text-label-md shadow-sm">Sign Up</button>
+                </div>
+            </nav>
+
+            <main class="flex-grow pt-32 pb-24 px-gutter max-w-container-max mx-auto w-full flex flex-col gap-8">
+                <div id="followUpContainer" class="bg-surface/60 backdrop-blur-md border border-outline-variant/50 rounded-xl p-md flex flex-col md:flex-row justify-between items-start md:items-center gap-6 shadow-sm">
                     <div>
-                        <p class="section-eyebrow">Condition Check</p>
-                        <h3 class="mt-2 text-2xl font-black text-slate-950">추천 조건을 세부 조정해 주세요</h3>
-                        <p id="followUpSummary" class="mt-2 text-slate-500">
-                            선택지를 고르면 추천을 다시 계산합니다.
+                        <p class="text-primary font-label-sm text-label-sm uppercase tracking-wider mb-2 font-bold">CONDITION CHECK</p>
+                        <h1 class="font-headline-lg text-headline-lg text-on-surface mb-2">추천 조건을 세부 조정해 주세요</h1>
+                        <p id="followUpSummary" class="text-on-surface-variant font-body-md text-body-md">
+                            선택한 항목을 반영해 더 구체적인 추천을 다시 계산합니다. 남은 시간: 04:49
                         </p>
                     </div>
 
-                    <button id="followUpSubmit" type="button" class="primary-btn">
-                        <i data-lucide="refresh-cw" class="h-4 w-4"></i>
-                        선택 반영해 다시 분석
+                    <button id="followUpSubmit" type="button" class="bg-primary text-on-primary px-6 py-3 rounded-full flex items-center gap-2 hover:bg-primary-container transition-colors shadow-md group">
+                        <span class="material-symbols-outlined group-hover:rotate-180 transition-transform duration-500">refresh</span>
+                        <span class="font-label-md text-label-md">선택 반영해 다시 분석</span>
                     </button>
                 </div>
 
@@ -322,42 +911,226 @@
                     <div id="selectedSummaryList" class="flex flex-wrap gap-2 text-sm"></div>
                 </div>
 
-                <div id="followUpGrid" class="grid grid-cols-1 gap-4 lg:grid-cols-2"></div>
+                <div id="followUpGrid" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="bg-surface/80 backdrop-blur-sm border border-outline-variant/50 rounded-xl p-md shadow-sm hover:shadow-md transition-shadow">
+                        <p class="text-primary font-label-sm text-label-sm mb-1 font-bold">고용 형태</p>
+                        <h3 class="font-headline-md text-headline-md text-on-surface mb-4 text-3xl"><span class="font-extrabold">고용 형태</span> 정보를 선택해 주세요.</h3>
+                        <p class="text-on-surface-variant font-body-sm text-sm mb-4">하나만 선택할 수 있습니다.</p>
+                        <div class="flex flex-wrap gap-3">
+                            <button type="button" class="condition-chip px-4 py-2 rounded-full border border-outline-variant text-on-surface hover:bg-surface-variant transition-colors flex items-center gap-2 chip-selected">
+                                <span class="font-label-md text-label-md">상관없음</span>
+                                <span class="font-label-sm text-label-sm text-primary">0개</span>
+                            </button>
+                            <button type="button" class="condition-chip px-4 py-2 rounded-full border border-outline-variant text-on-surface hover:bg-surface-variant transition-colors flex items-center gap-2">
+                                <span class="font-label-md text-label-md">비정규직</span>
+                                <span class="font-label-sm text-label-sm text-on-surface-variant">323개</span>
+                            </button>
+                            <button type="button" class="condition-chip px-4 py-2 rounded-full border border-outline-variant text-on-surface hover:bg-surface-variant transition-colors flex items-center gap-2">
+                                <span class="font-label-md text-label-md">무기계약직</span>
+                                <span class="font-label-sm text-label-sm text-on-surface-variant">79개</span>
+                            </button>
+                            <button type="button" class="condition-chip px-4 py-2 rounded-full border border-outline-variant text-on-surface hover:bg-surface-variant transition-colors flex items-center gap-2">
+                                <span class="font-label-md text-label-md">정규직</span>
+                                <span class="font-label-sm text-label-sm text-on-surface-variant">73개</span>
+                            </button>
+                            <button type="button" class="condition-chip px-4 py-2 rounded-full border border-outline-variant text-on-surface hover:bg-surface-variant transition-colors flex items-center gap-2">
+                                <span class="font-label-md text-label-md">청년인턴(체험형)</span>
+                                <span class="font-label-sm text-label-sm text-on-surface-variant">68개</span>
+                            </button>
+                        </div>
+                    </div>
 
-                <div class="mt-8">
-                    <button type="button" data-page-link="analyze" class="secondary-btn">
-                        <i data-lucide="arrow-left" class="h-5 w-5"></i>
-                        입력 화면으로 돌아가기
+                    <div class="bg-surface/80 backdrop-blur-sm border border-outline-variant/50 rounded-xl p-md shadow-sm hover:shadow-md transition-shadow">
+                        <p class="text-primary font-label-sm text-label-sm mb-1 font-bold">우대/선호</p>
+                        <h3 class="font-headline-md text-headline-md text-on-surface mb-4 text-3xl"><span class="font-extrabold">우대/선호</span> 정보를 선택해 주세요.</h3>
+                        <p class="text-on-surface-variant font-body-sm text-sm mb-4">여러 개 선택할 수 있습니다.</p>
+                        <div class="flex flex-wrap gap-3">
+                            <button type="button" class="condition-chip px-4 py-2 rounded-full border border-outline-variant text-on-surface hover:bg-surface-variant transition-colors flex items-center gap-2">
+                                <span class="font-label-md text-label-md">상관없음</span>
+                                <span class="font-label-sm text-label-sm text-on-surface-variant">0개</span>
+                            </button>
+                            <button type="button" class="condition-chip px-4 py-2 rounded-full border border-outline-variant text-on-surface hover:bg-surface-variant transition-colors flex items-center gap-2 chip-selected">
+                                <span class="font-label-md text-label-md">보훈</span>
+                                <span class="font-label-sm text-label-sm text-primary">391개</span>
+                            </button>
+                            <button type="button" class="condition-chip px-4 py-2 rounded-full border border-outline-variant text-on-surface hover:bg-surface-variant transition-colors flex items-center gap-2">
+                                <span class="font-label-md text-label-md">장애인</span>
+                                <span class="font-label-sm text-label-sm text-on-surface-variant">361개</span>
+                            </button>
+                            <button type="button" class="condition-chip px-4 py-2 rounded-full border border-outline-variant text-on-surface hover:bg-surface-variant transition-colors flex items-center gap-2">
+                                <span class="font-label-md text-label-md">가점</span>
+                                <span class="font-label-sm text-label-sm text-on-surface-variant">236개</span>
+                            </button>
+                            <button type="button" class="condition-chip px-4 py-2 rounded-full border border-outline-variant text-on-surface hover:bg-surface-variant transition-colors flex items-center gap-2 chip-selected">
+                                <span class="font-label-md text-label-md">청년</span>
+                                <span class="font-label-sm text-label-sm text-primary">139개</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="bg-surface/80 backdrop-blur-sm border border-outline-variant/50 rounded-xl p-md shadow-sm hover:shadow-md transition-shadow">
+                        <p class="text-primary font-label-sm text-label-sm mb-1 font-bold">지역</p>
+                        <h3 class="font-headline-md text-headline-md text-on-surface mb-4 text-3xl"><span class="font-extrabold">지역</span> 정보를 선택해 주세요.</h3>
+                        <p class="text-on-surface-variant font-body-sm text-sm mb-4">하나만 선택할 수 있습니다.</p>
+                        <div class="flex flex-wrap gap-3">
+                            <button type="button" class="condition-chip px-4 py-2 rounded-full border border-outline-variant text-on-surface hover:bg-surface-variant transition-colors flex items-center gap-2">
+                                <span class="font-label-md text-label-md">상관없음</span>
+                                <span class="font-label-sm text-label-sm text-on-surface-variant">0개</span>
+                            </button>
+                            <button type="button" class="condition-chip px-4 py-2 rounded-full border border-outline-variant text-on-surface hover:bg-surface-variant transition-colors flex items-center gap-2 chip-selected">
+                                <span class="font-label-md text-label-md">서울</span>
+                                <span class="font-label-sm text-label-sm text-primary">127개</span>
+                            </button>
+                            <button type="button" class="condition-chip px-4 py-2 rounded-full border border-outline-variant text-on-surface hover:bg-surface-variant transition-colors flex items-center gap-2">
+                                <span class="font-label-md text-label-md">경기</span>
+                                <span class="font-label-sm text-label-sm text-on-surface-variant">73개</span>
+                            </button>
+                            <button type="button" class="condition-chip px-4 py-2 rounded-full border border-outline-variant text-on-surface hover:bg-surface-variant transition-colors flex items-center gap-2">
+                                <span class="font-label-md text-label-md">경남</span>
+                                <span class="font-label-sm text-label-sm text-on-surface-variant">61개</span>
+                            </button>
+                            <button type="button" class="condition-chip px-4 py-2 rounded-full border border-outline-variant text-on-surface hover:bg-surface-variant transition-colors flex items-center gap-2">
+                                <span class="font-label-md text-label-md">대전</span>
+                                <span class="font-label-sm text-label-sm text-on-surface-variant">56개</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="bg-surface/80 backdrop-blur-sm border border-outline-variant/50 rounded-xl p-md shadow-sm hover:shadow-md transition-shadow">
+                        <p class="text-primary font-label-sm text-label-sm mb-1 font-bold">자격 요건</p>
+                        <h3 class="font-headline-md text-headline-md text-on-surface mb-4 text-3xl"><span class="font-extrabold">자격 요건</span> 정보를 선택해 주세요.</h3>
+                        <p class="text-on-surface-variant font-body-sm text-sm mb-4">하나만 선택할 수 있습니다.</p>
+                        <div class="flex flex-wrap gap-3">
+                            <button type="button" class="condition-chip px-4 py-2 rounded-full border border-outline-variant text-on-surface hover:bg-surface-variant transition-colors flex items-center gap-2 chip-selected">
+                                <span class="font-label-md text-label-md">상관없음</span>
+                                <span class="font-label-sm text-label-sm text-primary">0개</span>
+                            </button>
+                            <button type="button" class="condition-chip px-4 py-2 rounded-full border border-outline-variant text-on-surface hover:bg-surface-variant transition-colors flex items-center gap-2">
+                                <span class="font-label-md text-label-md">병역</span>
+                                <span class="font-label-sm text-label-sm text-on-surface-variant">199개</span>
+                            </button>
+                            <button type="button" class="condition-chip px-4 py-2 rounded-full border border-outline-variant text-on-surface hover:bg-surface-variant transition-colors flex items-center gap-2">
+                                <span class="font-label-md text-label-md">경력</span>
+                                <span class="font-label-sm text-label-sm text-on-surface-variant">151개</span>
+                            </button>
+                            <button type="button" class="condition-chip px-4 py-2 rounded-full border border-outline-variant text-on-surface hover:bg-surface-variant transition-colors flex items-center gap-2">
+                                <span class="font-label-md text-label-md">자격증</span>
+                                <span class="font-label-sm text-label-sm text-on-surface-variant">144개</span>
+                            </button>
+                            <button type="button" class="condition-chip px-4 py-2 rounded-full border border-outline-variant text-on-surface hover:bg-surface-variant transition-colors flex items-center gap-2">
+                                <span class="font-label-md text-label-md">연령제한</span>
+                                <span class="font-label-sm text-label-sm text-on-surface-variant">94개</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="bg-surface/80 backdrop-blur-sm border border-outline-variant/50 rounded-xl p-md shadow-sm hover:shadow-md transition-shadow">
+                        <p class="text-primary font-label-sm text-label-sm mb-1 font-bold">채용 유형</p>
+                        <h3 class="font-headline-md text-headline-md text-on-surface mb-4 text-3xl"><span class="font-extrabold">채용유형</span> 정보를 선택해 주세요.</h3>
+                        <p class="text-on-surface-variant font-body-sm text-sm mb-4">하나만 선택할 수 있습니다.</p>
+                        <div class="flex flex-wrap gap-3">
+                            <button type="button" class="condition-chip px-4 py-2 rounded-full border border-outline-variant text-on-surface hover:bg-surface-variant transition-colors flex items-center gap-2 chip-selected">
+                                <span class="font-label-md text-label-md">상관없음</span>
+                                <span class="font-label-sm text-label-sm text-primary">0개</span>
+                            </button>
+                            <button type="button" class="condition-chip px-4 py-2 rounded-full border border-outline-variant text-on-surface hover:bg-surface-variant transition-colors flex items-center gap-2">
+                                <span class="font-label-md text-label-md">신입+경력</span>
+                                <span class="font-label-sm text-label-sm text-on-surface-variant">317개</span>
+                            </button>
+                            <button type="button" class="condition-chip px-4 py-2 rounded-full border border-outline-variant text-on-surface hover:bg-surface-variant transition-colors flex items-center gap-2">
+                                <span class="font-label-md text-label-md">신입</span>
+                                <span class="font-label-sm text-label-sm text-on-surface-variant">144개</span>
+                            </button>
+                            <button type="button" class="condition-chip px-4 py-2 rounded-full border border-outline-variant text-on-surface hover:bg-surface-variant transition-colors flex items-center gap-2">
+                                <span class="font-label-md text-label-md">경력</span>
+                                <span class="font-label-sm text-label-sm text-on-surface-variant">30개</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="bg-surface/80 backdrop-blur-sm border border-outline-variant/50 rounded-xl p-md shadow-sm hover:shadow-md transition-shadow">
+                        <p class="text-primary font-label-sm text-label-sm mb-1 font-bold">전형</p>
+                        <h3 class="font-headline-md text-headline-md text-on-surface mb-4 text-3xl"><span class="font-extrabold">전형</span> 정보를 선택해 주세요.</h3>
+                        <p class="text-on-surface-variant font-body-sm text-sm mb-4">하나만 선택할 수 있습니다.</p>
+                        <div class="flex flex-wrap gap-3">
+                            <button type="button" class="condition-chip px-4 py-2 rounded-full border border-outline-variant text-on-surface hover:bg-surface-variant transition-colors flex items-center gap-2 chip-selected">
+                                <span class="font-label-md text-label-md">상관없음</span>
+                                <span class="font-label-sm text-label-sm text-primary">0개</span>
+                            </button>
+                            <button type="button" class="condition-chip px-4 py-2 rounded-full border border-outline-variant text-on-surface hover:bg-surface-variant transition-colors flex items-center gap-2">
+                                <span class="font-label-md text-label-md">면접전형</span>
+                                <span class="font-label-sm text-label-sm text-on-surface-variant">463개</span>
+                            </button>
+                            <button type="button" class="condition-chip px-4 py-2 rounded-full border border-outline-variant text-on-surface hover:bg-surface-variant transition-colors flex items-center gap-2">
+                                <span class="font-label-md text-label-md">서류전형</span>
+                                <span class="font-label-sm text-label-sm text-on-surface-variant">440개</span>
+                            </button>
+                            <button type="button" class="condition-chip px-4 py-2 rounded-full border border-outline-variant text-on-surface hover:bg-surface-variant transition-colors flex items-center gap-2">
+                                <span class="font-label-md text-label-md">발표</span>
+                                <span class="font-label-sm text-label-sm text-on-surface-variant">205개</span>
+                            </button>
+                            <button type="button" class="condition-chip px-4 py-2 rounded-full border border-outline-variant text-on-surface hover:bg-surface-variant transition-colors flex items-center gap-2">
+                                <span class="font-label-md text-label-md">최종합격</span>
+                                <span class="font-label-sm text-label-sm text-on-surface-variant">178개</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex justify-start mt-4">
+                    <button type="button" data-page-link="analyze" class="bg-surface text-on-surface border border-outline-variant px-6 py-3 rounded-full flex items-center gap-2 hover:bg-surface-variant transition-colors shadow-sm">
+                        <span class="material-symbols-outlined">arrow_back</span>
+                        <span class="font-label-md text-label-md">입력 화면으로 돌아가기</span>
                     </button>
                 </div>
-            </div>
+            </main>
+
+            <footer class="bg-surface-container-low dark:bg-inverse-surface border-t border-outline-variant/50 w-full mt-auto">
+                <div class="w-full py-12 px-gutter flex flex-col md:flex-row justify-between items-center max-w-container-max mx-auto gap-6">
+                    <div class="font-headline-md text-headline-md text-on-surface dark:text-inverse-on-surface">Career AI</div>
+
+                    <div class="flex flex-wrap gap-6 justify-center">
+                        <a class="text-on-secondary-fixed-variant dark:text-on-secondary-fixed hover:underline decoration-primary underline-offset-4 transition-opacity duration-200 hover:opacity-80 font-label-sm text-label-sm" href="#">Privacy Policy</a>
+                        <a class="text-on-secondary-fixed-variant dark:text-on-secondary-fixed hover:underline decoration-primary underline-offset-4 transition-opacity duration-200 hover:opacity-80 font-label-sm text-label-sm" href="#">Terms of Service</a>
+                        <a class="text-on-secondary-fixed-variant dark:text-on-secondary-fixed hover:underline decoration-primary underline-offset-4 transition-opacity duration-200 hover:opacity-80 font-label-sm text-label-sm" href="#">Institutional Partnership</a>
+                        <a class="text-on-secondary-fixed-variant dark:text-on-secondary-fixed hover:underline decoration-primary underline-offset-4 transition-opacity duration-200 hover:opacity-80 font-label-sm text-label-sm" href="#">Contact Us</a>
+                    </div>
+
+                    <div class="text-on-secondary-fixed-variant dark:text-on-secondary-fixed font-body-md text-body-md">
+                        © 2024 Career AI Public Institution Matching Service. All rights reserved.
+                    </div>
+                </div>
+            </footer>
         </section>
 
-        <section id="viewResult" class="app-view hidden pt-10">
-            <div id="resultContainer">
-                <section id="resultSummary" class="mb-8"></section>
+        <section id="viewResult" class="app-view hidden result-stitch-page">
+            <div class="result-stitch-bg"></div>
 
-                <div class="mb-6 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+            <div id="resultContainer" class="result-stitch-container">
+                <div class="result-stitch-heading">
                     <div>
-                        <p class="section-eyebrow">Matching Result</p>
-                        <h2 class="mt-2 text-3xl font-black text-slate-950">
-                            최적의 매칭 기관 <span id="matchCount" class="text-blue-700">0</span>개
+                        <p class="result-stitch-eyebrow">MATCHING RESULT</p>
+                        <h2>
+                            최적의 매칭 기관 <span id="matchCount">0</span>개
                         </h2>
                     </div>
 
-                    <div class="flex flex-col gap-3 sm:flex-row">
-                        <button type="button" data-page-link="analyze" class="secondary-btn">
-                            <i data-lucide="rotate-ccw" class="h-5 w-5"></i>
+                    <div class="result-stitch-actions">
+                        <button type="button" data-page-link="analyze" class="result-stitch-outline-btn">
+                            <span class="material-symbols-outlined">refresh</span>
                             다시 분석하기
                         </button>
-                        <button type="button" data-page-link="home" class="secondary-btn">
-                            <i data-lucide="home" class="h-5 w-5"></i>
+
+                        <button type="button" data-page-link="home" class="result-stitch-outline-btn">
+                            <span class="material-symbols-outlined">home</span>
                             처음으로
                         </button>
                     </div>
                 </div>
 
-                <div id="resultGrid" class="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3"></div>
+                <section id="resultSummary" class="result-stitch-summary-wrap"></section>
+
+                <div id="resultGrid" class="result-stitch-list"></div>
 
                 <section id="resultTableContainer" class="result-table-card mt-10 hidden">
                     <div class="mb-6 flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
@@ -408,7 +1181,7 @@
             </div>
         </div>
 
-        <div id="errorAlert" class="mt-8 hidden items-center gap-3 rounded-2xl border border-red-200 bg-red-50 p-5 text-red-700">
+        <div id="errorAlert" class="mx-auto mt-8 hidden max-w-7xl items-center gap-3 rounded-2xl border border-red-200 bg-red-50 p-5 text-red-700">
             <i data-lucide="alert-circle" class="h-6 w-6 text-red-500"></i>
             <div>
                 <p id="errorMessage" class="font-black"></p>
@@ -421,7 +1194,27 @@
 
     <script src="script.js"></script>
     <script>
-        lucide.createIcons();
+        if (window.lucide && typeof window.lucide.createIcons === 'function') {
+            lucide.createIcons();
+        }
+
+        document.addEventListener("click", function (event) {
+            const chip = event.target.closest(".condition-chip");
+            if (!chip) return;
+
+            chip.classList.toggle("chip-selected");
+
+            const countSpan = chip.querySelectorAll("span")[1];
+            if (!countSpan) return;
+
+            if (chip.classList.contains("chip-selected")) {
+                countSpan.classList.remove("text-on-surface-variant");
+                countSpan.classList.add("text-primary");
+            } else {
+                countSpan.classList.remove("text-primary");
+                countSpan.classList.add("text-on-surface-variant");
+            }
+        });
     </script>
 </body>
 </html>
