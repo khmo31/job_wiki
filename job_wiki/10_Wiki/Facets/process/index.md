@@ -5,13 +5,13 @@ category_label: "전형방법"
 
 # 전형방법
 
-- [[process/면접전형]] (220건)
-- [[process/서류전형]] (204건)
-- [[process/최종합격]] (75건)
-- [[process/인성검사]] (58건)
-- [[process/발표]] (55건)
-- [[process/필기전형]] (17건)
-- [[process/결격사유조회]] (15건)
-- [[process/PT]] (3건)
-- [[process/적성검사]] (3건)
-- [[process/실기전형]] (1건)
+- [[process/면접전형]] (499건)
+- [[process/서류전형]] (448건)
+- [[process/발표]] (218건)
+- [[process/최종합격]] (175건)
+- [[process/인성검사]] (76건)
+- [[process/필기전형]] (64건)
+- [[process/결격사유조회]] (35건)
+- [[process/실기전형]] (17건)
+- [[process/적성검사]] (11건)
+- [[process/PT]] (4건)
