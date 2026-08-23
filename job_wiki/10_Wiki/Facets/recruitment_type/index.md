@@ -5,6 +5,6 @@ category_label: "채용구분"
 
 # 채용구분
 
-- [[recruitment_type/신입+경력]] (318건)
-- [[recruitment_type/신입]] (194건)
-- [[recruitment_type/경력]] (28건)
+- [[recruitment_type/신입+경력]] (133건)
+- [[recruitment_type/신입]] (71건)
+- [[recruitment_type/경력]] (16건)
