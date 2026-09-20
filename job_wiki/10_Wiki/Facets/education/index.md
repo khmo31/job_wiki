@@ -5,10 +5,7 @@ category_label: "학력"
 
 # 학력
 
-- [[education/학력무관]] (26건)
-- [[education/박사]] (18건)
-- [[education/대졸(4년)]] (16건)
-- [[education/석사]] (15건)
-- [[education/고졸]] (1건)
-- [[education/대졸(2~3년)]] (1건)
-- [[education/중졸이하]] (1건)
+- [[education/학력무관]] (19건)
+- [[education/박사]] (14건)
+- [[education/대졸(4년)]] (12건)
+- [[education/석사]] (11건)
